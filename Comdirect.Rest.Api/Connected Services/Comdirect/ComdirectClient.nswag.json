@@ -1,0 +1,4371 @@
+﻿{
+  "swagger": "2.0",
+  "info": {
+    "title": "comdirect REST API",
+    "description": "Please have a look at the interfaces of comdirect REST API below. Note: Currently it is not possible to request an access token via swagger UI tools because of comdirect's proprietary authorization flow. The shown error message is due to that circumstance.",
+    "version": "20.04"
+  },
+  "host": "api.comdirect.de",
+  "basePath": "/api",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/banking/clients/{user}/v2/accounts/balances": {
+      "get": {
+        "tags": [
+          "Banking"
+        ],
+        "summary": "Request for account information, including cash balance and buying power, for all accounts",
+        "description": "",
+        "operationId": "bankingV2GetAccountBalances",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "description": "Can be either the customer identification number (UUID) or 'user'"
+          },
+          {
+            "type": "string",
+            "name": "without-attr",
+            "in": "query",
+            "description": "Suppresses the master data of the accounts",
+            "x-example": "account"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ListResourceAccountBalance"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Unexpected Error"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "BANKING_RO"
+            ]
+          }
+        ]
+      }
+    },
+    "/banking/v1/accounts/{accountId}/transactions": {
+      "get": {
+        "tags": [
+          "Banking"
+        ],
+        "summary": "Requests and returns a list of transactions for the given account",
+        "description": "",
+        "operationId": "bankingV1GetAccountTransactions",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "description": "Account identifier (UUID) ",
+            "x-example": "1234567890"
+          },
+          {
+            "type": "string",
+            "name": "transactionState",
+            "in": "query",
+            "description": "Filters for AccountTransactions. Will return all AccountTransactions (BOTH), or return all booked AccountTransactions (BOOKED), or all not booked AccountTransactions (NOTBOOKED).",
+            "default": "BOTH",
+            "enum": [
+              "BOOKED",
+              "NOTBOOKED",
+              "BOTH"
+            ]
+          },
+          {
+            "type": "string",
+            "name": "transactionDirection",
+            "in": "query",
+            "description": "Filters for CREDIT, DEBIT or CREDIT_AND_DEBIT",
+            "default": "CREDIT_AND_DEBIT",
+            "enum": [
+              "CREDIT",
+              "DEBIT",
+              "CREDIT_AND_DEBIT"
+            ]
+          },
+          {
+            "type": "integer",
+            "name": "paging-first",
+            "in": "query",
+            "description": "Index of the first transaction.",
+            "format": "int32",
+            "default": 0
+          },
+          {
+            "type": "string",
+            "name": "with-attr",
+            "in": "query",
+            "description": "Enforce to load the master data of an attribute. Currently supported attributes: account",
+            "x-example": "account"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ListResourceAccountTransaction"
+            }
+          },
+          "404": {
+            "description": "No transactions found"
+          },
+          "422": {
+            "description": "Error in request parameter"
+          },
+          "500": {
+            "description": "An internal Error occurred"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "BANKING_RO"
+            ]
+          }
+        ]
+      }
+    },
+    "/banking/v2/accounts/{accountId}/balances": {
+      "get": {
+        "tags": [
+          "Banking"
+        ],
+        "summary": "Request for account information, including cash balance and buying power",
+        "description": "",
+        "operationId": "bankingV2GetAccountBalance",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "description": "Account identifier (UUID)"
+          },
+          {
+            "type": "string",
+            "name": "without-attr",
+            "in": "query",
+            "description": "Suppresses the master data of the account",
+            "x-example": "account"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/AccountBalance"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Unexpected Error"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "BANKING_RO"
+            ]
+          }
+        ]
+      }
+    },
+    "/brokerage/clients/{userId}/v3/depots": {
+      "get": {
+        "tags": [
+          "Brokerage"
+        ],
+        "summary": "Request for a list of the master data for the securities accounts of the registered user",
+        "description": "",
+        "operationId": "brokerageV3GetDepots",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "UUID of the user to search depots for, or the string 'user' to use the logged in user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ListResourceDepot"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/StandardErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected Error"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "BROKERAGE_RW"
+            ]
+          }
+        ]
+      }
+    },
+    "/brokerage/depots/{depotId}/v3/orders": {
+      "get": {
+        "tags": [
+          "Brokerage"
+        ],
+        "summary": "Delivers a list of all orders for the given depotId.",
+        "description": "",
+        "operationId": "brokerageV3GetOrders",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "depotId",
+            "in": "path",
+            "required": true,
+            "description": "Reference to securities account number (as UUID).",
+            "x-example": "382DAB0CCE5175A45A15351078060372"
+          },
+          {
+            "type": "string",
+            "name": "with-attr",
+            "in": "query",
+            "description": "enables attribute: instrument.",
+            "x-example": "instrument"
+          },
+          {
+            "type": "string",
+            "name": "without-attr",
+            "in": "query",
+            "description": "Disables attribute: executions.",
+            "x-example": "executions"
+          },
+          {
+            "type": "string",
+            "name": "instrumentId",
+            "in": "query",
+            "description": "Instrument id (UUID), unique identification of an instrument (security, derivative, etc.).",
+            "x-example": "382DAB0CCE5175A45A15351078060372"
+          },
+          {
+            "type": "string",
+            "name": "isin",
+            "in": "query",
+            "description": "ISIN",
+            "x-example": "DE0005428007"
+          },
+          {
+            "type": "string",
+            "name": "wkn",
+            "in": "query",
+            "description": "WKN",
+            "x-example": "542800"
+          },
+          {
+            "type": "string",
+            "name": "orderStatus",
+            "in": "query",
+            "description": "Status of the order.",
+            "enum": [
+              "PENDING",
+              "OPEN",
+              "EXECUTED",
+              "SETTLED",
+              "CANCELLED_USER",
+              "EXPIRED",
+              "CANCELLED_SYSTEM",
+              "CANCELLED_TRADE",
+              "UNKNOWN"
+            ],
+            "x-example": "PENDING"
+          },
+          {
+            "type": "string",
+            "name": "venueId",
+            "in": "query",
+            "description": "Venue id (UUID), unique identification of a venue.",
+            "x-example": "382DAB0CCE5175A45A15351078060372"
+          },
+          {
+            "type": "string",
+            "name": "orderType",
+            "in": "query",
+            "description": "The order type.",
+            "enum": [
+              "MARKET",
+              "LIMIT",
+              "QUOTE",
+              "STOP_MARKET",
+              "STOP_LIMIT",
+              "TRAILING_STOP_MARKET",
+              "TRAILING_STOP_LIMIT",
+              "ONE_CANCELS_OTHER",
+              "NEXT_ORDER"
+            ],
+            "x-example": "LIMIT"
+          },
+          {
+            "type": "string",
+            "name": "min-creationTimeStamp",
+            "in": "query",
+            "description": "Minimum value of order's creation timestamp in UTC with the following format: YYYY-MM-DDThh:mm:ss,ffffff+zz.",
+            "x-example": "2018-07-03T12:00:00,123456+01"
+          },
+          {
+            "type": "string",
+            "name": "max-creationTimeStamp",
+            "in": "query",
+            "description": "Maximum value of order's creation timestamp in UTC with the following format: YYYY-MM-DDThh:mm:ss,ffffff+zz.",
+            "x-example": "2018-07-03T12:00:00,123456+01"
+          },
+          {
+            "type": "string",
+            "name": "side",
+            "in": "query",
+            "description": "Possible transaction types",
+            "enum": [
+              "BUY",
+              "SELL"
+            ],
+            "x-example": "BUY"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ListResourceOrder"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/StandardErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "BROKERAGE_RW"
+            ]
+          }
+        ]
+      }
+    },
+    "/brokerage/v1/instruments/{instrumentId}": {
+      "get": {
+        "tags": [
+          "Brokerage"
+        ],
+        "summary": "Request for an instrument's information",
+        "description": "",
+        "operationId": "brokerageV1GetInstrument",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "instrumentId",
+            "in": "path",
+            "required": true,
+            "description": "Instrument identification - can be either the WKN, the ISIN or the symbol of the instrument",
+            "x-example": "123456"
+          },
+          {
+            "type": "array",
+            "name": "with-attr",
+            "in": "query",
+            "description": "Enables attribute: orderDimensions",
+            "collectionFormat": "multi",
+            "items": {
+              "type": "string",
+              "enum": [
+                "orderDimensions",
+                "fundDistribution",
+                "derivativeData"
+              ]
+            },
+            "x-example": "orderDimensions"
+          },
+          {
+            "type": "array",
+            "name": "without-attr",
+            "in": "query",
+            "description": "Disables attribute: staticData",
+            "collectionFormat": "multi",
+            "items": {
+              "type": "string"
+            },
+            "x-example": "staticData"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ListResourceInstrument"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "BROKERAGE_RW"
+            ]
+          }
+        ]
+      }
+    },
+    "/brokerage/v3/depots/{depotId}/positions": {
+      "get": {
+        "tags": [
+          "Brokerage"
+        ],
+        "summary": "Request for securities positions, optionally including only the total balance with securities account information",
+        "description": "",
+        "operationId": "brokerageV3GetDepotPositions",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "depotId",
+            "in": "path",
+            "required": true,
+            "description": "Reference to securities account number (as UUID).",
+            "x-example": "0123456789ABCDEF0123456789ABCDEF"
+          },
+          {
+            "type": "string",
+            "name": "instrumentId",
+            "in": "query",
+            "description": "Instrument identification - can either be the WKN, the ISIN or the UUID of the instrument.",
+            "x-example": "710000"
+          },
+          {
+            "type": "array",
+            "name": "without-attr",
+            "in": "query",
+            "description": "Disables attributes for this request. Allowed attributes: depot, positions",
+            "collectionFormat": "multi",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "string",
+            "name": "with-attr",
+            "in": "query",
+            "description": "Enables additional attributes for this request. Allowed attributes: instrument"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ListResourceDepotPosition"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Unexpected Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "BROKERAGE_RW"
+            ]
+          }
+        ]
+      }
+    },
+    "/brokerage/v3/depots/{depotId}/positions/{positionId}": {
+      "get": {
+        "tags": [
+          "Brokerage"
+        ],
+        "summary": "Request for retrieving a single position of specific depot.",
+        "description": "",
+        "operationId": "brokerageV3GetDepotPosition",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "depotId",
+            "in": "path",
+            "required": true,
+            "description": "Reference to securities account number (as UUID).",
+            "x-example": "0123456789ABCDEF0123456789ABCDEF"
+          },
+          {
+            "type": "string",
+            "name": "positionId",
+            "in": "path",
+            "required": true,
+            "description": "Position identification number in securities account (as UUID)"
+          },
+          {
+            "type": "string",
+            "name": "with-attr",
+            "in": "query",
+            "description": "Enables additional attributes for this request. Allowed attributes: instrument"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DepotPosition"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/StandardErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "BROKERAGE_RW"
+            ]
+          }
+        ]
+      }
+    },
+    "/brokerage/v3/depots/{depotId}/transactions": {
+      "get": {
+        "tags": [
+          "Brokerage"
+        ],
+        "summary": "Depot transactions.",
+        "description": "",
+        "operationId": "brokerageV3GetDepotTransactions",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "depotId",
+            "in": "path",
+            "required": true,
+            "description": "Reference to securities account number (as UUID).",
+            "x-example": "B2D8C9A36F640148C915338922030951"
+          },
+          {
+            "type": "string",
+            "name": "isin",
+            "in": "query",
+            "description": "ISIN",
+            "x-example": "DE0005428007"
+          },
+          {
+            "type": "string",
+            "name": "wkn",
+            "in": "query",
+            "description": "WKN",
+            "x-example": "542800"
+          },
+          {
+            "type": "string",
+            "name": "instrumentId",
+            "in": "query",
+            "description": "Instrument id (UUID), unique identification of an instrument.",
+            "x-example": "B2D8C9A36F640148C915338922030951"
+          },
+          {
+            "type": "string",
+            "name": "min-bookingDate",
+            "in": "query",
+            "description": "Earliest booking date of the transaction. Format: YYYY-MM-DD or as negative offset from the current date e.g. -10d",
+            "default": "-180d",
+            "x-example": "2018-07-03"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ListResourceDepotTransaction"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/StandardErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "BROKERAGE_RW"
+            ]
+          }
+        ]
+      }
+    },
+    "/brokerage/v3/orders": {
+      "post": {
+        "tags": [
+          "Brokerage"
+        ],
+        "summary": "Order entry.",
+        "description": "",
+        "operationId": "brokerageV3PostOrder",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/StandardErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "BROKERAGE_RW"
+            ]
+          }
+        ]
+      }
+    },
+    "/brokerage/v3/orders/costindicationexante": {
+      "post": {
+        "tags": [
+          "Brokerage"
+        ],
+        "summary": "Generation of the ex-ante cost indication on the basis of the order data.",
+        "description": "",
+        "operationId": "brokerageV3GetOrdersCostIndicationExAnte",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "order",
+            "in": "body",
+            "required": true,
+            "description": "The Order for which the cost indication is to be calculated",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ListResourceCostIndicationExAnte"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/StandardErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "BROKERAGE_RW"
+            ]
+          }
+        ]
+      }
+    },
+    "/brokerage/v3/orders/dimensions": {
+      "get": {
+        "tags": [
+          "Brokerage"
+        ],
+        "summary": "Request for the trading venue and order options for a particular instrument",
+        "description": "",
+        "operationId": "brokerageV3GetOrderDimensions",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "instrumentId",
+            "in": "query",
+            "description": "Instrument id (UUID), unique identification of an instrument (security, derivative, etc.).",
+            "x-example": "B2D8C9A36F640148C915338922030951"
+          },
+          {
+            "type": "string",
+            "name": "isin",
+            "in": "query",
+            "description": "ISIN",
+            "x-example": "DE0005428007"
+          },
+          {
+            "type": "string",
+            "name": "wkn",
+            "in": "query",
+            "description": "WKN",
+            "x-example": "542800"
+          },
+          {
+            "type": "string",
+            "name": "custodyType",
+            "in": "query",
+            "description": "The custody type.",
+            "x-example": "004"
+          },
+          {
+            "type": "string",
+            "name": "venueId",
+            "in": "query",
+            "description": "Venue id (UUID), unique identification of a venue.",
+            "x-example": "B2D8C9A36F640148C915338922030951"
+          },
+          {
+            "type": "string",
+            "name": "orderType",
+            "in": "query",
+            "description": "The order type.",
+            "enum": [
+              "MARKET",
+              "LIMIT",
+              "QUOTE",
+              "STOP_MARKET",
+              "STOP_LIMIT",
+              "TRAILING_STOP_MARKET",
+              "TRAILING_STOP_LIMIT",
+              "ONE_CANCELS_OTHER",
+              "NEXT_ORDER"
+            ],
+            "x-example": "LIMIT"
+          },
+          {
+            "type": "string",
+            "name": "side",
+            "in": "query",
+            "description": "Possible transaction types.",
+            "enum": [
+              "BUY",
+              "SELL"
+            ],
+            "x-example": "BUY"
+          },
+          {
+            "type": "string",
+            "name": "country",
+            "in": "query",
+            "description": "Country of venue in ISO 3166-2.",
+            "x-example": "DE"
+          },
+          {
+            "type": "string",
+            "name": "type",
+            "in": "query",
+            "description": "Type of venue.",
+            "enum": [
+              "EXCHANGE",
+              "FUND",
+              "OFF"
+            ],
+            "x-example": "EXCHANGE"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ListResourceDimensions"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/StandardErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "BROKERAGE_RW"
+            ]
+          }
+        ]
+      }
+    },
+    "/brokerage/v3/orders/prevalidation": {
+      "post": {
+        "tags": [
+          "Brokerage"
+        ],
+        "summary": "Prevalidation of the order",
+        "description": "",
+        "operationId": "brokerageV3PostOrdersPrevalidation",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/StandardErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "BROKERAGE_RW"
+            ]
+          }
+        ]
+      }
+    },
+    "/brokerage/v3/orders/validation": {
+      "post": {
+        "tags": [
+          "Brokerage"
+        ],
+        "summary": "Validation of an order entry and triggering of a TAN-Challenge in a non-usage case of a Session-TAN.",
+        "description": "",
+        "operationId": "brokerageV3PostOrdersValidation",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/StandardErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "BROKERAGE_RW"
+            ]
+          }
+        ]
+      }
+    },
+    "/brokerage/v3/orders/{orderId}": {
+      "get": {
+        "tags": [
+          "Brokerage"
+        ],
+        "summary": "Delivers an order for the given orderId.",
+        "description": "",
+        "operationId": "brokerageV3GetOrder",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "description": "Unique orderId (UUID).",
+            "x-example": "382DAB0CCE5175A45A15351078060372"
+          },
+          {
+            "type": "string",
+            "name": "without-attr",
+            "in": "query",
+            "description": "Disables attribute: executions.",
+            "x-example": "executions"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/StandardErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "BROKERAGE_RW"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Brokerage"
+        ],
+        "summary": "Order cancellation.",
+        "description": "",
+        "operationId": "brokerageV3DeleteOrder",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "description": "Reference to order identifier (as UUID).",
+            "x-example": "382DAB0CCE5175A45A15351078060372"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/StandardErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "BROKERAGE_RW"
+            ]
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Brokerage"
+        ],
+        "summary": "Order modification.",
+        "description": "",
+        "operationId": "brokerageV3PatchOrder",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          {
+            "type": "string",
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "description": "Reference to order identifier (as UUID).",
+            "x-example": "382DAB0CCE5175A45A15351078060372"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/StandardErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "BROKERAGE_RW"
+            ]
+          }
+        ]
+      }
+    },
+    "/brokerage/v3/orders/{orderId}/costindicationexante": {
+      "post": {
+        "tags": [
+          "Brokerage"
+        ],
+        "summary": "Generation of the ex-ante cost indication on the basis of the order data.",
+        "description": "",
+        "operationId": "brokerageV3GetOrderCostIndicationExAnte",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "description": "Reference to order identifier (as UUID).",
+            "x-example": "382DAB0CCE5175A45A15351078060372"
+          },
+          {
+            "name": "order",
+            "in": "body",
+            "required": true,
+            "description": "The Order for which the cost indication is to be calculated",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ListResourceCostIndicationExAnte"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/StandardErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "BROKERAGE_RW"
+            ]
+          }
+        ]
+      }
+    },
+    "/brokerage/v3/orders/{orderId}/prevalidation": {
+      "post": {
+        "tags": [
+          "Brokerage"
+        ],
+        "summary": "Prevalidation of an order modfication",
+        "description": "",
+        "operationId": "brokerageV3PostOrderPrevalidation",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "description": "Reference to order identifier (as UUID).",
+            "x-example": "382DAB0CCE5175A45A15351078060372"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/StandardErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "BROKERAGE_RW"
+            ]
+          }
+        ]
+      }
+    },
+    "/brokerage/v3/orders/{orderId}/validation": {
+      "post": {
+        "tags": [
+          "Brokerage"
+        ],
+        "summary": "Validation of an order modification or order cancellation and triggering of a TAN Challenge in a non-usage case of a Session-TAN.",
+        "description": "",
+        "operationId": "brokerageV3PostOrderValidation",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "description": "Reference to order identifier (as UUID).",
+            "x-example": "382DAB0CCE5175A45A15351078060372"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/StandardErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "BROKERAGE_RW"
+            ]
+          }
+        ]
+      }
+    },
+    "/brokerage/v3/quotes": {
+      "post": {
+        "tags": [
+          "Brokerage"
+        ],
+        "summary": "Sends a quote request to a venue",
+        "description": "",
+        "operationId": "brokerageV3PostQuoteRequest",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Quote"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Quote"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "BROKERAGE_RW"
+            ]
+          }
+        ]
+      }
+    },
+    "/brokerage/v3/quoteticket": {
+      "post": {
+        "tags": [
+          "Brokerage"
+        ],
+        "summary": "Initiates a TAN-Challenge",
+        "description": "",
+        "operationId": "brokerageV3PostQuoteTicket",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "order",
+            "in": "body",
+            "required": true,
+            "description": "The order for which a ticket will be acquired",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "BROKERAGE_RW"
+            ]
+          }
+        ]
+      }
+    },
+    "/brokerage/v3/quoteticket/{ticketId}": {
+      "patch": {
+        "tags": [
+          "Brokerage"
+        ],
+        "summary": "Initiate a TAN-Challange",
+        "description": "",
+        "operationId": "brokerageV3PatchQuoteTicket",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "ticketId",
+            "in": "path",
+            "required": true,
+            "description": "Reference to the quote ticket (as UUID).",
+            "x-example": "54693D8EF76646559B76B42AE1A4E245"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "BROKERAGE_RW"
+            ]
+          }
+        ]
+      }
+    },
+    "/messages/clients/{user}/v2/documents": {
+      "get": {
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Delivers a list of documents for the customer.",
+        "description": "",
+        "operationId": "messagesV2GetDocuments",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "description": "The literal \"user\" or the unique ID of the client.",
+            "x-example": "0123456789ABCDEF0123456789ABCDEF"
+          },
+          {
+            "type": "integer",
+            "name": "paging-first",
+            "in": "query",
+            "description": "Index of the returning results.",
+            "format": "int32",
+            "default": 0,
+            "minimum": 0.0,
+            "x-example": 0
+          },
+          {
+            "type": "integer",
+            "name": "paging-count",
+            "in": "query",
+            "description": "The maximum number of results that will be returned.",
+            "format": "int32",
+            "default": 20,
+            "maximum": 1000.0,
+            "minimum": 1.0,
+            "x-example": 20
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ListResourceDocument"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/StandardErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "MESSAGES_RO"
+            ]
+          }
+        ]
+      }
+    },
+    "/messages/v2/documents/{documentId}": {
+      "get": {
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Delivers a document for the given UUID.",
+        "description": "",
+        "operationId": "messagesV2GetDocument",
+        "produces": [
+          "text/html",
+          "application/pdf"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "documentId",
+            "in": "path",
+            "required": true,
+            "description": "The unique ID of the document.",
+            "x-example": "0123456789ABCDEF0123456789ABCDEF"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/StandardErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "MESSAGES_RO"
+            ]
+          }
+        ]
+      }
+    },
+    "/messages/v2/documents/{documentId}/predocument": {
+      "get": {
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Delivers a predocument for the given UUID.",
+        "description": "",
+        "operationId": "messagesV2GetPredocument",
+        "produces": [
+          "text/html",
+          "application/pdf"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "documentId",
+            "in": "path",
+            "required": true,
+            "description": "The unique ID of the document.",
+            "x-example": "0123456789ABCDEF0123456789ABCDEF"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/StandardErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "MESSAGES_RO"
+            ]
+          }
+        ]
+      }
+    },
+    "/reports/participants/{user}/v1/allbalances": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "List of all balances for a client's own and connected products.",
+        "description": "",
+        "operationId": "reportsV1GetParticipantBalances",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "description": "The literal \"user\" or the UUID of the participant.",
+            "x-example": "B2D8C9A36F640148C915338922030951"
+          },
+          {
+            "type": "array",
+            "name": "clientConnectionType",
+            "in": "query",
+            "description": "A single ConnectionType of a client connection or a list of ConnectionTypes.",
+            "collectionFormat": "multi",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "array",
+            "name": "targetClientId",
+            "in": "query",
+            "description": "A single UUID of a target client or a list of UUIDs.",
+            "collectionFormat": "multi",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "array",
+            "name": "without-attr",
+            "in": "query",
+            "description": "Prevents setting the static data in the balance objects.",
+            "collectionFormat": "multi",
+            "items": {
+              "type": "string",
+              "enum": [
+                "balance.staticdata"
+              ]
+            },
+            "x-example": "balance.staticdata"
+          },
+          {
+            "type": "array",
+            "name": "productType",
+            "in": "query",
+            "description": "Filter for a single or list of product types.",
+            "collectionFormat": "multi",
+            "items": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ListResourceProductBalance"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/StandardErrorResponse"
+            }
+          },
+          "501": {
+            "description": "Not Implemented"
+          }
+        },
+        "security": [
+          {
+            "CdSecondary": [
+              "REPORTS_RO"
+            ]
+          }
+        ]
+      }
+    },
+    "/session/clients/{user}/v1/sessions": {
+      "get": {
+        "tags": [
+          "Session"
+        ],
+        "summary": "Returns the current Session-Objects for the specified client, can handle the literal \"user\" for the currently logged in client.",
+        "description": "",
+        "operationId": "sessionV1GetSession",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "description": "The literal \"user\" or the UUID of the client.",
+            "x-example": "ABCDEF0123456789ABCDEF0123456789"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Session"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "ResourceOwnerPasswordCredentials": [
+              "TWO_FACTOR"
+            ]
+          },
+          {
+            "CdSecondary": [
+              "SESSION_RW"
+            ]
+          }
+        ]
+      }
+    },
+    "/session/clients/{user}/v1/sessions/{session}": {
+      "patch": {
+        "tags": [
+          "Session"
+        ],
+        "summary": "Writes updates to a session",
+        "description": "",
+        "operationId": "sessionV1PatchSession",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Session"
+            }
+          },
+          {
+            "type": "string",
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "description": "The literal \"user\" or the UUID of the client.",
+            "x-example": "ABCDEF0123456789ABCDEF0123456789"
+          },
+          {
+            "type": "string",
+            "name": "session",
+            "in": "path",
+            "required": true,
+            "description": "Reference to the session (UUID)",
+            "x-example": "ABCDEF0123456789ABCDEF0123456789"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Session"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "ResourceOwnerPasswordCredentials": [
+              "TWO_FACTOR"
+            ]
+          },
+          {
+            "CdSecondary": [
+              "SESSION_RW"
+            ]
+          }
+        ]
+      }
+    },
+    "/session/clients/{user}/v1/sessions/{session}/validate": {
+      "post": {
+        "tags": [
+          "Session"
+        ],
+        "summary": "Validates the input and checks if the client is able to update the current session. An activated session TAN cannot be deactivated in the current session. It is necessary to provide a TAN when patching the activation of the session TAN.",
+        "description": "",
+        "operationId": "sessionV1PostSessionValidation",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Session"
+            }
+          },
+          {
+            "type": "string",
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "description": "The literal \"user\" or the UUID of the client.",
+            "x-example": "ABCDEF0123456789ABCDEF0123456789"
+          },
+          {
+            "type": "string",
+            "name": "session",
+            "in": "path",
+            "required": true,
+            "description": "Reference to the session (UUID)",
+            "x-example": "ABCDEF0123456789ABCDEF0123456789"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Session"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "ResourceOwnerPasswordCredentials": [
+              "TWO_FACTOR"
+            ]
+          },
+          {
+            "CdSecondary": [
+              "SESSION_RW"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "Account": {
+      "type": "object",
+      "description": "Master data of an account",
+      "properties": {
+        "accountId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Account identifier (UUID)"
+        },
+        "accountDisplayId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Account identfier"
+        },
+        "currency": {
+          "readOnly": true,
+          "description": "Account currency",
+          "$ref": "#/definitions/CurrencyString"
+        },
+        "clientId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Identification Code of the client (UUID)"
+        },
+        "accountType": {
+          "readOnly": true,
+          "description": "Account type. 'key' contains the product type, 'text' a description",
+          "$ref": "#/definitions/EnumText"
+        },
+        "iban": {
+          "type": "string",
+          "readOnly": true,
+          "description": "IBAN (International bank account number), if available"
+        },
+        "creditLimit": {
+          "readOnly": true,
+          "description": "Credit limit, if available",
+          "$ref": "#/definitions/AmountValue"
+        }
+      }
+    },
+    "AccountBalance": {
+      "type": "object",
+      "description": "Account information, including cash balance and buying power",
+      "properties": {
+        "account": {
+          "readOnly": true,
+          "description": "The master data of this account (attribute can be suppressed by using the parameter 'without-attr=account')",
+          "$ref": "#/definitions/Account"
+        },
+        "accountId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Account identifier (UUID)"
+        },
+        "balance": {
+          "readOnly": true,
+          "description": "Current balance",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "balanceEUR": {
+          "readOnly": true,
+          "description": "Current balance in EUR",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "availableCashAmount": {
+          "readOnly": true,
+          "description": "Sum of current account balance + credit limit - sum of funds, which are already planned but not yet booked. This is the maximum cash limit",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "availableCashAmountEUR": {
+          "readOnly": true,
+          "description": "As 'availableCashAmount', but in EUR",
+          "$ref": "#/definitions/AmountValue"
+        }
+      }
+    },
+    "AccountInformation": {
+      "type": "object",
+      "description": "Model for the information of an account (debtor/creditor).",
+      "properties": {
+        "holderName": {
+          "type": "string",
+          "readOnly": true,
+          "description": "name of the account owner"
+        },
+        "iban": {
+          "type": "string",
+          "readOnly": true,
+          "description": "The IBAN (International bank account number) for the account - if available"
+        },
+        "bic": {
+          "type": "string",
+          "readOnly": true,
+          "description": "The BIC (Bank Identifier Code) for the IBAN - if available"
+        }
+      }
+    },
+    "AccountTransaction": {
+      "type": "object",
+      "description": "Model for an account transaction.",
+      "properties": {
+        "reference": {
+          "type": "string",
+          "readOnly": true,
+          "description": "unique reference code of the transaction"
+        },
+        "bookingStatus": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Status of transaction",
+          "enum": [
+            "BOOKED",
+            "NOTBOOKED"
+          ]
+        },
+        "bookingDate": {
+          "readOnly": true,
+          "description": "The booking date",
+          "$ref": "#/definitions/DateString"
+        },
+        "amount": {
+          "readOnly": true,
+          "description": "The amount",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "remitter": {
+          "readOnly": true,
+          "description": "Account information of name, IBAN and BIC of the remitter.",
+          "$ref": "#/definitions/AccountInformation"
+        },
+        "deptor": {
+          "readOnly": true,
+          "description": "Account information of name, IBAN and BIC of the debtor",
+          "$ref": "#/definitions/AccountInformation"
+        },
+        "creditor": {
+          "readOnly": true,
+          "description": "includes the account information of the name, IBAN and BIC from the creditor",
+          "$ref": "#/definitions/AccountInformation"
+        },
+        "valutaDate": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Availability date (yyyy-mm-dd). Could be an invalid date e.g. 2019-12-32"
+        },
+        "directDebitCreditorId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Gives back the creditor identifier of an account transaction, if it is a direct debit."
+        },
+        "directDebitMandateId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Gives back the mandateId of an account transaction, if it is a direct debit."
+        },
+        "endToEndReference": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Gives back the end-to-end-reference of an account transaction, if it is a direct debit."
+        },
+        "newTransaction": {
+          "type": "boolean",
+          "readOnly": true,
+          "description": "Shows whether the client has seen the account transaction in web.",
+          "default": false
+        },
+        "remittanceInfo": {
+          "type": "string",
+          "readOnly": true,
+          "description": "remittance information of the transaction. This can be more then one line with a length of 35 symbols. The lines will be numbered in case of an already booked transaction."
+        },
+        "transactionType": {
+          "readOnly": true,
+          "description": "Definition of account transaction type.",
+          "$ref": "#/definitions/EnumText"
+        }
+      }
+    },
+    "AggregatedInfo": {
+      "type": "object"
+    },
+    "AmountValue": {
+      "type": "object",
+      "description": "Represents the amount value with the currency.",
+      "properties": {
+        "value": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Nominal value in corresponding unit",
+          "example": "999.99"
+        },
+        "unit": {
+          "type": "string",
+          "readOnly": true,
+          "description": "{XXX, XXC, XXM, XXP, XXU} or currencies according to ISO-4217 (EUR, USD, GBP,...)",
+          "maxLength": 3,
+          "minLength": 3,
+          "example": "EUR"
+        }
+      }
+    },
+    "Balance": {
+      "type": "object",
+      "description": "A balance object is equal to one of the types indicated by the attributes in this definition.",
+      "properties": {
+        "accountBalance": {
+          "description": "Balance object for an account",
+          "$ref": "#/definitions/AccountBalance"
+        },
+        "cardBalance": {
+          "description": "Balance object for a card",
+          "$ref": "#/definitions/CardBalance"
+        },
+        "depotAggregation": {
+          "description": "Aggregation object for a depot",
+          "$ref": "#/definitions/DepotAggregation"
+        },
+        "fixedTermSavings": {
+          "description": "Balance object for a fixed term saving",
+          "$ref": "#/definitions/FixedTermSavings"
+        },
+        "installmentLoanBalance": {
+          "description": "Balance object for an installment loan",
+          "$ref": "#/definitions/InstallmentLoanBalance"
+        }
+      }
+    },
+    "BusinessMessage": {
+      "type": "object",
+      "description": "Model for an error",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "Identifier for the error",
+          "enum": [
+            "request.object.invalid",
+            "request.query.invalid"
+          ]
+        },
+        "severity": {
+          "type": "string",
+          "description": "Severity level of the error",
+          "enum": [
+            "ERROR",
+            "INFO",
+            "WARN"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "description": "Default error message"
+        },
+        "origin": {
+          "type": "array",
+          "description": "List of properties causing validation errors",
+          "items": {
+            "type": "string"
+          }
+        },
+        "args": {
+          "type": "array",
+          "description": "Arguments for the error message",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "Card": {
+      "type": "object",
+      "description": "Model for a card.",
+      "properties": {
+        "cardId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Card identifier (UUID).",
+          "example": "0123456789ABCDEF0123456789ABCDEF"
+        },
+        "cardType": {
+          "readOnly": true,
+          "description": "Type of the card. 'key' contains the card type, 'text' a description",
+          "example": "{\"key\" : \"VISA_CREDIT\", \"text\" : \"Visa-Karte (Kreditkarte)\"",
+          "$ref": "#/definitions/EnumText"
+        },
+        "clientId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Client connection uniquely assigned to the credit card account.",
+          "example": "0123456789ABCDEF0123456789ABCDEF"
+        },
+        "participantId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Contract code of the client uniquely assigned to the credit card account.",
+          "example": "0123456789ABCDEF0123456789ABCDEF"
+        },
+        "holderName": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Name of the card holder",
+          "example": "Tommer Tapir"
+        },
+        "settlementAccountId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Default settlement account number uniquely assigned to the credit card account. In this case, it has to be the current account.",
+          "example": "0123456789ABCDEF0123456789ABCDEF"
+        },
+        "cardDisplayId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Partially masked credit card number.",
+          "example": "XXXX XXXX XXXX 1234"
+        },
+        "cardValidity": {
+          "type": "string",
+          "readOnly": true,
+          "description": "validity of the card. Format: MM/YY",
+          "example": "01/21"
+        },
+        "cardImage": {
+          "readOnly": true,
+          "description": "Image of the card.",
+          "$ref": "#/definitions/VisaCardImage"
+        },
+        "primaryAccountNumberSuffix": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Last 4 digits of the credit card number",
+          "example": "1234"
+        },
+        "cardLimit": {
+          "description": "Card limit if available. Will be 0.00 EUR if card has no limit.",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of the card.",
+          "example": "ACTIVE",
+          "enum": [
+            "ACTIVE",
+            "INACTIVE",
+            "IN_CHANGE",
+            "UNKNOWN"
+          ]
+        }
+      }
+    },
+    "CardBalance": {
+      "type": "object",
+      "description": "Model for a card balance.",
+      "properties": {
+        "cardId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Card identifier (UUID).",
+          "example": "0123456789ABCDEF0123456789ABCDEF"
+        },
+        "card": {
+          "readOnly": true,
+          "description": "Master data of the card.",
+          "$ref": "#/definitions/Card"
+        },
+        "balance": {
+          "readOnly": true,
+          "description": "Current balance.",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "availableCashAmount": {
+          "readOnly": true,
+          "description": "Sum of current account balance + credit limit - sum of scheduled amounts which are not booked yet. This is the maximum cash limit.",
+          "$ref": "#/definitions/AmountValue"
+        }
+      }
+    },
+    "CostEntry": {
+      "type": "object",
+      "description": "Cost entry of a cost group.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Type of the cost entry",
+          "enum": [
+            "E",
+            "F",
+            "P"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Label of the cost entry",
+          "example": "Orderprovision"
+        },
+        "amount": {
+          "readOnly": true,
+          "description": "Cost in trading currency",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "amountReportingCurrency": {
+          "readOnly": true,
+          "description": "Cost in reporting currency",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "inducement": {
+          "readOnly": true,
+          "description": "Inducement of the cost entry",
+          "$ref": "#/definitions/Inducement"
+        }
+      }
+    },
+    "CostGroup": {
+      "type": "object",
+      "description": "Model for a cost group including a list of cost entries for this cost group.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Type of cost group. K: Costs of securities purchase, H: Costs of the holding period (per year), V: Costs of the sale of securities",
+          "enum": [
+            "K",
+            "H",
+            "V"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Name of cost group for showing in the cost-note"
+        },
+        "sum": {
+          "readOnly": true,
+          "description": "Sum of the cost group in trading currency (quantity.amount.unit)",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "sumReportingCurrency": {
+          "readOnly": true,
+          "description": "Sum of the cost group in reporting currency",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "costs": {
+          "type": "array",
+          "readOnly": true,
+          "description": "List of costs per cost group",
+          "items": {
+            "$ref": "#/definitions/CostEntry"
+          }
+        }
+      }
+    },
+    "CostIndicationExAnte": {
+      "type": "object",
+      "description": "Ex-ante cost indication on the basis of the order data.",
+      "properties": {
+        "depotId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Securities account number (UUID)"
+        },
+        "calculationSuccessful": {
+          "type": "boolean",
+          "readOnly": true,
+          "description": "Result of calculation of cost indication; if false, linkCosts will link to a generic cost indication",
+          "default": false
+        },
+        "name": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Instrument name analogous to Instrument.name"
+        },
+        "wkn": {
+          "type": "string",
+          "readOnly": true,
+          "description": "WKN analogous to Instrument.wkn"
+        },
+        "side": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Type of transaction analogous to Order.side",
+          "enum": [
+            "BUY",
+            "SELL"
+          ]
+        },
+        "quantity": {
+          "readOnly": true,
+          "description": "Quantity analogous to Order.quantity",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "limit": {
+          "readOnly": true,
+          "description": "Limit analogous to Order.limit with trading currency",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "expectedValue": {
+          "readOnly": true,
+          "description": "Expected value (net costs) of the order: in trading currency",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "venueName": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Execution venue as name for the display"
+        },
+        "settlementCurrency": {
+          "readOnly": true,
+          "description": "Settlement currency analogous to Account.currency",
+          "$ref": "#/definitions/CurrencyString"
+        },
+        "tradingCurrency": {
+          "readOnly": true,
+          "description": "Trading currency",
+          "$ref": "#/definitions/CurrencyString"
+        },
+        "reportingCurrency": {
+          "readOnly": true,
+          "description": "Reporting currency",
+          "$ref": "#/definitions/CurrencyString"
+        },
+        "fxRate": {
+          "readOnly": true,
+          "description": "Exchange rate for settlement currency to FX, for buy and sell (both sides for conversion depending on BUY/SELL)",
+          "$ref": "#/definitions/FXRateEUR"
+        },
+        "expectedSettlementCosts": {
+          "readOnly": true,
+          "description": "Expected costs for order analogue (real) settlement costs",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "purchaseCosts": {
+          "readOnly": true,
+          "description": "CostGroup type K",
+          "$ref": "#/definitions/CostGroup"
+        },
+        "holdingCosts": {
+          "readOnly": true,
+          "description": "CostGroup type H",
+          "$ref": "#/definitions/CostGroup"
+        },
+        "salesCosts": {
+          "readOnly": true,
+          "description": "CostGroup type V",
+          "$ref": "#/definitions/CostGroup"
+        },
+        "holdingPeriod": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Holding period in years, displayed on purchase"
+        },
+        "totalCostsAbs": {
+          "readOnly": true,
+          "description": "Absolute amount of the total costs",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "totalCostsRel": {
+          "readOnly": true,
+          "description": "Amount of total costs relative to the investment",
+          "$ref": "#/definitions/PercentageString"
+        },
+        "totalCostsDetail": {
+          "readOnly": true,
+          "description": "Total cost block including total cost entries segregated as: E (own service costs of bank), F (external service costs), and P (product costs)",
+          "$ref": "#/definitions/TotalCostBlock"
+        },
+        "totalHoldingCosts": {
+          "readOnly": true,
+          "description": "List of cost blocks over time",
+          "$ref": "#/definitions/TotalHoldingCostBlock"
+        },
+        "linkCosts": {
+          "type": "string",
+          "readOnly": true,
+          "description": "HTTP link to further cost information"
+        },
+        "linkKid": {
+          "type": "string",
+          "readOnly": true,
+          "description": "HTTP link to key information document"
+        }
+      }
+    },
+    "CurrencyString": {
+      "type": "object",
+      "description": "Represents the ISO-4217 code of the currency.",
+      "properties": {
+        "Currency": {
+          "type": "string",
+          "maxLength": 3,
+          "minLength": 3,
+          "example": "EUR"
+        }
+      }
+    },
+    "DateString": {
+      "type": "object",
+      "description": "Represents the date without the time.",
+      "properties": {
+        "date": {
+          "type": "string",
+          "description": "Time with format: 'yyyy-MM-dd'",
+          "format": "date",
+          "example": "2018-07-03"
+        }
+      }
+    },
+    "DateTimeString": {
+      "type": "object",
+      "description": "Represents the date with the time.",
+      "properties": {
+        "dateTime": {
+          "type": "string",
+          "description": "Time with format: 'yyyy-MM-dd'T'HH:mm:ssX'",
+          "format": "date-time",
+          "example": "2018-07-03T16:40:30+02:00"
+        }
+      }
+    },
+    "Depot": {
+      "type": "object",
+      "properties": {
+        "depotId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Securities account Identifier (UUID)"
+        },
+        "depotDisplayId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Securities account Number"
+        },
+        "clientId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Identification code of the client uniquely assigned to the securities account",
+          "example": "0123456789ABCDEF0123456789ABCDEF"
+        },
+        "defaultSettlementAccountId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Default settlement account number uniquely assigned to the securities account"
+        },
+        "settlementAccountIds": {
+          "type": "array",
+          "readOnly": true,
+          "description": "List of other settlement account identification numbers assigned to the securities account",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "DepotAggregation": {
+      "type": "object",
+      "properties": {
+        "depot": {
+          "readOnly": true,
+          "description": "The master data of this securities account (this attribute can be suppressed by using the parameter 'without-attr=depot')",
+          "$ref": "#/definitions/Depot"
+        },
+        "depotId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Securities account Identifier (UUID)"
+        },
+        "dateLastUpdate": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Date of the last update of securities holdings & master data. YYYY-MM-DD"
+        },
+        "currentValue": {
+          "readOnly": true,
+          "description": "Current value of the securities account (the sum of all the securities holdings at their current prices)",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "purchaseValue": {
+          "readOnly": true,
+          "description": "Sum of the purchase values of all the securities holdings",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "prevDayValue": {
+          "readOnly": true,
+          "description": "Value of the securities account (the sum of all the securities holdings at the closing prices of the previous day)",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "lendingValue": {
+          "readOnly": true,
+          "description": "Sum of the lending values of all of the securities holdings",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "profitLossPurchaseAbs": {
+          "readOnly": true,
+          "description": "Profit/loss at the absolute purchase value",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "profitLossPurchaseRel": {
+          "readOnly": true,
+          "description": "Profit/loss relative to purchase value in percentage",
+          "$ref": "#/definitions/PercentageString"
+        },
+        "profitLossPrevDayAbs": {
+          "readOnly": true,
+          "description": "Absolute profit/loss compared to the previous day",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "profitLossPrevDayRel": {
+          "readOnly": true,
+          "description": "Profit/Loss compared to the previous day in percentage",
+          "$ref": "#/definitions/PercentageString"
+        }
+      }
+    },
+    "DepotPosition": {
+      "type": "object",
+      "properties": {
+        "depotId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Securities account Identifier (UUID)"
+        },
+        "positionId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Position identification number in securities account"
+        },
+        "wkn": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Identification number of the instrument"
+        },
+        "custodyType": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Custody type"
+        },
+        "quantity": {
+          "readOnly": true,
+          "description": "Quantity or nominal amount in case of a percentage quotation",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "availableQuantity": {
+          "readOnly": true,
+          "description": "Available quantity or nominal amount in case of a percentage quotation",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "currentPrice": {
+          "readOnly": true,
+          "description": "Current price, if available",
+          "$ref": "#/definitions/Price"
+        },
+        "purchasePrice": {
+          "readOnly": true,
+          "description": "Purchase price, if available",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "prevDayPrice": {
+          "readOnly": true,
+          "description": "Price of the previous day, if available",
+          "$ref": "#/definitions/Price"
+        },
+        "currentValue": {
+          "readOnly": true,
+          "description": "Current value of the position",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "purchaseValue": {
+          "readOnly": true,
+          "description": "Average purchase value of the position",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "prevDayValue": {
+          "readOnly": true,
+          "description": "Position value at previous day's closing price",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "profitLossPurchaseAbs": {
+          "readOnly": true,
+          "description": "Absolute profit/loss at purchase price, if available",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "profitLossPurchaseRel": {
+          "readOnly": true,
+          "description": "Profit/loss relative to purchase value in percentage, if available",
+          "$ref": "#/definitions/PercentageString"
+        },
+        "profitLossPrevDayAbs": {
+          "readOnly": true,
+          "description": "Absolute profit/loss compared to previous day, if available",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "profitLossPrevDayRel": {
+          "readOnly": true,
+          "description": "Profit/Loss compared to previous day in percentage, if available",
+          "$ref": "#/definitions/PercentageString"
+        },
+        "instrument": {
+          "readOnly": true,
+          "description": "Information about the instrument of the securities position",
+          "$ref": "#/definitions/Instrument"
+        },
+        "version": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Position version, if available"
+        }
+      }
+    },
+    "DepotTransaction": {
+      "type": "object",
+      "description": "Model for a depot transaction.",
+      "properties": {
+        "transactionId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Transaction Identifier (UUID)"
+        },
+        "bookingStatus": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Status of transaction",
+          "enum": [
+            "BOOKED",
+            "NOTBOOKED"
+          ]
+        },
+        "bookingDate": {
+          "readOnly": true,
+          "description": "The booking date",
+          "$ref": "#/definitions/DateString"
+        },
+        "settlementDate": {
+          "readOnly": true,
+          "description": "Date and time of settlement",
+          "$ref": "#/definitions/DateTimeString"
+        },
+        "businessDate": {
+          "readOnly": true,
+          "description": "The business date",
+          "$ref": "#/definitions/DateString"
+        },
+        "quantity": {
+          "readOnly": true,
+          "description": "The quantity",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "instrumentId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "InstrumentId as UUID"
+        },
+        "instrument": {
+          "readOnly": true,
+          "description": "Information about the instrument of the securities position",
+          "$ref": "#/definitions/Instrument"
+        },
+        "executionPrice": {
+          "readOnly": true,
+          "description": "Price of the execution",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "transactionValue": {
+          "readOnly": true,
+          "description": "Value of the transaction",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "transactionDirection": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Transaction direction",
+          "enum": [
+            "IN",
+            "OUT"
+          ]
+        },
+        "transactionType": {
+          "type": "string",
+          "readOnly": true,
+          "description": "On the basis of securities account turnover transaction type",
+          "enum": [
+            "BUY",
+            "SELL",
+            "TRANSFER_IN",
+            "TRANSFER_OUT",
+            "OTHER"
+          ]
+        },
+        "fxRate": {
+          "readOnly": true,
+          "description": "Exchange rate settlement currency EUR to FX if exectionPrice amount is not notated in EUR",
+          "$ref": "#/definitions/FXRateEUR"
+        }
+      }
+    },
+    "DerivativeData": {
+      "type": "object",
+      "description": "additional data of a derivative",
+      "properties": {
+        "underlyingInstrument": {
+          "readOnly": true,
+          "description": "the underlying instrument",
+          "$ref": "#/definitions/Instrument"
+        },
+        "underlyingPrice": {
+          "readOnly": true,
+          "description": "Price of the underlying",
+          "$ref": "#/definitions/Price"
+        },
+        "certificateType": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Certificate Type",
+          "enum": [
+            "Hebel",
+            "Index",
+            "Basket",
+            "Hedge-Fonds-Zertifikat",
+            "Discount",
+            "Aktienanleihe",
+            "Bandbreite",
+            "Outperformance",
+            "Express",
+            "Bonus",
+            "Kapitalschutz"
+          ]
+        },
+        "rating": {
+          "readOnly": true,
+          "description": "rating",
+          "$ref": "#/definitions/Rating"
+        },
+        "strikePrice": {
+          "readOnly": true,
+          "description": "strike price of the underlying",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "leverage": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Leverage of the derivate",
+          "example": "13.37"
+        },
+        "multiplier": {
+          "type": "string",
+          "readOnly": true,
+          "description": "multiplier of the underlying",
+          "example": "13.37"
+        },
+        "expiryDate": {
+          "type": "string",
+          "readOnly": true,
+          "description": "expiry date of a derivative",
+          "example": "2019-03-14"
+        },
+        "yieldPA": {
+          "type": "string",
+          "readOnly": true,
+          "description": "yield p.a.",
+          "example": "99.999"
+        },
+        "remainingTermInYears": {
+          "type": "string",
+          "readOnly": true,
+          "description": "remaining Term (expiryDate-today)",
+          "example": "13.37"
+        },
+        "nominalRate": {
+          "type": "string",
+          "readOnly": true,
+          "description": "nominal rate",
+          "example": "99.999"
+        },
+        "warrantType": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Warrant Type",
+          "enum": [
+            "Call",
+            "Put"
+          ]
+        },
+        "maturityDate": {
+          "type": "string",
+          "readOnly": true,
+          "description": "maturity Date of a bonds",
+          "example": "2019-03-14"
+        },
+        "interestPaymentDate": {
+          "type": "string",
+          "readOnly": true,
+          "description": "date of the interest payment of a bond",
+          "example": "2019-03-14"
+        },
+        "interestPaymentInterval": {
+          "type": "string",
+          "readOnly": true,
+          "description": "interval of the interest payment of a bond\",allowableValues = \"monthly, quarterly, biannualy, annualy",
+          "enum": [
+            "MONTHLY",
+            "QUARTERLY",
+            "SEMIANNUALLY",
+            "ANNUALLY",
+            "OTHER"
+          ]
+        }
+      }
+    },
+    "Dimensions": {
+      "type": "object",
+      "description": "Model for dimensions.",
+      "properties": {
+        "venues": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Venue"
+          }
+        }
+      }
+    },
+    "Document": {
+      "type": "object",
+      "description": "Model for a document.",
+      "properties": {
+        "documentId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Unique ID of the document (UUID)",
+          "example": "0123456789ABCDEF0123456789ABCDEF"
+        },
+        "name": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Name or description of the document.",
+          "maxLength": 50,
+          "minLength": 0,
+          "example": "Villeroy & Boch AG: Einladung zur Hauptversammlung"
+        },
+        "dateCreation": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Date at which the Document was assigned to the client.",
+          "example": "2019-03-14"
+        },
+        "mimeType": {
+          "type": "string",
+          "readOnly": true,
+          "description": "The native mimeType of the document.",
+          "example": "application/pdf"
+        },
+        "deletable": {
+          "type": "boolean",
+          "readOnly": true,
+          "description": "Is the client allowed to delete the document?",
+          "default": false
+        },
+        "advertisement": {
+          "type": "boolean",
+          "readOnly": true,
+          "description": "Is the document advertising comdirect products?",
+          "default": false
+        },
+        "documentMetaData": {
+          "readOnly": true,
+          "description": "Object containing optional information about the document. Available information will differ between categories.",
+          "$ref": "#/definitions/DocumentMetadata"
+        }
+      }
+    },
+    "DocumentMetadata": {
+      "type": "object",
+      "description": "Model for category-specific metadata of documents.",
+      "properties": {
+        "archived": {
+          "type": "boolean",
+          "readOnly": true,
+          "description": "Is document archived?",
+          "default": false
+        },
+        "dateRead": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Date on which the document was read.",
+          "example": "2019-03-14"
+        },
+        "alreadyRead": {
+          "type": "boolean",
+          "readOnly": true,
+          "description": "Has the document been read?",
+          "default": false
+        },
+        "predocumentExists": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "EnumText": {
+      "type": "object",
+      "description": "Holds a unique key and the corresponding text.",
+      "properties": {
+        "key": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Unique key value for an enumeration type.",
+          "maxLength": 40,
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Display text in German language.",
+          "maxLength": 65,
+          "minLength": 0
+        }
+      }
+    },
+    "Execution": {
+      "type": "object",
+      "description": "Model for an order's execution.",
+      "properties": {
+        "executionId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Execution ID (UUID)",
+          "maxLength": 40,
+          "minLength": 0
+        },
+        "executionNumber": {
+          "type": "integer",
+          "readOnly": true,
+          "description": "Position (by time) of the execution of an order",
+          "format": "int32"
+        },
+        "executedQuantity": {
+          "readOnly": true,
+          "description": "Quantity of executed units or nominal amount",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "executionPrice": {
+          "readOnly": true,
+          "description": "Execution price",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "executionTimestamp": {
+          "readOnly": true,
+          "description": "Date/timestamp of the order entry in UTC in the following format: (MiFID II) YYYY-MM-DDThh:mm:ss,ffffff+zz",
+          "$ref": "#/definitions/TimestampString"
+        }
+      }
+    },
+    "FixedTermSavings": {
+      "type": "object",
+      "properties": {
+        "fixedTermSavingsId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "UUID of the deposit account.",
+          "example": "0123456789ABCDEF0123456789ABCDEF"
+        },
+        "savingsAmount": {
+          "readOnly": true,
+          "description": "Total of investment.",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "interestRate": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Interest rate of the deposit account.",
+          "example": "99.999"
+        },
+        "fixedTermSavingsType": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Type of the deposit account.",
+          "enum": [
+            "SHORT_TERM",
+            "LONG_TERM"
+          ]
+        },
+        "fixedTermSavingsDisplayName": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Name of the deposit account.",
+          "example": "Laufzeitkonto"
+        },
+        "contractPeriodInMonths": {
+          "type": "integer",
+          "readOnly": true,
+          "description": "Contract period of the deposit account in months.",
+          "format": "int32",
+          "example": 120
+        },
+        "creationDate": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Start date of investment.",
+          "example": "2019-03-14"
+        },
+        "expirationDate": {
+          "type": "string",
+          "readOnly": true,
+          "description": "End date of investment.",
+          "example": "2019-03-14"
+        },
+        "prolongationAmount": {
+          "readOnly": true,
+          "description": "Amount of money for prolongation.",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "extendable": {
+          "type": "boolean",
+          "readOnly": true,
+          "description": "Indicates whether the investment can be extended.",
+          "default": false,
+          "example": true
+        }
+      }
+    },
+    "FundDistribution": {
+      "type": "object",
+      "description": "additional fund data, if the instrument is a fund",
+      "properties": {
+        "fundStatus": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Status of fund",
+          "enum": [
+            "A",
+            "K",
+            "P",
+            "R",
+            "V",
+            "N",
+            "L",
+            "D",
+            "F",
+            "I",
+            "M"
+          ]
+        },
+        "fundFlags": {
+          "type": "array",
+          "readOnly": true,
+          "description": "List of different features of funds",
+          "items": {
+            "type": "string"
+          }
+        },
+        "currency": {
+          "type": "string",
+          "readOnly": true,
+          "description": "currency of fund",
+          "example": "EUR"
+        },
+        "regularIssueSurcharge": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Regular issue surcharge",
+          "example": "99.999"
+        },
+        "discountIssueSurcharge": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Discount issue surcharge",
+          "example": "99.999"
+        },
+        "reducedIssueSurcharge": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Reduced issue surcharge",
+          "example": "99.999"
+        },
+        "individualIssueSurcharge": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Individual issue surcharge",
+          "example": "99.999"
+        },
+        "isIndividualIssueSurchargeCorrected": {
+          "type": "boolean",
+          "readOnly": true,
+          "description": "Is individual issue surcharge corrected",
+          "default": false
+        },
+        "bonification": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Bonification",
+          "example": "99.999"
+        },
+        "investmentCategory": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Investment category"
+        },
+        "totalExpenseRatio": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Total expense ratio",
+          "example": "99.999"
+        },
+        "rating": {
+          "readOnly": true,
+          "description": "Rating",
+          "$ref": "#/definitions/Rating"
+        }
+      }
+    },
+    "FXRateEUR": {
+      "type": "object",
+      "description": "Exchange rate for settlement currency to FX.",
+      "properties": {
+        "bid": {
+          "readOnly": true,
+          "description": "Bid rate of settlement currency to FX",
+          "example": "1,1752 USD (1 EUR)",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "ask": {
+          "readOnly": true,
+          "description": "Ask rate of settlement currency to FX",
+          "example": "1,1757 USD (1 EUR)",
+          "$ref": "#/definitions/AmountValue"
+        }
+      }
+    },
+    "Inducement": {
+      "type": "object",
+      "description": "Model for an inducement.",
+      "properties": {
+        "amount": {
+          "readOnly": true,
+          "description": "Amount of the inducement",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "estimated": {
+          "type": "boolean",
+          "readOnly": true,
+          "description": "TRUE, if the amount is an estimation",
+          "default": false
+        }
+      }
+    },
+    "InstallmentLoan": {
+      "type": "object",
+      "description": "Master data of an installment loan",
+      "properties": {
+        "installmentLoanId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Installment loan identifier (UUID).",
+          "example": "0123456789ABCDEF0123456789ABCDEF"
+        },
+        "productDisplayId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "SWK number of the installment loan.",
+          "example": "0123456789"
+        },
+        "creditAmount": {
+          "readOnly": true,
+          "description": "Approved loan amount of the initial conclusion of the loan in EUR, including residual debt insurance and interest.",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "netCreditAmount": {
+          "readOnly": true,
+          "description": "Approved loan amount of the initial conclusion of the loan in EUR, before residual debt insurance and interest.",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "paidOutAmount": {
+          "readOnly": true,
+          "description": "Paid out amount of the approved loan, can include additions or deductions for residual debt insurance or interest.",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "installmentAmount": {
+          "readOnly": true,
+          "description": "Amount of the installment loan in EUR.",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "contractPeriodInMonths": {
+          "type": "integer",
+          "readOnly": true,
+          "description": "Runtime of the installment loan in months.",
+          "format": "int32",
+          "example": 42
+        },
+        "effectiveInterest": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Effective interest rate.",
+          "example": "99.999"
+        },
+        "nominalInterest": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Nominal interest rate.",
+          "example": "99.999"
+        },
+        "contractConclusionDate": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Date of conclusion of the installment loan.",
+          "example": "2019-03-14"
+        }
+      }
+    },
+    "InstallmentLoanBalance": {
+      "type": "object",
+      "description": "Balance and master data of an installment loan",
+      "properties": {
+        "installmentLoanId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Installment loan identifier (UUID).",
+          "example": "0123456789ABCDEF0123456789ABCDEF"
+        },
+        "installmentLoan": {
+          "readOnly": true,
+          "description": "Master data of the installment loan.",
+          "$ref": "#/definitions/InstallmentLoan"
+        },
+        "balance": {
+          "readOnly": true,
+          "description": "Current balance of the installment loan in EUR, including residual debt insurance and interest.",
+          "$ref": "#/definitions/AmountValue"
+        }
+      }
+    },
+    "Instrument": {
+      "type": "object",
+      "description": "Model for an instrument.",
+      "properties": {
+        "instrumentId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Instrument id (UUID), unique identification of an instrument (security, derivative, etc.) for future use"
+        },
+        "wkn": {
+          "type": "string",
+          "readOnly": true,
+          "description": "WKN"
+        },
+        "isin": {
+          "type": "string",
+          "readOnly": true,
+          "description": "ISIN"
+        },
+        "mnemonic": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Security symbol according to WM data-service"
+        },
+        "name": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Name of the instrument"
+        },
+        "shortName": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Short name of the instrument"
+        },
+        "staticData": {
+          "readOnly": true,
+          "description": "Static data of the instrument, e.g., notation, instrument type",
+          "$ref": "#/definitions/StaticData"
+        },
+        "orderDimensions": {
+          "readOnly": true,
+          "description": "List of the trading venues including the attributes (orderDimensions)",
+          "$ref": "#/definitions/Dimensions"
+        },
+        "fundsDistribution": {
+          "readOnly": true,
+          "description": "additional fund data, if the instrument is a fund",
+          "$ref": "#/definitions/FundDistribution"
+        },
+        "derivativeData": {
+          "readOnly": true,
+          "description": "additional data of a derivative",
+          "$ref": "#/definitions/DerivativeData"
+        }
+      }
+    },
+    "ListResourceAccountBalance": {
+      "type": "object",
+      "properties": {
+        "paging": {
+          "$ref": "#/definitions/PagingInfo"
+        },
+        "aggregated": {
+          "$ref": "#/definitions/AggregatedInfo"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AccountBalance"
+          }
+        }
+      }
+    },
+    "ListResourceAccountTransaction": {
+      "type": "object",
+      "properties": {
+        "paging": {
+          "$ref": "#/definitions/PagingInfo"
+        },
+        "aggregated": {
+          "$ref": "#/definitions/AggregatedInfo"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AccountTransaction"
+          }
+        }
+      }
+    },
+    "ListResourceCostIndicationExAnte": {
+      "type": "object",
+      "properties": {
+        "paging": {
+          "$ref": "#/definitions/PagingInfo"
+        },
+        "aggregated": {
+          "$ref": "#/definitions/AggregatedInfo"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CostIndicationExAnte"
+          }
+        }
+      }
+    },
+    "ListResourceDepot": {
+      "type": "object",
+      "properties": {
+        "paging": {
+          "$ref": "#/definitions/PagingInfo"
+        },
+        "aggregated": {
+          "$ref": "#/definitions/AggregatedInfo"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Depot"
+          }
+        }
+      }
+    },
+    "ListResourceDepotPosition": {
+      "type": "object",
+      "properties": {
+        "paging": {
+          "$ref": "#/definitions/PagingInfo"
+        },
+        "aggregated": {
+          "$ref": "#/definitions/AggregatedInfo"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DepotPosition"
+          }
+        }
+      }
+    },
+    "ListResourceDepotTransaction": {
+      "type": "object",
+      "properties": {
+        "paging": {
+          "$ref": "#/definitions/PagingInfo"
+        },
+        "aggregated": {
+          "$ref": "#/definitions/AggregatedInfo"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DepotTransaction"
+          }
+        }
+      }
+    },
+    "ListResourceDimensions": {
+      "type": "object",
+      "properties": {
+        "paging": {
+          "$ref": "#/definitions/PagingInfo"
+        },
+        "aggregated": {
+          "$ref": "#/definitions/AggregatedInfo"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Dimensions"
+          }
+        }
+      }
+    },
+    "ListResourceDocument": {
+      "type": "object",
+      "properties": {
+        "paging": {
+          "$ref": "#/definitions/PagingInfo"
+        },
+        "aggregated": {
+          "$ref": "#/definitions/AggregatedInfo"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Document"
+          }
+        }
+      }
+    },
+    "ListResourceInstrument": {
+      "type": "object",
+      "properties": {
+        "paging": {
+          "$ref": "#/definitions/PagingInfo"
+        },
+        "aggregated": {
+          "$ref": "#/definitions/AggregatedInfo"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Instrument"
+          }
+        }
+      }
+    },
+    "ListResourceProductBalance": {
+      "type": "object",
+      "properties": {
+        "paging": {
+          "$ref": "#/definitions/PagingInfo"
+        },
+        "aggregated": {
+          "$ref": "#/definitions/AggregatedInfo"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProductBalance"
+          }
+        }
+      }
+    },
+    "ListResourceOrder": {
+      "type": "object",
+      "properties": {
+        "paging": {
+          "$ref": "#/definitions/PagingInfo"
+        },
+        "aggregated": {
+          "$ref": "#/definitions/AggregatedInfo"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Order"
+          }
+        }
+      }
+    },
+    "Order": {
+      "type": "object",
+      "description": "Model for an order.",
+      "properties": {
+        "depotId": {
+          "type": "string",
+          "description": "Unique securities account identification (as UUID)",
+          "maxLength": 40,
+          "minLength": 0
+        },
+        "settlementAccountId": {
+          "type": "string",
+          "description": "Reference settlement account for the securities account, if different from the settlement account assigned directly to the securities account (UUID)",
+          "maxLength": 40,
+          "minLength": 0
+        },
+        "orderId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Unique order-Id (UUID)",
+          "maxLength": 40,
+          "minLength": 0
+        },
+        "creationTimestamp": {
+          "readOnly": true,
+          "description": "Date/timestamp of the order entry in UTC with the following format: YYYY-MM-DDThh:mm:ss,ffffff+zz",
+          "$ref": "#/definitions/TimestampString"
+        },
+        "legNumber": {
+          "type": "integer",
+          "readOnly": true,
+          "description": "Order leg number (if ordertype is OCO or NEO)",
+          "format": "int32"
+        },
+        "bestEx": {
+          "type": "boolean",
+          "description": "Flag if order is a best-execution-order, default value is false",
+          "default": false
+        },
+        "orderType": {
+          "type": "string",
+          "description": "Ordertype, partially executed and open orders are listed in the execution parameters",
+          "maxLength": 30,
+          "minLength": 0,
+          "enum": [
+            "MARKET",
+            "LIMIT",
+            "QUOTE",
+            "STOP_MARKET",
+            "STOP_LIMIT",
+            "TRAILING_STOP_MARKET",
+            "TRAILING_STOP_LIMIT",
+            "ONE_CANCELS_OTHER",
+            "NEXT_ORDER"
+          ]
+        },
+        "orderStatus": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Status of the order",
+          "maxLength": 30,
+          "minLength": 0,
+          "enum": [
+            "PENDING",
+            "OPEN",
+            "EXECUTED",
+            "SETTLED",
+            "CANCELLED_USER",
+            "EXPIRED",
+            "CANCELLED_SYSTEM",
+            "CANCELLED_TRADE",
+            "UNKNOWN"
+          ]
+        },
+        "subOrders": {
+          "type": "array",
+          "description": "Parts of the orders, e.g. combination orders OCO, NEO (Next Order) with different order legs or partially executed or partially cancelled orders with different parts of an order",
+          "items": {
+            "$ref": "#/definitions/Order"
+          }
+        },
+        "side": {
+          "type": "string",
+          "description": "Type of transaction",
+          "maxLength": 4,
+          "minLength": 0,
+          "enum": [
+            "BUY",
+            "SELL"
+          ]
+        },
+        "instrumentId": {
+          "type": "string",
+          "description": "WKN, ISIN or uuId; wkn will be returned if instrumentId is entered as wkn, an ISIN is returned if instrumentId is entered as ISIN, a uuId is returned if instrumentId is entered as uuId",
+          "maxLength": 40,
+          "minLength": 0
+        },
+        "quoteId": {
+          "type": "string",
+          "description": "Quote-Id as reference for the quote received from the trading venue (issuer or exchange) on the quote request",
+          "maxLength": 40,
+          "minLength": 0
+        },
+        "venueId": {
+          "type": "string",
+          "description": "UUID of the trading venue or partner. This is mandatory, if isBestEx=FALSE",
+          "maxLength": 40,
+          "minLength": 0
+        },
+        "quantity": {
+          "description": "Quantity or nominal amount in the case of a percentage quotation",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "openQuantity": {
+          "description": "Open quantity or nominal amount",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "cancelledQuantity": {
+          "description": "Canceled quantity or nominal amount",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "executedQuantity": {
+          "description": "Canceled quantity or nominal amount",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "limitExtension": {
+          "type": "string",
+          "description": "Order extensions (Fill-or-Kill, Immediate-or-Cancel, All-or-None)",
+          "maxLength": 3,
+          "minLength": 0,
+          "enum": [
+            "FOK",
+            "IOC",
+            "AON"
+          ]
+        },
+        "tradingRestriction": {
+          "type": "string",
+          "description": "Restrictions on trade (Opening Auction Only, Auction Only, Closing Auction Only)",
+          "maxLength": 3,
+          "minLength": 0,
+          "enum": [
+            "OAO",
+            "AO",
+            "CAO"
+          ]
+        },
+        "limit": {
+          "description": "Limit of the order, empty in case of a market order, stop market, trailing stop market order or a corresponding suborder",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "triggerLimit": {
+          "description": "Trigger limit: stop limit by which a Stop order is triggered (Stop, TLS, OCO)",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "trailingLimitDistAbs": {
+          "description": "Distance trigger limit of the trailing stop order from the current absolute price",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "trailingLimitDistRel": {
+          "description": "Distance trigger limit of the trailing stop order from the current price in percentage",
+          "$ref": "#/definitions/PercentageString"
+        },
+        "validityType": {
+          "type": "string",
+          "description": "Type of order validity (Good-for-day (default), Good-til-date (incl. end of month))",
+          "maxLength": 3,
+          "minLength": 0,
+          "enum": [
+            "GFD",
+            "GTD"
+          ]
+        },
+        "validity": {
+          "description": "Date of order validity in format YYYY-MM-DD; required for validityType=GTD",
+          "$ref": "#/definitions/DateString"
+        },
+        "expectedValue": {
+          "readOnly": true,
+          "description": "Expected value of the limit order",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "executions": {
+          "type": "array",
+          "readOnly": true,
+          "description": "List of execution types for the order",
+          "items": {
+            "$ref": "#/definitions/Execution"
+          }
+        },
+        "quoteTicketId": {
+          "type": "string",
+          "description": "Ticket UUID for the quote order. This is mandatory, if for a quote order",
+          "maxLength": 40,
+          "minLength": 0
+        },
+        "version": {
+          "type": "string",
+          "description": "Version of the position to be sold. Only applicable for sell"
+        }
+      }
+    },
+    "OrderType": {
+      "type": "object",
+      "description": "Model for an order type.",
+      "properties": {
+        "limitExtensions": {
+          "type": "array",
+          "readOnly": true,
+          "description": "Names of the possible limit extensions",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tradingRestrictions": {
+          "type": "array",
+          "readOnly": true,
+          "description": "Names of possible trading restrictions",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "PagingInfo": {
+      "type": "object",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "matches": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "PercentageString": {
+      "type": "object",
+      "description": "Represents the percentage value.",
+      "properties": {
+        "preDecimalPlaces": {
+          "type": "string",
+          "description": "Pre-decimal places",
+          "maxLength": 18,
+          "minLength": 0,
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "example": "99"
+        },
+        "decimalPlaces": {
+          "type": "string",
+          "description": "Decimal places",
+          "pattern": "^[0-9]*$",
+          "example": "99"
+        },
+        "percentString": {
+          "type": "string"
+        }
+      }
+    },
+    "Price": {
+      "type": "object",
+      "description": "Represents a price.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Type of the price. Can be one of the following: {LST, BID, ASK, MID}.",
+          "maxLength": 3,
+          "minLength": 3,
+          "example": "BID"
+        },
+        "price": {
+          "readOnly": true,
+          "description": "Price.",
+          "example": "999.99 EUR",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "quantity": {
+          "readOnly": true,
+          "description": "Quantity or nominal amount in case of a percentage quotation.",
+          "example": "1000 XXX",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "priceDateTime": {
+          "readOnly": true,
+          "description": "Datetime with format: 'yyyy-MM-dd'T'HH:mm:ssX",
+          "example": "2018-07-03T13:29:30+02:00",
+          "$ref": "#/definitions/DateTimeString"
+        }
+      }
+    },
+    "ProductBalance": {
+      "type": "object",
+      "description": "Model for a product balance.",
+      "properties": {
+        "productId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Unique ID of the product (UUID).",
+          "example": "B2D8C9A36F640148C915338922030951"
+        },
+        "productType": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Type of the product.",
+          "example": "ACCOUNT",
+          "enum": [
+            "ACCOUNT",
+            "CARD",
+            "DEPOT",
+            "LOAN",
+            "SAVINGS"
+          ]
+        },
+        "targetClientId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Unique Id of the target client (UUID).",
+          "example": "B2D8C9A36F640148C915338922030951"
+        },
+        "clientConnectionType": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Type of the client connection.",
+          "example": "CURRENT_CLIENT",
+          "enum": [
+            "CURRENT_CLIENT",
+            "OTHER_COMDIRECT",
+            "OTHER_EXTERNAL"
+          ]
+        },
+        "balance": {
+          "readOnly": true,
+          "description": "Balance object based on the product type.",
+          "$ref": "#/definitions/Balance"
+        }
+      }
+    },
+    "Quote": {
+      "type": "object",
+      "description": "Model for a quote request.",
+      "properties": {
+        "depotId": {
+          "type": "string",
+          "description": "Unique securities account identification (as UUID)",
+          "maxLength": 40,
+          "minLength": 0
+        },
+        "side": {
+          "type": "string",
+          "description": "Type of transaction",
+          "maxLength": 4,
+          "minLength": 0,
+          "enum": [
+            "BUY",
+            "SELL"
+          ]
+        },
+        "instrumentId": {
+          "type": "string",
+          "description": "WKN, ISIN or uuId; wkn will be returned if instrumentId is entered as wkn, an ISIN is returned if instrumentId is entered as ISIN, a uuId is returned if instrumentId is entered as uuId",
+          "maxLength": 40,
+          "minLength": 0
+        },
+        "venueId": {
+          "type": "string",
+          "description": "UUID of the trading venue or partner. This is mandatory, if isBestEx=FALSE",
+          "maxLength": 40,
+          "minLength": 0
+        },
+        "quantity": {
+          "description": "Quantity or nominal amount in the case of a percentage quotation",
+          "$ref": "#/definitions/AmountValue"
+        }
+      }
+    },
+    "Rating": {
+      "type": "object",
+      "description": "Rating of the instrument.",
+      "properties": {
+        "morningstar": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Funds Rating"
+        },
+        "moodys": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Bonds Rating"
+        }
+      }
+    },
+    "Session": {
+      "type": "object",
+      "description": "Model for the current session.",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "identifier": {
+          "type": "string",
+          "description": "Identifier of the session"
+        },
+        "sessionTanActive": {
+          "type": "boolean",
+          "description": "This boolean is used to point out whether or not the current session has an active session TAN (transaction authentication number). With an active session TAN some use cases, that are genuinely TAN protected, might be callable without asking the client for a TAN. The validation method of session TAN ready use cases will return \"TAN_FREE\" as a TAN type while the session TAN is activated. The session TAN will be available after a refresh of tokens and dies with the last pair of tokens (access and refresh token).",
+          "default": false
+        },
+        "activated2FA": {
+          "type": "boolean",
+          "description": "Boolean indicating whether a second factor is already added to this session",
+          "default": false
+        }
+      }
+    },
+    "StandardErrorResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "messages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BusinessMessage"
+          }
+        }
+      }
+    },
+    "StaticData": {
+      "type": "object",
+      "description": "Static data of the instrument.",
+      "properties": {
+        "notation": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Ticker symbol or notation of a security",
+          "enum": [
+            "XXX",
+            "XXC",
+            "XXM",
+            "XXP",
+            "XXU"
+          ]
+        },
+        "currency": {
+          "readOnly": true,
+          "description": "instrument currency of a security, e.g., for bonds, bond and open real estate funds; additionally to ISO 4217 currency code the following values are possible: XXX (Pcs.), XXP (Pts.), XXU (Unknown)",
+          "$ref": "#/definitions/CurrencyString"
+        },
+        "instrumentType": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Instrument type",
+          "enum": [
+            "SHARE",
+            "BONDS",
+            "SUBSCRIPTION_RIGHT",
+            "ETF",
+            "PROFIT_PART_CERTIFICATE",
+            "FUND",
+            "WARRANT",
+            "CERTIFICATE",
+            "NOT_AVAILABLE"
+          ]
+        },
+        "priipsRelevant": {
+          "type": "boolean",
+          "readOnly": true,
+          "description": "Flag indicating - if TRUE - that EU-regulation referring to Packaged Retail and Insurance-based Investment Products - PRIIPs) is relevant for the instrument",
+          "default": false
+        },
+        "kidAvailable": {
+          "type": "boolean",
+          "readOnly": true,
+          "description": "Flag indicating - if TRUE - that a Key Information Document (KID) of the issuer is electronically available. Before order placement a static note ought to displayed in such a case.",
+          "default": false
+        },
+        "shippingWaiverRequired": {
+          "type": "boolean",
+          "readOnly": true,
+          "description": "Flag indicating - if TRUE - that within prevalidation and before placement of a buy order the investor must approve, e.g., by a frontend checkbox that no shipping of fund sales information is required (waiver); a static note regarding that information ought to be displayed in such a case. Without an explicit waiver the order placement must be prevented in the frontend.",
+          "default": false
+        },
+        "fundRedemptionLimited": {
+          "type": "boolean",
+          "readOnly": true,
+          "description": "Flag indicating - if TRUE - that within prevalidation and before placement of a buy order a static note must be displayed indicating that the redemption of the fund is limited.",
+          "default": false
+        }
+      }
+    },
+    "TimestampString": {
+      "type": "object",
+      "description": "Represents the date with up to 6 fractions of seconds.",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "description": "Date and time with following format: 'yyyy-MM-dd'T'HH:mm:ss,SSSSSSX'",
+          "format": "date-time",
+          "example": "2018-07-03T12:00:00,123456+01"
+        }
+      }
+    },
+    "TotalCostBlock": {
+      "type": "object",
+      "description": "Model for a total cost block including total cost entries segregated as: E (own service costs of bank), F (external service costs), and P (product costs).",
+      "properties": {
+        "serviceCosts": {
+          "readOnly": true,
+          "description": "Total cost entry for own service costs of bank (E)",
+          "$ref": "#/definitions/TotalCostEntry"
+        },
+        "serviceInducement": {
+          "readOnly": true,
+          "description": "Total amount of inducements for own service costs of bank",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "externalCosts": {
+          "readOnly": true,
+          "description": "Total cost entry for external service costs (F)",
+          "$ref": "#/definitions/TotalCostEntry"
+        },
+        "productCosts": {
+          "readOnly": true,
+          "description": "Total cost entry for product costs (P)",
+          "$ref": "#/definitions/TotalCostEntry"
+        }
+      }
+    },
+    "TotalCostEntry": {
+      "type": "object",
+      "description": "Model for a total cost entry.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Type of total cost entry",
+          "enum": [
+            "E",
+            "F",
+            "P"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Label of total cost entry"
+        },
+        "amount": {
+          "readOnly": true,
+          "description": "Total cost in reporting currency",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "averageReturnPA": {
+          "readOnly": true,
+          "description": "Average return reduction per year",
+          "$ref": "#/definitions/PercentageString"
+        }
+      }
+    },
+    "TotalHoldingCostBlock": {
+      "type": "object",
+      "description": "List of cost blocks over time.",
+      "properties": {
+        "year1": {
+          "readOnly": true,
+          "description": "Total holding cost entry for the first year",
+          "$ref": "#/definitions/TotalHoldingCostEntry"
+        },
+        "year2": {
+          "readOnly": true,
+          "description": "Total holding cost entry for the second year",
+          "$ref": "#/definitions/TotalHoldingCostEntry"
+        },
+        "sales": {
+          "readOnly": true,
+          "description": "Total holding cost entry for the year of the sale",
+          "$ref": "#/definitions/TotalHoldingCostEntry"
+        }
+      }
+    },
+    "TotalHoldingCostEntry": {
+      "type": "object",
+      "description": "Model for cost block over time.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Type of total holding cost entry",
+          "enum": [
+            "IM_ERSTEN_JAHR",
+            "IM_ZWEITEN_JAHR",
+            "IM_JAHR_DER_VERAUESSERUNG"
+          ]
+        },
+        "amount": {
+          "readOnly": true,
+          "description": "Cost in reporting currency",
+          "$ref": "#/definitions/AmountValue"
+        },
+        "averageReturnPA": {
+          "readOnly": true,
+          "description": "Average return reduction per year",
+          "$ref": "#/definitions/PercentageString"
+        }
+      }
+    },
+    "Venue": {
+      "type": "object",
+      "description": "Model for a venue.",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "venueId": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "currencies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CurrencyString"
+          }
+        },
+        "sides": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "validityTypes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "orderTypes": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/OrderType"
+          }
+        }
+      }
+    },
+    "VisaCardImage": {
+      "type": "object",
+      "properties": {
+        "visaCardImageId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Visa card image ID to be used in the application",
+          "example": "0002"
+        },
+        "imageDescription": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Description of the image",
+          "example": "Schmetterling"
+        },
+        "imageBaseFilename": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Base filename for the files representing the image. The name has to be extended with a postfix indicating the resolution and file type, e.g. -1x.jpg. The resulting filename can be used to retrieve the image from the comdirect CMS",
+          "example": "visual_visamotiv_karte0002"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "ResourceOwnerPasswordCredentials": {
+      "type": "oauth2",
+      "flow": "password",
+      "tokenUrl": "https://api.comdirect.de/oauth/token",
+      "scopes": {
+        "TWO_FACTOR": "Read and write permission for SESSION interfaces"
+      }
+    },
+    "CdSecondary": {
+      "type": "oauth2",
+      "flow": "password",
+      "tokenUrl": "https://api.comdirect.de/oauth/token",
+      "scopes": {
+        "BANKING_RO": "Read permission for BANKING interfaces",
+        "BROKERAGE_RW": "Read and write permission for BROKERAGE interfaces",
+        "MESSAGES_RO": "Read permission for MESSAGES interfaces",
+        "REPORTS_RO": "Read permission for REPORTS interfaces",
+        "SESSION_RW": "Read and write permission for SESSION interfaces"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Banking"
+    },
+    {
+      "name": "Brokerage"
+    },
+    {
+      "name": "Messages"
+    },
+    {
+      "name": "Reports"
+    },
+    {
+      "name": "Session"
+    }
+  ]
+}
