@@ -7,7 +7,7 @@
   "ExtendedData": {
     "ServiceName": "Comdirect",
     "GeneratedFileName": "ComdirectClient",
-    "Endpoint": "C:\\playground\\Comdirect.REST.Auth.CSharp-master\\Comdirect.REST.Auth.CSharp-master\\comdirect_rest_api_swagger.json",
+    "Endpoint": "C:\\github\\comdirect\\Comdirect.Rest.Api\\Comdirect.Rest.Api\\Connected Servicescomdirect_rest_api_swagger.json",
     "GeneratedFileNamePrefix": null,
     "GenerateCSharpClient": true,
     "GenerateTypeScriptClient": false,

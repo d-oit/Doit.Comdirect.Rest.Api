@@ -7,9 +7,9 @@ using System.Net.Http;
 
 namespace ConsoleApp.ComdirectApi
 {
-    class Program
+    internal class Program
     {
-        static async System.Threading.Tasks.Task Main(string[] args)
+        private static async System.Threading.Tasks.Task Main(string[] args)
         {
             Console.WriteLine("Comdirect Rest Api!");
 
@@ -33,18 +33,26 @@ namespace ConsoleApp.ComdirectApi
                 if (authClient.ActivateSessionTan(token.access_token, session.Identifier, validateSessionStatus.id))
                 {
                     Console.WriteLine("login ok - get banking balances");
-              
+
                     var validComdirectToken = authClient.PostSecondaryFlow(token.access_token);
                     var comdirectClient = new ComdirectClient(httpClient);
 
-                    ListResourceAccountBalance balance = await comdirectClient.BankingClientsV2AccountsBalancesAsync(comdirectCredentials.Username, null);
-                    if(balance != null)
+                    ListResourceAccountBalance balance = await comdirectClient.BankingClientsV2AccountsBalancesAsync("", null);
+                    if (balance != null)
                     {
-                        if(balance.Values != null)
+                        if (balance.Values != null)
                         {
                             foreach (var item in balance.Values)
                             {
-                                Console.WriteLine(item.AccountId + " - " + item.BalanceEUR);
+                                Console.WriteLine($"{item.Account.AccountDisplayId} ({item.Account.AccountType.Text}) - Balance: {item.Balance.Value}");
+                                var transactions = await comdirectClient.BankingV1AccountsTransactionsAsync(item.AccountId, TransactionState.BOTH, TransactionDirection.CREDIT_AND_DEBIT, null, null);
+                                  if(transactions != null)
+                                {
+                                    foreach (var itemTransaction in transactions.Values)
+                                    {
+                                        Console.WriteLine($"Date: { itemTransaction.BookingDate}, Amount: {itemTransaction.Amount.Value}, HolderName: {itemTransaction?.Remitter?.HolderName}, Info: {itemTransaction?.RemittanceInfo}");
+                                    }
+                                }
                             }
                         }
                     }
@@ -57,14 +65,9 @@ namespace ConsoleApp.ComdirectApi
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 throw;
             }
-
-
-
-
-
         }
-        
     }
 }

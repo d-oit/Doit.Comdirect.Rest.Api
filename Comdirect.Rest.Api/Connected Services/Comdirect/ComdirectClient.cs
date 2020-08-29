@@ -72,8 +72,8 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("user");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/banking/clients/{user}/v2/accounts/balances?");
-            urlBuilder_.Replace("{user}", System.Uri.EscapeDataString(ConvertToString(user, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/banking/clients/user/v2/accounts/balances?");
+            // TODO - not working. Postman comdirect = {{url}}/banking/clients/user/v2/accounts/balances - generated code:  urlBuilder_.Replace("{user}", System.Uri.EscapeDataString(ConvertToString(user, System.Globalization.CultureInfo.InvariantCulture)));
             if (without_attr != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("without-attr") + "=").Append(System.Uri.EscapeDataString(ConvertToString(without_attr, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -3378,7 +3378,7 @@ namespace Comdirect.Rest.Api.Comdirect
     
         /// <summary>Account currency</summary>
         [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public CurrencyString Currency { get; set; }
+        public string Currency { get; set; }
     
         /// <summary>Identification Code of the client (UUID)</summary>
         [Newtonsoft.Json.JsonProperty("clientId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3464,7 +3464,7 @@ namespace Comdirect.Rest.Api.Comdirect
     
         /// <summary>The booking date</summary>
         [Newtonsoft.Json.JsonProperty("bookingDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public DateString BookingDate { get; set; }
+        public string BookingDate { get; set; }
     
         /// <summary>The amount</summary>
         [Newtonsoft.Json.JsonProperty("amount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3769,15 +3769,15 @@ namespace Comdirect.Rest.Api.Comdirect
     
         /// <summary>Settlement currency analogous to Account.currency</summary>
         [Newtonsoft.Json.JsonProperty("settlementCurrency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public CurrencyString SettlementCurrency { get; set; }
+        public string SettlementCurrency { get; set; }
     
         /// <summary>Trading currency</summary>
         [Newtonsoft.Json.JsonProperty("tradingCurrency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public CurrencyString TradingCurrency { get; set; }
+        public string TradingCurrency { get; set; }
     
         /// <summary>Reporting currency</summary>
         [Newtonsoft.Json.JsonProperty("reportingCurrency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public CurrencyString ReportingCurrency { get; set; }
+        public string ReportingCurrency { get; set; }
     
         /// <summary>Exchange rate for settlement currency to FX, for buy and sell (both sides for conversion depending on BUY/SELL)</summary>
         [Newtonsoft.Json.JsonProperty("fxRate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3830,39 +3830,7 @@ namespace Comdirect.Rest.Api.Comdirect
     
     }
     
-    /// <summary>Represents the ISO-4217 code of the currency.</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class CurrencyString 
-    {
-        [Newtonsoft.Json.JsonProperty("Currency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.StringLength(3, MinimumLength = 3)]
-        public string Currency { get; set; }
-    
-    
-    }
-    
-    /// <summary>Represents the date without the time.</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class DateString 
-    {
-        /// <summary>Time with format: 'yyyy-MM-dd'</summary>
-        [Newtonsoft.Json.JsonProperty("date", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTimeOffset? Date { get; set; }
-    
-    
-    }
-    
-    /// <summary>Represents the date with the time.</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class DateTimeString 
-    {
-        /// <summary>Time with format: 'yyyy-MM-dd'T'HH:mm:ssX'</summary>
-        [Newtonsoft.Json.JsonProperty("dateTime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? DateTime { get; set; }
-    
-    
-    }
+  
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public partial class Depot 
@@ -4033,15 +4001,15 @@ namespace Comdirect.Rest.Api.Comdirect
     
         /// <summary>The booking date</summary>
         [Newtonsoft.Json.JsonProperty("bookingDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public DateString BookingDate { get; set; }
+        public string BookingDate { get; set; }
     
         /// <summary>Date and time of settlement</summary>
         [Newtonsoft.Json.JsonProperty("settlementDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public DateTimeString SettlementDate { get; set; }
+        public string SettlementDate { get; set; }
     
         /// <summary>The business date</summary>
         [Newtonsoft.Json.JsonProperty("businessDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public DateString BusinessDate { get; set; }
+        public string BusinessDate { get; set; }
     
         /// <summary>The quantity</summary>
         [Newtonsoft.Json.JsonProperty("quantity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -4794,7 +4762,7 @@ namespace Comdirect.Rest.Api.Comdirect
     
         /// <summary>Date of order validity in format YYYY-MM-DD; required for validityType=GTD</summary>
         [Newtonsoft.Json.JsonProperty("validity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public DateString Validity { get; set; }
+        public string Validity { get; set; }
     
         /// <summary>Expected value of the limit order</summary>
         [Newtonsoft.Json.JsonProperty("expectedValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -4883,7 +4851,7 @@ namespace Comdirect.Rest.Api.Comdirect
     
         /// <summary>Datetime with format: 'yyyy-MM-dd'T'HH:mm:ssX</summary>
         [Newtonsoft.Json.JsonProperty("priceDateTime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public DateTimeString PriceDateTime { get; set; }
+        public string PriceDateTime { get; set; }
     
     
     }
@@ -5009,7 +4977,7 @@ namespace Comdirect.Rest.Api.Comdirect
     
         /// <summary>instrument currency of a security, e.g., for bonds, bond and open real estate funds; additionally to ISO 4217 currency code the following values are possible: XXX (Pcs.), XXP (Pts.), XXU (Unknown)</summary>
         [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public CurrencyString Currency { get; set; }
+        public string Currency { get; set; }
     
         /// <summary>Instrument type</summary>
         [Newtonsoft.Json.JsonProperty("instrumentType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -5149,7 +5117,7 @@ namespace Comdirect.Rest.Api.Comdirect
         public string Type { get; set; }
     
         [Newtonsoft.Json.JsonProperty("currencies", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<CurrencyString> Currencies { get; set; }
+        public System.Collections.Generic.ICollection<string> Currencies { get; set; }
     
         [Newtonsoft.Json.JsonProperty("sides", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> Sides { get; set; }

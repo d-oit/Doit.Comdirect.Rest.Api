@@ -7,13 +7,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 
 namespace Comdirect.Rest.Api
 {
     public class AuthClient : ComdirectClient
     {
-        public string SessionId { get; set; } = Guid.NewGuid().ToString("N").ToLower(); // TODO encrypted
+        public string SessionId { get; set; } = Guid.NewGuid().ToString("N").ToLower(); 
         public string RequestId { get; set; } = GenerateDigits(9);
 
         public HttpClient _httpClient;
@@ -163,16 +162,12 @@ namespace Comdirect.Rest.Api
 
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(token.token_type, token.access_token);
             _httpClient.DefaultRequestHeaders.Add("x-http-request-info", GetHttpRequestInfoValue());
-            _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
-            _httpClient.DefaultRequestHeaders
-                 .Accept
-                 .Add(new MediaTypeWithQualityHeaderValue("application/json"));
             return token;
         }
 
         public bool RevokeToken(string accessToken)
         {
-            var client = new RestClient($"https://api.comdirect.de/oauth/revoke");
+            var client = new RestClient("https://api.comdirect.de/oauth/revoke");
             client.Timeout = -1;
             var request = new RestRequest(Method.DELETE);
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
