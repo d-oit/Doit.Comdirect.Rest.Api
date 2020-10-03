@@ -29,3 +29,12 @@ Start the Console project
 https://github.com/do-it-ger/Comdirect.Rest.Api/blob/master/Console.ComdirectApi/Program.cs
 
 Active the login with the comdirect photoTan App https://kunde.comdirect.de/cms/sicherheit-pin-tan.html#mobiletan 
+
+
+## Links
+
+* Web site & Documentation: https://www.comdirect.de/cms/kontakt-zugaenge-api.html
+
+## License
+
+[MIT](LICENSE).
