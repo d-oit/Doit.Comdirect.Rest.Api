@@ -6,16 +6,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 
 namespace Comdirect.Rest.Api
 {
     public class AuthClient : ComdirectClient
     {
-        public string SessionId { get; set; } = Guid.NewGuid().ToString("N").ToLower(); 
+        public string SessionId { get; set; } = Guid.NewGuid().ToString("N").ToLower();
         public string RequestId { get; set; } = GenerateDigits(9);
 
-        public HttpClient _httpClient;
+        public HttpClient _httpClient = new HttpClient();
         private readonly ComdirectCredentials _comdirectCredentials;
 
         public AuthClient(HttpClient httpClient, ComdirectCredentials comdirectCredentials) : base(httpClient)
@@ -31,7 +30,7 @@ namespace Comdirect.Rest.Api
             var validateSessionStatus = PostValidateSessionStatus(token.access_token, session.Identifier);
             return validateSessionStatus;
         }
-        
+
         public void SetRequestSessionInfo(RestRequest request)
         {
             string serializedHttpRequestInfo = GetHttpRequestInfoValue();
@@ -134,7 +133,7 @@ namespace Comdirect.Rest.Api
             request.AddHeader("x-once-authentication", "000000");
             SetBody(sessionUUID, request);
             IRestResponse response = client.Execute(request);
-            if(response.StatusCode == System.Net.HttpStatusCode.OK)
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 return true;
             }
@@ -175,7 +174,7 @@ namespace Comdirect.Rest.Api
             request.AddHeader("Authorization", $"Bearer {accessToken}");
             request.AddParameter("application/x-www-form-urlencoded", "", ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
-            if(response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
             {
                 return true;
             }

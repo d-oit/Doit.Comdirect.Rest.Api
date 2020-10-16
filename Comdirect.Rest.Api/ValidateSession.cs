@@ -21,5 +21,4 @@
         public string mimeType { get; set; }
         public string charset { get; set; }
     }
-
 }

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Comdirect.Rest.Api
 {
@@ -15,6 +13,5 @@ namespace Comdirect.Rest.Api
         public string kdnr { get; set; }
         public int bpid { get; set; }
         public long kontaktId { get; set; }
-
     }
 }

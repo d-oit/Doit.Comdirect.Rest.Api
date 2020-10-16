@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Comdirect.CSharp
+﻿namespace Comdirect.CSharp
 {
     public static class Extension
     {
@@ -51,4 +47,3 @@ namespace Comdirect.CSharp
         }
     }
 }
-

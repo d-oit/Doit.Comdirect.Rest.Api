@@ -296,12 +296,12 @@
             "x-example": "382DAB0CCE5175A45A15351078060372"
           },
           {
-            "name" : "with-attr",
-            "in" : "query",
-            "description" : "enables attribute: instrument.",
-            "required" : false,
-            "type" : "string",
-            "x-example" : "instrument"
+            "name": "with-attr",
+            "in": "query",
+            "description": "enables attribute: instrument.",
+            "required": false,
+            "type": "string",
+            "x-example": "instrument"
           },
           {
             "name": "without-attr",
@@ -467,25 +467,25 @@
             "in": "query",
             "description": "Enables attribute: orderDimensions",
             "required": false,
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "enum" : ["orderDimensions", "fundDistribution", "derivativeData"]
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [ "orderDimensions", "fundDistribution", "derivativeData" ]
             },
-            "collectionFormat" : "multi",
+            "collectionFormat": "multi",
             "x-example": "orderDimensions"
           },
           {
-            "name" : "without-attr",
-            "in" : "query",
-            "description" : "Disables attribute: staticData",
-            "required" : false,
-            "type" : "array",
-            "items" : {
-              "type" : "string"
+            "name": "without-attr",
+            "in": "query",
+            "description": "Disables attribute: staticData",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
             },
-            "collectionFormat" : "multi",
-            "x-example" : "staticData"
+            "collectionFormat": "multi",
+            "x-example": "staticData"
           }
         ],
         "responses": {
@@ -1596,231 +1596,245 @@
         ]
       }
     },
-    "/messages/clients/{user}/v2/documents" : {
-      "get" : {
-        "tags" : [ "Messages" ],
-        "summary" : "Delivers a list of documents for the customer.",
-        "description" : "",
-        "operationId" : "messagesV2GetDocuments",
-        "produces" : [ "application/json" ],
-        "parameters" : [ {
-          "name" : "user",
-          "in" : "path",
-          "description" : "The literal \"user\" or the unique ID of the client.",
-          "required" : true,
-          "type" : "string",
-          "x-example" : "0123456789ABCDEF0123456789ABCDEF"
-        }, {
-          "name" : "paging-first",
-          "in" : "query",
-          "description" : "Index of the returning results.",
-          "required" : false,
-          "type" : "integer",
-          "default" : 0,
-          "minimum" : 0.0,
-          "format" : "int32",
-          "x-example" : 0
-        }, {
-          "name" : "paging-count",
-          "in" : "query",
-          "description" : "The maximum number of results that will be returned.",
-          "required" : false,
-          "type" : "integer",
-          "default" : 20,
-          "maximum" : 1000.0,
-          "minimum" : 1.0,
-          "format" : "int32",
-          "x-example" : 20
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "successful operation",
-            "schema" : {
-              "$ref" : "#/definitions/ListResourceDocument"
+    "/messages/clients/{user}/v2/documents": {
+      "get": {
+        "tags": [ "Messages" ],
+        "summary": "Delivers a list of documents for the customer.",
+        "description": "",
+        "operationId": "messagesV2GetDocuments",
+        "produces": [ "application/json" ],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "path",
+            "description": "The literal \"user\" or the unique ID of the client.",
+            "required": true,
+            "type": "string",
+            "x-example": "0123456789ABCDEF0123456789ABCDEF"
+          },
+          {
+            "name": "paging-first",
+            "in": "query",
+            "description": "Index of the returning results.",
+            "required": false,
+            "type": "integer",
+            "default": 0,
+            "minimum": 0.0,
+            "format": "int32",
+            "x-example": 0
+          },
+          {
+            "name": "paging-count",
+            "in": "query",
+            "description": "The maximum number of results that will be returned.",
+            "required": false,
+            "type": "integer",
+            "default": 20,
+            "maximum": 1000.0,
+            "minimum": 1.0,
+            "format": "int32",
+            "x-example": 20
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ListResourceDocument"
             }
           },
-          "404" : {
-            "description" : "Not Found"
+          "404": {
+            "description": "Not Found"
           },
-          "422" : {
-            "description" : "Unprocessable Entity",
-            "schema" : {
-              "$ref" : "#/definitions/StandardErrorResponse"
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/StandardErrorResponse"
             }
           },
-          "500" : {
-            "description" : "Internal Server Error"
+          "500": {
+            "description": "Internal Server Error"
           }
         },
-        "security" : [
+        "security": [
           {
-            "CdSecondary" : [
+            "CdSecondary": [
               "MESSAGES_RO"
             ]
           }
         ]
       }
     },
-    "/messages/v2/documents/{documentId}" : {
-      "get" : {
-        "tags" : [ "Messages" ],
-        "summary" : "Delivers a document for the given UUID.",
-        "description" : "",
-        "operationId" : "messagesV2GetDocument",
-        "produces" : [ "text/html", "application/pdf" ],
-        "parameters" : [ {
-          "name" : "documentId",
-          "in" : "path",
-          "description" : "The unique ID of the document.",
-          "required" : true,
-          "type" : "string",
-          "x-example" : "0123456789ABCDEF0123456789ABCDEF"
-        } ],
-        "responses" : {
-          "404" : {
-            "description" : "Not Found"
+    "/messages/v2/documents/{documentId}": {
+      "get": {
+        "tags": [ "Messages" ],
+        "summary": "Delivers a document for the given UUID.",
+        "description": "",
+        "operationId": "messagesV2GetDocument",
+        "produces": [ "text/html", "application/pdf" ],
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "description": "The unique ID of the document.",
+            "required": true,
+            "type": "string",
+            "x-example": "0123456789ABCDEF0123456789ABCDEF"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
           },
-          "422" : {
-            "description" : "Unprocessable Entity",
-            "schema" : {
-              "$ref" : "#/definitions/StandardErrorResponse"
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/StandardErrorResponse"
             }
           },
-          "500" : {
-            "description" : "Internal Server Error"
+          "500": {
+            "description": "Internal Server Error"
           },
-          "503" : {
-            "description" : "Service Unavailable"
+          "503": {
+            "description": "Service Unavailable"
           }
         },
-        "security" : [
+        "security": [
           {
-            "CdSecondary" : [
+            "CdSecondary": [
               "MESSAGES_RO"
             ]
           }
         ]
       }
     },
-    "/messages/v2/documents/{documentId}/predocument" : {
-      "get" : {
-        "tags" : [ "Messages" ],
-        "summary" : "Delivers a predocument for the given UUID.",
-        "description" : "",
-        "operationId" : "messagesV2GetPredocument",
-        "produces" : [ "text/html", "application/pdf" ],
-        "parameters" : [ {
-          "name" : "documentId",
-          "in" : "path",
-          "description" : "The unique ID of the document.",
-          "required" : true,
-          "type" : "string",
-          "x-example" : "0123456789ABCDEF0123456789ABCDEF"
-        } ],
-        "responses" : {
-          "404" : {
-            "description" : "Not Found"
+    "/messages/v2/documents/{documentId}/predocument": {
+      "get": {
+        "tags": [ "Messages" ],
+        "summary": "Delivers a predocument for the given UUID.",
+        "description": "",
+        "operationId": "messagesV2GetPredocument",
+        "produces": [ "text/html", "application/pdf" ],
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "description": "The unique ID of the document.",
+            "required": true,
+            "type": "string",
+            "x-example": "0123456789ABCDEF0123456789ABCDEF"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
           },
-          "422" : {
-            "description" : "Unprocessable Entity",
-            "schema" : {
-              "$ref" : "#/definitions/StandardErrorResponse"
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/StandardErrorResponse"
             }
           },
-          "500" : {
-            "description" : "Internal Server Error"
+          "500": {
+            "description": "Internal Server Error"
           },
-          "503" : {
-            "description" : "Service Unavailable"
+          "503": {
+            "description": "Service Unavailable"
           }
         },
-        "security" : [
+        "security": [
           {
-            "CdSecondary" : [
+            "CdSecondary": [
               "MESSAGES_RO"
             ]
           }
         ]
       }
     },
-    "/reports/participants/{user}/v1/allbalances" : {
-      "get" : {
-        "tags" : [ "Reports" ],
-        "summary" : "List of all balances for a client's own and connected products.",
-        "description" : "",
-        "operationId" : "reportsV1GetParticipantBalances",
-        "produces" : [ "application/json" ],
-        "parameters" : [ {
-          "name" : "user",
-          "in" : "path",
-          "description" : "The literal \"user\" or the UUID of the participant.",
-          "required" : true,
-          "type" : "string",
-          "x-example" : "B2D8C9A36F640148C915338922030951"
-        }, {
-          "name" : "clientConnectionType",
-          "in" : "query",
-          "description" : "A single ConnectionType of a client connection or a list of ConnectionTypes.",
-          "required" : false,
-          "type" : "array",
-          "items" : {
-            "type" : "string"
+    "/reports/participants/{user}/v1/allbalances": {
+      "get": {
+        "tags": [ "Reports" ],
+        "summary": "List of all balances for a client's own and connected products.",
+        "description": "",
+        "operationId": "reportsV1GetParticipantBalances",
+        "produces": [ "application/json" ],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "path",
+            "description": "The literal \"user\" or the UUID of the participant.",
+            "required": true,
+            "type": "string",
+            "x-example": "B2D8C9A36F640148C915338922030951"
           },
-          "collectionFormat" : "multi"
-        }, {
-          "name" : "targetClientId",
-          "in" : "query",
-          "description" : "A single UUID of a target client or a list of UUIDs.",
-          "required" : false,
-          "type" : "array",
-          "items" : {
-            "type" : "string"
+          {
+            "name": "clientConnectionType",
+            "in": "query",
+            "description": "A single ConnectionType of a client connection or a list of ConnectionTypes.",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
           },
-          "collectionFormat" : "multi"
-        }, {
-          "name" : "without-attr",
-          "in" : "query",
-          "description" : "Prevents setting the static data in the balance objects.",
-          "required" : false,
-          "type" : "array",
-          "items" : {
-            "type" : "string",
-            "enum" : [ "balance.staticdata" ]
+          {
+            "name": "targetClientId",
+            "in": "query",
+            "description": "A single UUID of a target client or a list of UUIDs.",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
           },
-          "collectionFormat" : "multi",
-          "x-example" : "balance.staticdata"
-        }, {
-          "name" : "productType",
-          "in" : "query",
-          "description" : "Filter for a single or list of product types.",
-          "required" : false,
-          "type" : "array",
-          "items" : {
-            "type" : "string"
+          {
+            "name": "without-attr",
+            "in": "query",
+            "description": "Prevents setting the static data in the balance objects.",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [ "balance.staticdata" ]
+            },
+            "collectionFormat": "multi",
+            "x-example": "balance.staticdata"
           },
-          "collectionFormat" : "multi"
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "successful operation",
-            "schema" : {
-              "$ref" : "#/definitions/ListResourceProductBalance"
+          {
+            "name": "productType",
+            "in": "query",
+            "description": "Filter for a single or list of product types.",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ListResourceProductBalance"
             }
           },
-          "404" : {
-            "description" : "Not Found"
+          "404": {
+            "description": "Not Found"
           },
-          "422" : {
-            "description" : "Unprocessable Entity",
-            "schema" : {
-              "$ref" : "#/definitions/StandardErrorResponse"
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/StandardErrorResponse"
             }
           },
-          "501" : {
-            "description" : "Not Implemented"
+          "501": {
+            "description": "Not Implemented"
           }
         },
-        "security" : [
+        "security": [
           {
             "CdSecondary": [
               "REPORTS_RO"
@@ -2237,31 +2251,31 @@
       },
       "description": "Represents the amount value with the currency."
     },
-    "Balance" : {
-      "type" : "object",
-      "properties" : {
-        "accountBalance" : {
-          "description" : "Balance object for an account",
-          "$ref" : "#/definitions/AccountBalance"
+    "Balance": {
+      "type": "object",
+      "properties": {
+        "accountBalance": {
+          "description": "Balance object for an account",
+          "$ref": "#/definitions/AccountBalance"
         },
-        "cardBalance" : {
-          "description" : "Balance object for a card",
-          "$ref" : "#/definitions/CardBalance"
+        "cardBalance": {
+          "description": "Balance object for a card",
+          "$ref": "#/definitions/CardBalance"
         },
-        "depotAggregation" : {
-          "description" : "Aggregation object for a depot",
-          "$ref" : "#/definitions/DepotAggregation"
+        "depotAggregation": {
+          "description": "Aggregation object for a depot",
+          "$ref": "#/definitions/DepotAggregation"
         },
-        "fixedTermSavings" : {
-          "description" : "Balance object for a fixed term saving",
-          "$ref" : "#/definitions/FixedTermSavings"
+        "fixedTermSavings": {
+          "description": "Balance object for a fixed term saving",
+          "$ref": "#/definitions/FixedTermSavings"
         },
-        "installmentLoanBalance" : {
-          "description" : "Balance object for an installment loan",
-          "$ref" : "#/definitions/InstallmentLoanBalance"
+        "installmentLoanBalance": {
+          "description": "Balance object for an installment loan",
+          "$ref": "#/definitions/InstallmentLoanBalance"
         }
       },
-      "description" : "A balance object is equal to one of the types indicated by the attributes in this definition."
+      "description": "A balance object is equal to one of the types indicated by the attributes in this definition."
     },
     "BusinessMessage": {
       "type": "object",
@@ -2304,107 +2318,107 @@
       },
       "description": "Model for an error"
     },
-    "Card" : {
-      "type" : "object",
-      "properties" : {
-        "cardId" : {
-          "type" : "string",
-          "example" : "0123456789ABCDEF0123456789ABCDEF",
-          "description" : "Card identifier (UUID).",
-          "readOnly" : true
+    "Card": {
+      "type": "object",
+      "properties": {
+        "cardId": {
+          "type": "string",
+          "example": "0123456789ABCDEF0123456789ABCDEF",
+          "description": "Card identifier (UUID).",
+          "readOnly": true
         },
-        "cardType" : {
-          "example" : "{\"key\" : \"VISA_CREDIT\", \"text\" : \"Visa-Karte (Kreditkarte)\"",
-          "description" : "Type of the card. 'key' contains the card type, 'text' a description",
-          "readOnly" : true,
-          "$ref" : "#/definitions/EnumText"
+        "cardType": {
+          "example": "{\"key\" : \"VISA_CREDIT\", \"text\" : \"Visa-Karte (Kreditkarte)\"",
+          "description": "Type of the card. 'key' contains the card type, 'text' a description",
+          "readOnly": true,
+          "$ref": "#/definitions/EnumText"
         },
-        "clientId" : {
-          "type" : "string",
-          "example" : "0123456789ABCDEF0123456789ABCDEF",
-          "description" : "Client connection uniquely assigned to the credit card account.",
-          "readOnly" : true
+        "clientId": {
+          "type": "string",
+          "example": "0123456789ABCDEF0123456789ABCDEF",
+          "description": "Client connection uniquely assigned to the credit card account.",
+          "readOnly": true
         },
-        "participantId" : {
-          "type" : "string",
-          "example" : "0123456789ABCDEF0123456789ABCDEF",
-          "description" : "Contract code of the client uniquely assigned to the credit card account.",
-          "readOnly" : true
+        "participantId": {
+          "type": "string",
+          "example": "0123456789ABCDEF0123456789ABCDEF",
+          "description": "Contract code of the client uniquely assigned to the credit card account.",
+          "readOnly": true
         },
-        "holderName" : {
-          "type" : "string",
-          "example" : "Tommer Tapir",
-          "description" : "Name of the card holder",
-          "readOnly" : true
+        "holderName": {
+          "type": "string",
+          "example": "Tommer Tapir",
+          "description": "Name of the card holder",
+          "readOnly": true
         },
-        "settlementAccountId" : {
-          "type" : "string",
-          "example" : "0123456789ABCDEF0123456789ABCDEF",
-          "description" : "Default settlement account number uniquely assigned to the credit card account. In this case, it has to be the current account.",
-          "readOnly" : true
+        "settlementAccountId": {
+          "type": "string",
+          "example": "0123456789ABCDEF0123456789ABCDEF",
+          "description": "Default settlement account number uniquely assigned to the credit card account. In this case, it has to be the current account.",
+          "readOnly": true
         },
-        "cardDisplayId" : {
-          "type" : "string",
-          "example" : "XXXX XXXX XXXX 1234",
-          "description" : "Partially masked credit card number.",
-          "readOnly" : true
+        "cardDisplayId": {
+          "type": "string",
+          "example": "XXXX XXXX XXXX 1234",
+          "description": "Partially masked credit card number.",
+          "readOnly": true
         },
-        "cardValidity" : {
-          "type" : "string",
-          "example" : "01/21",
-          "description" : "validity of the card. Format: MM/YY",
-          "readOnly" : true
+        "cardValidity": {
+          "type": "string",
+          "example": "01/21",
+          "description": "validity of the card. Format: MM/YY",
+          "readOnly": true
         },
-        "cardImage" : {
-          "description" : "Image of the card.",
-          "readOnly" : true,
-          "$ref" : "#/definitions/VisaCardImage"
+        "cardImage": {
+          "description": "Image of the card.",
+          "readOnly": true,
+          "$ref": "#/definitions/VisaCardImage"
         },
-        "primaryAccountNumberSuffix" : {
-          "type" : "string",
-          "example" : "1234",
-          "description" : "Last 4 digits of the credit card number",
-          "readOnly" : true
+        "primaryAccountNumberSuffix": {
+          "type": "string",
+          "example": "1234",
+          "description": "Last 4 digits of the credit card number",
+          "readOnly": true
         },
-        "cardLimit" : {
-          "description" : "Card limit if available. Will be 0.00 EUR if card has no limit.",
-          "$ref" : "#/definitions/AmountValue"
+        "cardLimit": {
+          "description": "Card limit if available. Will be 0.00 EUR if card has no limit.",
+          "$ref": "#/definitions/AmountValue"
         },
-        "status" : {
-          "type" : "string",
-          "example" : "ACTIVE",
-          "description" : "Status of the card.",
-          "enum" : [ "ACTIVE", "INACTIVE", "IN_CHANGE", "UNKNOWN" ]
+        "status": {
+          "type": "string",
+          "example": "ACTIVE",
+          "description": "Status of the card.",
+          "enum": [ "ACTIVE", "INACTIVE", "IN_CHANGE", "UNKNOWN" ]
         }
       },
-      "description" : "Model for a card."
+      "description": "Model for a card."
     },
-    "CardBalance" : {
-      "type" : "object",
-      "properties" : {
-        "cardId" : {
-          "type" : "string",
-          "example" : "0123456789ABCDEF0123456789ABCDEF",
-          "description" : "Card identifier (UUID).",
-          "readOnly" : true
+    "CardBalance": {
+      "type": "object",
+      "properties": {
+        "cardId": {
+          "type": "string",
+          "example": "0123456789ABCDEF0123456789ABCDEF",
+          "description": "Card identifier (UUID).",
+          "readOnly": true
         },
-        "card" : {
-          "description" : "Master data of the card.",
-          "readOnly" : true,
-          "$ref" : "#/definitions/Card"
+        "card": {
+          "description": "Master data of the card.",
+          "readOnly": true,
+          "$ref": "#/definitions/Card"
         },
-        "balance" : {
-          "description" : "Current balance.",
-          "readOnly" : true,
-          "$ref" : "#/definitions/AmountValue"
+        "balance": {
+          "description": "Current balance.",
+          "readOnly": true,
+          "$ref": "#/definitions/AmountValue"
         },
-        "availableCashAmount" : {
-          "description" : "Sum of current account balance + credit limit - sum of scheduled amounts which are not booked yet. This is the maximum cash limit.",
-          "readOnly" : true,
-          "$ref" : "#/definitions/AmountValue"
+        "availableCashAmount": {
+          "description": "Sum of current account balance + credit limit - sum of scheduled amounts which are not booked yet. This is the maximum cash limit.",
+          "readOnly": true,
+          "$ref": "#/definitions/AmountValue"
         }
       },
-      "description" : "Model for a card balance."
+      "description": "Model for a card balance."
     },
     "CostEntry": {
       "type": "object",
@@ -2924,97 +2938,97 @@
       },
       "description": "Model for a depot transaction."
     },
-    "DerivativeData" : {
-      "type" : "object",
-      "properties" : {
-        "underlyingInstrument" : {
-          "description" : "the underlying instrument",
-          "readOnly" : true,
-          "$ref" : "#/definitions/Instrument"
+    "DerivativeData": {
+      "type": "object",
+      "properties": {
+        "underlyingInstrument": {
+          "description": "the underlying instrument",
+          "readOnly": true,
+          "$ref": "#/definitions/Instrument"
         },
-        "underlyingPrice" : {
-          "description" : "Price of the underlying",
-          "readOnly" : true,
-          "$ref" : "#/definitions/Price"
+        "underlyingPrice": {
+          "description": "Price of the underlying",
+          "readOnly": true,
+          "$ref": "#/definitions/Price"
         },
-        "certificateType" : {
-          "type" : "string",
-          "description" : "Certificate Type",
-          "readOnly" : true,
-          "enum" : [ "Hebel", "Index", "Basket", "Hedge-Fonds-Zertifikat", "Discount", "Aktienanleihe", "Bandbreite", "Outperformance", "Express", "Bonus", "Kapitalschutz" ]
+        "certificateType": {
+          "type": "string",
+          "description": "Certificate Type",
+          "readOnly": true,
+          "enum": [ "Hebel", "Index", "Basket", "Hedge-Fonds-Zertifikat", "Discount", "Aktienanleihe", "Bandbreite", "Outperformance", "Express", "Bonus", "Kapitalschutz" ]
         },
-        "rating" : {
-          "description" : "rating",
-          "readOnly" : true,
-          "$ref" : "#/definitions/Rating"
+        "rating": {
+          "description": "rating",
+          "readOnly": true,
+          "$ref": "#/definitions/Rating"
         },
-        "strikePrice" : {
-          "description" : "strike price of the underlying",
-          "readOnly" : true,
-          "$ref" : "#/definitions/AmountValue"
+        "strikePrice": {
+          "description": "strike price of the underlying",
+          "readOnly": true,
+          "$ref": "#/definitions/AmountValue"
         },
-        "leverage" : {
-          "type" : "string",
-          "example" : "13.37",
-          "description" : "Leverage of the derivate",
-          "readOnly" : true
+        "leverage": {
+          "type": "string",
+          "example": "13.37",
+          "description": "Leverage of the derivate",
+          "readOnly": true
         },
-        "multiplier" : {
-          "type" : "string",
-          "example" : "13.37",
-          "description" : "multiplier of the underlying",
-          "readOnly" : true
+        "multiplier": {
+          "type": "string",
+          "example": "13.37",
+          "description": "multiplier of the underlying",
+          "readOnly": true
         },
-        "expiryDate" : {
-          "type" : "string",
-          "example" : "2019-03-14",
-          "description" : "expiry date of a derivative",
-          "readOnly" : true
+        "expiryDate": {
+          "type": "string",
+          "example": "2019-03-14",
+          "description": "expiry date of a derivative",
+          "readOnly": true
         },
-        "yieldPA" : {
-          "type" : "string",
-          "example" : "99.999",
-          "description" : "yield p.a.",
-          "readOnly" : true
+        "yieldPA": {
+          "type": "string",
+          "example": "99.999",
+          "description": "yield p.a.",
+          "readOnly": true
         },
-        "remainingTermInYears" : {
-          "type" : "string",
-          "example" : "13.37",
-          "description" : "remaining Term (expiryDate-today)",
-          "readOnly" : true
+        "remainingTermInYears": {
+          "type": "string",
+          "example": "13.37",
+          "description": "remaining Term (expiryDate-today)",
+          "readOnly": true
         },
-        "nominalRate" : {
-          "type" : "string",
-          "example" : "99.999",
-          "description" : "nominal rate",
-          "readOnly" : true
+        "nominalRate": {
+          "type": "string",
+          "example": "99.999",
+          "description": "nominal rate",
+          "readOnly": true
         },
-        "warrantType" : {
-          "type" : "string",
-          "description" : "Warrant Type",
-          "readOnly" : true,
-          "enum" : [ "Call", "Put" ]
+        "warrantType": {
+          "type": "string",
+          "description": "Warrant Type",
+          "readOnly": true,
+          "enum": [ "Call", "Put" ]
         },
-        "maturityDate" : {
-          "type" : "string",
-          "example" : "2019-03-14",
-          "description" : "maturity Date of a bonds",
-          "readOnly" : true
+        "maturityDate": {
+          "type": "string",
+          "example": "2019-03-14",
+          "description": "maturity Date of a bonds",
+          "readOnly": true
         },
-        "interestPaymentDate" : {
-          "type" : "string",
-          "example" : "2019-03-14",
-          "description" : "date of the interest payment of a bond",
-          "readOnly" : true
+        "interestPaymentDate": {
+          "type": "string",
+          "example": "2019-03-14",
+          "description": "date of the interest payment of a bond",
+          "readOnly": true
         },
-        "interestPaymentInterval" : {
-          "type" : "string",
-          "description" : "interval of the interest payment of a bond\",allowableValues = \"monthly, quarterly, biannualy, annualy",
-          "readOnly" : true,
-          "enum" : [ "MONTHLY", "QUARTERLY", "SEMIANNUALLY", "ANNUALLY", "OTHER" ]
+        "interestPaymentInterval": {
+          "type": "string",
+          "description": "interval of the interest payment of a bond\",allowableValues = \"monthly, quarterly, biannualy, annualy",
+          "readOnly": true,
+          "enum": [ "MONTHLY", "QUARTERLY", "SEMIANNUALLY", "ANNUALLY", "OTHER" ]
         }
       },
-      "description" : "additional data of a derivative"
+      "description": "additional data of a derivative"
     },
     "Dimensions": {
       "type": "object",
@@ -3028,82 +3042,82 @@
       },
       "description": "Model for dimensions."
     },
-    "Document" : {
-      "type" : "object",
-      "properties" : {
-        "documentId" : {
-          "type" : "string",
-          "example" : "0123456789ABCDEF0123456789ABCDEF",
-          "description" : "Unique ID of the document (UUID)",
-          "readOnly" : true
+    "Document": {
+      "type": "object",
+      "properties": {
+        "documentId": {
+          "type": "string",
+          "example": "0123456789ABCDEF0123456789ABCDEF",
+          "description": "Unique ID of the document (UUID)",
+          "readOnly": true
         },
-        "name" : {
-          "type" : "string",
-          "example" : "Villeroy & Boch AG: Einladung zur Hauptversammlung",
-          "description" : "Name or description of the document.",
-          "readOnly" : true,
-          "minLength" : 0,
-          "maxLength" : 50
+        "name": {
+          "type": "string",
+          "example": "Villeroy & Boch AG: Einladung zur Hauptversammlung",
+          "description": "Name or description of the document.",
+          "readOnly": true,
+          "minLength": 0,
+          "maxLength": 50
         },
-        "dateCreation" : {
-          "type" : "string",
-          "example" : "2019-03-14",
-          "description" : "Date at which the Document was assigned to the client.",
-          "readOnly" : true
+        "dateCreation": {
+          "type": "string",
+          "example": "2019-03-14",
+          "description": "Date at which the Document was assigned to the client.",
+          "readOnly": true
         },
-        "mimeType" : {
-          "type" : "string",
-          "example" : "application/pdf",
-          "description" : "The native mimeType of the document.",
-          "readOnly" : true
+        "mimeType": {
+          "type": "string",
+          "example": "application/pdf",
+          "description": "The native mimeType of the document.",
+          "readOnly": true
         },
-        "deletable" : {
-          "type" : "boolean",
-          "description" : "Is the client allowed to delete the document?",
-          "readOnly" : true,
-          "default" : false
+        "deletable": {
+          "type": "boolean",
+          "description": "Is the client allowed to delete the document?",
+          "readOnly": true,
+          "default": false
         },
-        "advertisement" : {
-          "type" : "boolean",
-          "description" : "Is the document advertising comdirect products?",
-          "readOnly" : true,
-          "default" : false
+        "advertisement": {
+          "type": "boolean",
+          "description": "Is the document advertising comdirect products?",
+          "readOnly": true,
+          "default": false
         },
-        "documentMetaData" : {
-          "description" : "Object containing optional information about the document. Available information will differ between categories.",
-          "readOnly" : true,
-          "$ref" : "#/definitions/DocumentMetadata"
+        "documentMetaData": {
+          "description": "Object containing optional information about the document. Available information will differ between categories.",
+          "readOnly": true,
+          "$ref": "#/definitions/DocumentMetadata"
         }
       },
-      "description" : "Model for a document."
+      "description": "Model for a document."
     },
-    "DocumentMetadata" : {
-      "type" : "object",
-      "properties" : {
-        "archived" : {
-          "type" : "boolean",
-          "description" : "Is document archived?",
-          "readOnly" : true,
-          "default" : false
+    "DocumentMetadata": {
+      "type": "object",
+      "properties": {
+        "archived": {
+          "type": "boolean",
+          "description": "Is document archived?",
+          "readOnly": true,
+          "default": false
         },
-        "dateRead" : {
-          "type" : "string",
-          "example" : "2019-03-14",
-          "description" : "Date on which the document was read.",
-          "readOnly" : true
+        "dateRead": {
+          "type": "string",
+          "example": "2019-03-14",
+          "description": "Date on which the document was read.",
+          "readOnly": true
         },
-        "alreadyRead" : {
-          "type" : "boolean",
-          "description" : "Has the document been read?",
-          "readOnly" : true,
-          "default" : false
+        "alreadyRead": {
+          "type": "boolean",
+          "description": "Has the document been read?",
+          "readOnly": true,
+          "default": false
         },
-        "predocumentExists" : {
-          "type" : "boolean",
-          "default" : false
+        "predocumentExists": {
+          "type": "boolean",
+          "default": false
         }
       },
-      "description" : "Model for category-specific metadata of documents."
+      "description": "Model for category-specific metadata of documents."
     },
     "EnumText": {
       "type": "object",
@@ -3159,148 +3173,148 @@
       },
       "description": "Model for an order's execution."
     },
-    "FixedTermSavings" : {
-      "type" : "object",
-      "properties" : {
-        "fixedTermSavingsId" : {
-          "type" : "string",
-          "example" : "0123456789ABCDEF0123456789ABCDEF",
-          "description" : "UUID of the deposit account.",
-          "readOnly" : true
+    "FixedTermSavings": {
+      "type": "object",
+      "properties": {
+        "fixedTermSavingsId": {
+          "type": "string",
+          "example": "0123456789ABCDEF0123456789ABCDEF",
+          "description": "UUID of the deposit account.",
+          "readOnly": true
         },
-        "savingsAmount" : {
-          "description" : "Total of investment.",
-          "readOnly" : true,
-          "$ref" : "#/definitions/AmountValue"
+        "savingsAmount": {
+          "description": "Total of investment.",
+          "readOnly": true,
+          "$ref": "#/definitions/AmountValue"
         },
-        "interestRate" : {
-          "type" : "string",
-          "example" : "99.999",
-          "description" : "Interest rate of the deposit account.",
-          "readOnly" : true
+        "interestRate": {
+          "type": "string",
+          "example": "99.999",
+          "description": "Interest rate of the deposit account.",
+          "readOnly": true
         },
-        "fixedTermSavingsType" : {
-          "type" : "string",
-          "description" : "Type of the deposit account.",
-          "readOnly" : true,
-          "enum" : [ "SHORT_TERM", "LONG_TERM" ]
+        "fixedTermSavingsType": {
+          "type": "string",
+          "description": "Type of the deposit account.",
+          "readOnly": true,
+          "enum": [ "SHORT_TERM", "LONG_TERM" ]
         },
-        "fixedTermSavingsDisplayName" : {
-          "type" : "string",
-          "example" : "Laufzeitkonto",
-          "description" : "Name of the deposit account.",
-          "readOnly" : true
+        "fixedTermSavingsDisplayName": {
+          "type": "string",
+          "example": "Laufzeitkonto",
+          "description": "Name of the deposit account.",
+          "readOnly": true
         },
-        "contractPeriodInMonths" : {
-          "type" : "integer",
-          "format" : "int32",
-          "example" : 120,
-          "description" : "Contract period of the deposit account in months.",
-          "readOnly" : true
+        "contractPeriodInMonths": {
+          "type": "integer",
+          "format": "int32",
+          "example": 120,
+          "description": "Contract period of the deposit account in months.",
+          "readOnly": true
         },
-        "creationDate" : {
-          "type" : "string",
-          "example" : "2019-03-14",
-          "description" : "Start date of investment.",
-          "readOnly" : true
+        "creationDate": {
+          "type": "string",
+          "example": "2019-03-14",
+          "description": "Start date of investment.",
+          "readOnly": true
         },
-        "expirationDate" : {
-          "type" : "string",
-          "example" : "2019-03-14",
-          "description" : "End date of investment.",
-          "readOnly" : true
+        "expirationDate": {
+          "type": "string",
+          "example": "2019-03-14",
+          "description": "End date of investment.",
+          "readOnly": true
         },
-        "prolongationAmount" : {
-          "description" : "Amount of money for prolongation.",
-          "readOnly" : true,
-          "$ref" : "#/definitions/AmountValue"
+        "prolongationAmount": {
+          "description": "Amount of money for prolongation.",
+          "readOnly": true,
+          "$ref": "#/definitions/AmountValue"
         },
-        "extendable" : {
-          "type" : "boolean",
-          "example" : true,
-          "description" : "Indicates whether the investment can be extended.",
-          "readOnly" : true,
-          "default" : false
+        "extendable": {
+          "type": "boolean",
+          "example": true,
+          "description": "Indicates whether the investment can be extended.",
+          "readOnly": true,
+          "default": false
         }
       }
     },
-    "FundDistribution" : {
-      "type" : "object",
-      "properties" : {
-        "fundStatus" : {
-          "type" : "string",
-          "description" : "Status of fund",
-          "readOnly" : true,
-          "enum" : [ "A", "K", "P", "R", "V", "N", "L", "D", "F", "I", "M" ]
+    "FundDistribution": {
+      "type": "object",
+      "properties": {
+        "fundStatus": {
+          "type": "string",
+          "description": "Status of fund",
+          "readOnly": true,
+          "enum": [ "A", "K", "P", "R", "V", "N", "L", "D", "F", "I", "M" ]
         },
-        "fundFlags" : {
-          "type" : "array",
-          "description" : "List of different features of funds",
-          "readOnly" : true,
-          "items" : {
-            "type" : "string"
+        "fundFlags": {
+          "type": "array",
+          "description": "List of different features of funds",
+          "readOnly": true,
+          "items": {
+            "type": "string"
           }
         },
-        "currency" : {
-          "type" : "string",
-          "example" : "EUR",
-          "description" : "currency of fund",
-          "readOnly" : true
+        "currency": {
+          "type": "string",
+          "example": "EUR",
+          "description": "currency of fund",
+          "readOnly": true
         },
-        "regularIssueSurcharge" : {
-          "type" : "string",
-          "example" : "99.999",
-          "description" : "Regular issue surcharge",
-          "readOnly" : true
+        "regularIssueSurcharge": {
+          "type": "string",
+          "example": "99.999",
+          "description": "Regular issue surcharge",
+          "readOnly": true
         },
-        "discountIssueSurcharge" : {
-          "type" : "string",
-          "example" : "99.999",
-          "description" : "Discount issue surcharge",
-          "readOnly" : true
+        "discountIssueSurcharge": {
+          "type": "string",
+          "example": "99.999",
+          "description": "Discount issue surcharge",
+          "readOnly": true
         },
-        "reducedIssueSurcharge" : {
-          "type" : "string",
-          "example" : "99.999",
-          "description" : "Reduced issue surcharge",
-          "readOnly" : true
+        "reducedIssueSurcharge": {
+          "type": "string",
+          "example": "99.999",
+          "description": "Reduced issue surcharge",
+          "readOnly": true
         },
-        "individualIssueSurcharge" : {
-          "type" : "string",
-          "example" : "99.999",
-          "description" : "Individual issue surcharge",
-          "readOnly" : true
+        "individualIssueSurcharge": {
+          "type": "string",
+          "example": "99.999",
+          "description": "Individual issue surcharge",
+          "readOnly": true
         },
-        "isIndividualIssueSurchargeCorrected" : {
-          "type" : "boolean",
-          "description" : "Is individual issue surcharge corrected",
-          "readOnly" : true,
-          "default" : false
+        "isIndividualIssueSurchargeCorrected": {
+          "type": "boolean",
+          "description": "Is individual issue surcharge corrected",
+          "readOnly": true,
+          "default": false
         },
-        "bonification" : {
-          "type" : "string",
-          "example" : "99.999",
-          "description" : "Bonification",
-          "readOnly" : true
+        "bonification": {
+          "type": "string",
+          "example": "99.999",
+          "description": "Bonification",
+          "readOnly": true
         },
-        "investmentCategory" : {
-          "type" : "string",
-          "description" : "Investment category",
-          "readOnly" : true
+        "investmentCategory": {
+          "type": "string",
+          "description": "Investment category",
+          "readOnly": true
         },
-        "totalExpenseRatio" : {
-          "type" : "string",
-          "example" : "99.999",
-          "description" : "Total expense ratio",
-          "readOnly" : true
+        "totalExpenseRatio": {
+          "type": "string",
+          "example": "99.999",
+          "description": "Total expense ratio",
+          "readOnly": true
         },
-        "rating" : {
-          "description" : "Rating",
-          "readOnly" : true,
-          "$ref" : "#/definitions/Rating"
+        "rating": {
+          "description": "Rating",
+          "readOnly": true,
+          "$ref": "#/definitions/Rating"
         }
       },
-      "description" : "additional fund data, if the instrument is a fund"
+      "description": "additional fund data, if the instrument is a fund"
     },
     "FXRateEUR": {
       "type": "object",
@@ -3337,90 +3351,90 @@
       },
       "description": "Model for an inducement."
     },
-    "InstallmentLoan" : {
-      "type" : "object",
-      "properties" : {
-        "installmentLoanId" : {
-          "type" : "string",
-          "example" : "0123456789ABCDEF0123456789ABCDEF",
-          "description" : "Installment loan identifier (UUID).",
-          "readOnly" : true
+    "InstallmentLoan": {
+      "type": "object",
+      "properties": {
+        "installmentLoanId": {
+          "type": "string",
+          "example": "0123456789ABCDEF0123456789ABCDEF",
+          "description": "Installment loan identifier (UUID).",
+          "readOnly": true
         },
-        "productDisplayId" : {
-          "type" : "string",
-          "example" : "0123456789",
-          "description" : "SWK number of the installment loan.",
-          "readOnly" : true
+        "productDisplayId": {
+          "type": "string",
+          "example": "0123456789",
+          "description": "SWK number of the installment loan.",
+          "readOnly": true
         },
-        "creditAmount" : {
-          "description" : "Approved loan amount of the initial conclusion of the loan in EUR, including residual debt insurance and interest.",
-          "readOnly" : true,
-          "$ref" : "#/definitions/AmountValue"
+        "creditAmount": {
+          "description": "Approved loan amount of the initial conclusion of the loan in EUR, including residual debt insurance and interest.",
+          "readOnly": true,
+          "$ref": "#/definitions/AmountValue"
         },
-        "netCreditAmount" : {
-          "description" : "Approved loan amount of the initial conclusion of the loan in EUR, before residual debt insurance and interest.",
-          "readOnly" : true,
-          "$ref" : "#/definitions/AmountValue"
+        "netCreditAmount": {
+          "description": "Approved loan amount of the initial conclusion of the loan in EUR, before residual debt insurance and interest.",
+          "readOnly": true,
+          "$ref": "#/definitions/AmountValue"
         },
-        "paidOutAmount" : {
-          "description" : "Paid out amount of the approved loan, can include additions or deductions for residual debt insurance or interest.",
-          "readOnly" : true,
-          "$ref" : "#/definitions/AmountValue"
+        "paidOutAmount": {
+          "description": "Paid out amount of the approved loan, can include additions or deductions for residual debt insurance or interest.",
+          "readOnly": true,
+          "$ref": "#/definitions/AmountValue"
         },
-        "installmentAmount" : {
-          "description" : "Amount of the installment loan in EUR.",
-          "readOnly" : true,
-          "$ref" : "#/definitions/AmountValue"
+        "installmentAmount": {
+          "description": "Amount of the installment loan in EUR.",
+          "readOnly": true,
+          "$ref": "#/definitions/AmountValue"
         },
-        "contractPeriodInMonths" : {
-          "type" : "integer",
-          "format" : "int32",
-          "example" : 42,
-          "description" : "Runtime of the installment loan in months.",
-          "readOnly" : true
+        "contractPeriodInMonths": {
+          "type": "integer",
+          "format": "int32",
+          "example": 42,
+          "description": "Runtime of the installment loan in months.",
+          "readOnly": true
         },
-        "effectiveInterest" : {
-          "type" : "string",
-          "example" : "99.999",
-          "description" : "Effective interest rate.",
-          "readOnly" : true
+        "effectiveInterest": {
+          "type": "string",
+          "example": "99.999",
+          "description": "Effective interest rate.",
+          "readOnly": true
         },
-        "nominalInterest" : {
-          "type" : "string",
-          "example" : "99.999",
-          "description" : "Nominal interest rate.",
-          "readOnly" : true
+        "nominalInterest": {
+          "type": "string",
+          "example": "99.999",
+          "description": "Nominal interest rate.",
+          "readOnly": true
         },
-        "contractConclusionDate" : {
-          "type" : "string",
-          "example" : "2019-03-14",
-          "description" : "Date of conclusion of the installment loan.",
-          "readOnly" : true
+        "contractConclusionDate": {
+          "type": "string",
+          "example": "2019-03-14",
+          "description": "Date of conclusion of the installment loan.",
+          "readOnly": true
         }
       },
-      "description" : "Master data of an installment loan"
+      "description": "Master data of an installment loan"
     },
-    "InstallmentLoanBalance" : {
-      "type" : "object",
-      "properties" : {
-        "installmentLoanId" : {
-          "type" : "string",
-          "example" : "0123456789ABCDEF0123456789ABCDEF",
-          "description" : "Installment loan identifier (UUID).",
-          "readOnly" : true
+    "InstallmentLoanBalance": {
+      "type": "object",
+      "properties": {
+        "installmentLoanId": {
+          "type": "string",
+          "example": "0123456789ABCDEF0123456789ABCDEF",
+          "description": "Installment loan identifier (UUID).",
+          "readOnly": true
         },
-        "installmentLoan" : {
-          "description" : "Master data of the installment loan.",
-          "readOnly" : true,
-          "$ref" : "#/definitions/InstallmentLoan"
+        "installmentLoan": {
+          "description": "Master data of the installment loan.",
+          "readOnly": true,
+          "$ref": "#/definitions/InstallmentLoan"
         },
-        "balance" : {
-          "description" : "Current balance of the installment loan in EUR, including residual debt insurance and interest.",
-          "readOnly" : true,
-          "$ref" : "#/definitions/AmountValue"
+        "balance": {
+          "description": "Current balance of the installment loan in EUR, including residual debt insurance and interest.",
+          "readOnly": true,
+          "$ref": "#/definitions/AmountValue"
         }
       },
-      "description" : "Balance and master data of an installment loan"
+      "description": "Balance and master data of an installment loan"
     },
     "Instrument": {
       "type": "object",
@@ -3465,15 +3479,15 @@
           "readOnly": true,
           "$ref": "#/definitions/Dimensions"
         },
-        "fundsDistribution" : {
-          "description" : "additional fund data, if the instrument is a fund",
-          "readOnly" : true,
-          "$ref" : "#/definitions/FundDistribution"
+        "fundsDistribution": {
+          "description": "additional fund data, if the instrument is a fund",
+          "readOnly": true,
+          "$ref": "#/definitions/FundDistribution"
         },
-        "derivativeData" : {
-          "description" : "additional data of a derivative",
-          "readOnly" : true,
-          "$ref" : "#/definitions/DerivativeData"
+        "derivativeData": {
+          "description": "additional data of a derivative",
+          "readOnly": true,
+          "$ref": "#/definitions/DerivativeData"
         }
       },
       "description": "Model for an instrument."
@@ -3631,19 +3645,19 @@
         }
       }
     },
-    "ListResourceProductBalance" : {
-      "type" : "object",
-      "properties" : {
-        "paging" : {
-          "$ref" : "#/definitions/PagingInfo"
+    "ListResourceProductBalance": {
+      "type": "object",
+      "properties": {
+        "paging": {
+          "$ref": "#/definitions/PagingInfo"
         },
-        "aggregated" : {
-          "$ref" : "#/definitions/AggregatedInfo"
+        "aggregated": {
+          "$ref": "#/definitions/AggregatedInfo"
         },
-        "values" : {
-          "type" : "array",
-          "items" : {
-            "$ref" : "#/definitions/ProductBalance"
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProductBalance"
           }
         }
       }
@@ -3957,42 +3971,42 @@
       },
       "description": "Represents a price."
     },
-    "ProductBalance" : {
-      "type" : "object",
-      "properties" : {
-        "productId" : {
-          "type" : "string",
-          "example" : "B2D8C9A36F640148C915338922030951",
-          "description" : "Unique ID of the product (UUID).",
-          "readOnly" : true
+    "ProductBalance": {
+      "type": "object",
+      "properties": {
+        "productId": {
+          "type": "string",
+          "example": "B2D8C9A36F640148C915338922030951",
+          "description": "Unique ID of the product (UUID).",
+          "readOnly": true
         },
-        "productType" : {
-          "type" : "string",
-          "example" : "ACCOUNT",
-          "description" : "Type of the product.",
-          "readOnly" : true,
-          "enum" : [ "ACCOUNT", "CARD", "DEPOT", "LOAN", "SAVINGS" ]
+        "productType": {
+          "type": "string",
+          "example": "ACCOUNT",
+          "description": "Type of the product.",
+          "readOnly": true,
+          "enum": [ "ACCOUNT", "CARD", "DEPOT", "LOAN", "SAVINGS" ]
         },
-        "targetClientId" : {
-          "type" : "string",
-          "example" : "B2D8C9A36F640148C915338922030951",
-          "description" : "Unique Id of the target client (UUID).",
-          "readOnly" : true
+        "targetClientId": {
+          "type": "string",
+          "example": "B2D8C9A36F640148C915338922030951",
+          "description": "Unique Id of the target client (UUID).",
+          "readOnly": true
         },
-        "clientConnectionType" : {
-          "type" : "string",
-          "example" : "CURRENT_CLIENT",
-          "description" : "Type of the client connection.",
-          "readOnly" : true,
-          "enum" : [ "CURRENT_CLIENT", "OTHER_COMDIRECT", "OTHER_EXTERNAL" ]
+        "clientConnectionType": {
+          "type": "string",
+          "example": "CURRENT_CLIENT",
+          "description": "Type of the client connection.",
+          "readOnly": true,
+          "enum": [ "CURRENT_CLIENT", "OTHER_COMDIRECT", "OTHER_EXTERNAL" ]
         },
-        "balance" : {
-          "description" : "Balance object based on the product type.",
-          "readOnly" : true,
-          "$ref" : "#/definitions/Balance"
+        "balance": {
+          "description": "Balance object based on the product type.",
+          "readOnly": true,
+          "$ref": "#/definitions/Balance"
         }
       },
-      "description" : "Model for a product balance."
+      "description": "Model for a product balance."
     },
     "Quote": {
       "type": "object",
@@ -4032,21 +4046,21 @@
       },
       "description": "Model for a quote request."
     },
-    "Rating" : {
-      "type" : "object",
-      "properties" : {
-        "morningstar" : {
-          "type" : "string",
-          "description" : "Funds Rating",
-          "readOnly" : true
+    "Rating": {
+      "type": "object",
+      "properties": {
+        "morningstar": {
+          "type": "string",
+          "description": "Funds Rating",
+          "readOnly": true
         },
-        "moodys" : {
-          "type" : "string",
-          "description" : "Bonds Rating",
-          "readOnly" : true
+        "moodys": {
+          "type": "string",
+          "description": "Bonds Rating",
+          "readOnly": true
         }
       },
-      "description" : "Rating of the instrument."
+      "description": "Rating of the instrument."
     },
     "Session": {
       "type": "object",
@@ -4307,26 +4321,26 @@
       },
       "description": "Model for a venue."
     },
-    "VisaCardImage" : {
-      "type" : "object",
-      "properties" : {
-        "visaCardImageId" : {
-          "type" : "string",
-          "example" : "0002",
-          "description" : "Visa card image ID to be used in the application",
-          "readOnly" : true
+    "VisaCardImage": {
+      "type": "object",
+      "properties": {
+        "visaCardImageId": {
+          "type": "string",
+          "example": "0002",
+          "description": "Visa card image ID to be used in the application",
+          "readOnly": true
         },
-        "imageDescription" : {
-          "type" : "string",
-          "example" : "Schmetterling",
-          "description" : "Description of the image",
-          "readOnly" : true
+        "imageDescription": {
+          "type": "string",
+          "example": "Schmetterling",
+          "description": "Description of the image",
+          "readOnly": true
         },
-        "imageBaseFilename" : {
-          "type" : "string",
-          "example" : "visual_visamotiv_karte0002",
-          "description" : "Base filename for the files representing the image. The name has to be extended with a postfix indicating the resolution and file type, e.g. -1x.jpg. The resulting filename can be used to retrieve the image from the comdirect CMS",
-          "readOnly" : true
+        "imageBaseFilename": {
+          "type": "string",
+          "example": "visual_visamotiv_karte0002",
+          "description": "Base filename for the files representing the image. The name has to be extended with a postfix indicating the resolution and file type, e.g. -1x.jpg. The resulting filename can be used to retrieve the image from the comdirect CMS",
+          "readOnly": true
         }
       }
     }

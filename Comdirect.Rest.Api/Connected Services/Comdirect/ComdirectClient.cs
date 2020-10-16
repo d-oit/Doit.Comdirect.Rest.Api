@@ -3366,7 +3366,7 @@ namespace Comdirect.Rest.Api.Comdirect
 
     /// <summary>Master data of an account</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class Account 
+    public class Account 
     {
         /// <summary>Account identifier (UUID)</summary>
         [Newtonsoft.Json.JsonProperty("accountId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3401,7 +3401,7 @@ namespace Comdirect.Rest.Api.Comdirect
     
     /// <summary>Account information, including cash balance and buying power</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class AccountBalance 
+    public class AccountBalance 
     {
         /// <summary>The master data of this account (attribute can be suppressed by using the parameter 'without-attr=account')</summary>
         [Newtonsoft.Json.JsonProperty("account", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
