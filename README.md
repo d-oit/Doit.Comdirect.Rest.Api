@@ -1,3 +1,5 @@
+![Build and Test - release branch](https://github.com/do-it-ger/Doit.Comdirect.Rest.Api/workflows/Build%20and%20Test%20-%20release%20branch/badge.svg)
+
 # Doit.Comdirect.Rest.Api
 C# .NET Standard Rest API for comdirect
 
