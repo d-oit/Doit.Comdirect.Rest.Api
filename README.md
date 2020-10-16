@@ -1,4 +1,4 @@
-# Comdirect.Rest.Api
+# Doit.Comdirect.Rest.Api
 C# .NET Standard Rest API for comdirect
 
 ## Requirements
