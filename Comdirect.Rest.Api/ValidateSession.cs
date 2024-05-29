@@ -1,6 +1,6 @@
 ﻿namespace Comdirect.Rest.Api
 {
-    public class ValidateSession
+    public class ValidateSessionAsync
     {
         public string id { get; set; }
         public string typ { get; set; }

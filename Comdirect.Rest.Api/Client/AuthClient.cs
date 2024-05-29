@@ -6,125 +6,53 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Comdirect.Rest.Api
 {
+    /// <summary>
+    /// The auth client.
+    /// </summary>
     public class AuthClient : ComdirectClient
     {
-        public string SessionId { get; set; } = Guid.NewGuid().ToString("N").ToLower();
-        public string RequestId { get; set; } = GenerateDigits(9);
+        private ComdirectCredentials _comdirectCredentials;
 
         public HttpClient _httpClient = new HttpClient();
-        private readonly ComdirectCredentials _comdirectCredentials;
+        /// <summary>
+        /// Gets or sets the request id.
+        /// </summary>
+        public string RequestId { get; set; } = GenerateDigits(9);
 
+        /// <summary>
+        /// Gets or sets the session id.
+        /// </summary>
+        public string SessionId { get; set; } = Guid.NewGuid().ToString("N").ToLower();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthClient"/> class.
+        /// </summary>
+        /// <param name="httpClient">The HttpClient instance to be used for making HTTP requests.</param>
+        /// <param name="comdirectCredentials">The ComdirectCredentials object containing the client id, client secret, username, and pin.</param>
         public AuthClient(HttpClient httpClient, ComdirectCredentials comdirectCredentials) : base(httpClient)
         {
+            // Assign the provided HttpClient instance to the _httpClient field
             _httpClient = httpClient;
-            this._comdirectCredentials = comdirectCredentials;
+
+            // Assign the provided ComdirectCredentials instance to the _comdirectCredentials field
+            _comdirectCredentials = comdirectCredentials;
         }
-
-        public ValidateSession GetTokenAndValidateSession()
-        {
-            var token = GetToken();
-            var session = GetSessionStatus(token.access_token);
-            var validateSessionStatus = PostValidateSessionStatus(token.access_token, session.Identifier);
-            return validateSessionStatus;
-        }
-
-        public void SetRequestSessionInfo(RestRequest request)
-        {
-            string serializedHttpRequestInfo = GetHttpRequestInfoValue();
-            request.AddHeader("x-http-request-info", serializedHttpRequestInfo);
-        }
-
-        private string GetHttpRequestInfoValue()
-        {
-            var httpRequestInfo = new { clientRequestId = new { sessionId = SessionId, requestId = RequestId } };
-            var serializedHttpRequestInfo = JsonConvert.SerializeObject(httpRequestInfo);
-            return serializedHttpRequestInfo;
-        }
-
-        public ComdirectOAuthToken GetToken()
-        {
-            var client = new RestClient("https://api.comdirect.de/oauth/token");
-            client.Timeout = -1;
-            var request = new RestRequest(Method.POST);
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddHeader("Accept", "application/json");
-            request.AddParameter("client_id", _comdirectCredentials.ClientId);
-            request.AddParameter("client_secret", _comdirectCredentials.ClientSecret);
-            request.AddParameter("grant_type", "password");
-            request.AddParameter("username", _comdirectCredentials.Username);
-            request.AddParameter("password", _comdirectCredentials.Pin);
-            IRestResponse response = client.Execute(request);
-
-            if (response.StatusCode != System.Net.HttpStatusCode.OK)
-            {
-                throw new ApplicationException("Could not get token - check client id/secrets configuration! Status Code: " + response.StatusCode);
-            }
-
-            return JsonConvert.DeserializeObject<ComdirectOAuthToken>(response.Content);
-        }
-
-        public Session GetSessionStatus(string accessToken)
-        {
-            var client = new RestClient($"{BaseUrl}/session/clients/user/v1/sessions");
-            client.Timeout = -1;
-            var request = new RestRequest(Method.GET);
-            request.AddHeader("Accept", "application/json");
-            request.AddHeader("Authorization", $"Bearer {accessToken}");
-            SetRequestSessionInfo(request);
-            request.AddHeader("Content-Type", "application/json");
-            IRestResponse response = client.Execute(request);
-
-            if (response.StatusCode != System.Net.HttpStatusCode.OK)
-            {
-                throw new ApplicationException("Could not generate token! Status Code: " + response.StatusCode);
-            }
-
-            var sessionsResults = JsonConvert.DeserializeObject<List<Session>>(response.Content);
-            return sessionsResults[0];
-        }
-
-        public ValidateSession PostValidateSessionStatus(string accessToken, string sessionUUID)
-        {
-            var client = new RestClient($"{BaseUrl}/session/clients/user/v1/sessions/{sessionUUID}/validate");
-            client.Timeout = -1;
-            var request = new RestRequest(Method.POST);
-            request.AddHeader("Accept", "application/json");
-            request.AddHeader("Authorization", $"Bearer {accessToken}");
-            SetRequestSessionInfo(request);
-            request.AddHeader("Content-Type", "application/json");
-            SetBody(sessionUUID, request);
-            IRestResponse response = client.Execute(request);
-
-            if (response.StatusCode != System.Net.HttpStatusCode.Created)
-            {
-                throw new ApplicationException("Post validate session failed!");
-            }
-
-            var responseAuthHeader = response.Headers.FirstOrDefault(x => x.Name == "x-once-authentication-info");
-            if (responseAuthHeader.Value != null)
-            {
-                var comdirectValidateSessionResponse = JsonConvert.DeserializeObject<ValidateSession>(responseAuthHeader.Value.ToString());
-                return comdirectValidateSessionResponse;
-            }
-
-            throw new ApplicationException("Post validate session failed!");
-        }
-
-        private static void SetBody(string sessionUUID, RestRequest request)
-        {
-            var parameter = "{\r\n        \"identifier\": \"" + sessionUUID + "\",\r\n        \"sessionTanActive\": true,\r\n        \"activated2FA\": true\r\n}";
-
-            request.AddParameter("application/json", parameter, ParameterType.RequestBody);
-        }
-
-        public bool ActivateSessionTan(string accessToken, string sessionUUID, string challangeId)
+             
+        /// <summary>
+        /// Activates the session tan async.
+        /// </summary>
+        /// <param name="accessToken">The access token.</param>
+        /// <param name="sessionUUID">The session u u i d.</param>
+        /// <param name="challangeId">The challange id.</param>
+        /// <returns>A Task.</returns>
+        public async Task<bool> ActivateSessionTanAsync(string accessToken, string sessionUUID, string challangeId)
         {
             var client = new RestClient($"{BaseUrl}/session/clients/user/v1/sessions/{sessionUUID}");
-            client.Timeout = -1;
-            var request = new RestRequest(Method.PATCH);
+            var request = new RestRequest();
             request.AddHeader("Accept", "application/json");
             request.AddHeader("Authorization", $"Bearer {accessToken}");
             SetRequestSessionInfo(request);
@@ -132,7 +60,7 @@ namespace Comdirect.Rest.Api
             request.AddHeader("x-once-authentication-info", "{\"id\": " + challangeId + "}");
             request.AddHeader("x-once-authentication", "000000");
             SetBody(sessionUUID, request);
-            IRestResponse response = client.Execute(request);
+            var response = await client.ExecuteAsync(request, Method.Patch);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 return true;
@@ -140,18 +68,127 @@ namespace Comdirect.Rest.Api
             return false;
         }
 
-        public ComdirectOAuthToken PostSecondaryFlow(string accessToken)
+        /// <summary>
+        /// Gets the session status async.
+        /// </summary>
+        /// <param name="accessToken">The access token.</param>
+        /// <returns>A Task.</returns>
+        /// <summary>
+        /// Gets the session status async.
+        /// This method is used to retrieve the status of the user's session.
+        /// </summary>
+        /// <param name="accessToken">The access token to authenticate the request.</param>
+        /// <returns>A Task that represents the asynchronous operation. The task result is the user's session.</returns>
+        /// <exception cref="ApplicationException">Thrown when the request to the Comdirect API fails.</exception>
+        public async Task<Session> GetSessionStatusAsync(string accessToken)
+        {
+            // Initialize a new RestClient with the base URL for session management
+            var client = new RestClient($"{BaseUrl}/session/clients/user/v1/sessions");
+
+            // Create a new RestRequest
+            var request = new RestRequest();
+
+            // Add headers to the request
+            request.AddHeader("Accept", "application/json");
+            request.AddHeader("Authorization", $"Bearer {accessToken}");
+            SetRequestSessionInfo(request);
+            request.AddHeader("Content-Type", "application/json");
+
+            // Execute the request asynchronously
+            var response = await client.ExecuteAsync(request, Method.Get);
+
+            // Check the response status code
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                // If the status code is not OK, throw an exception
+                throw new ApplicationException("Could not generate token! Status Code: " + response.StatusCode);
+            }
+
+            // Deserialize the response content into a list of Session objects
+            var sessionsResults = JsonConvert.DeserializeObject<List<Session>>(response.Content);
+
+            // Return the first session (assuming there is at least one session)
+            return sessionsResults[0];
+        }
+
+        /// <summary>
+        /// This method retrieves an access token and validates the user's session.
+        /// </summary>
+        /// <returns>A Task that represents the asynchronous operation. The task result is the ValidateSessionAsync object.</returns>
+        public async Task<ValidateSessionAsync> GetTokenAndValidateSessionAsync()
+        {
+            // Retrieve an access token
+            var token = await GetTokenAsync();
+
+            // Retrieve the user's session status
+            var session = await GetSessionStatusAsync(token.access_token);
+
+            // Validate the user's session
+            var validateSessionStatus = await PostValidateSessionStatusAsync(token.access_token, session.Identifier);
+
+            // Return the validation result
+            return validateSessionStatus;
+        }
+
+        /// <summary>
+        /// Gets the token async.
+        /// </summary>
+        /// <returns>A Task.</returns>
+        /// <summary>
+        /// Gets the token async.
+        /// This method is used to retrieve an access token from the Comdirect API.
+        /// </summary>
+        /// <returns>A Task that represents the asynchronous operation. The task result is the ComdirectOAuthToken object.</returns>
+        /// <exception cref="ApplicationException">Thrown when the request to the Comdirect API fails or when the client id/secrets are not valid.</exception>
+        public async Task<ComdirectOAuthToken> GetTokenAsync()
+        {
+            // Initialize a new RestClient with the base URL for token generation
+            var client = new RestClient("https://api.comdirect.de/oauth/token");
+
+            // Create a new RestRequest
+            var request = new RestRequest();
+
+            // Add headers to the request
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Accept", "application/json");
+
+            // Add parameters to the request
+            request.AddParameter("client_id", _comdirectCredentials.ClientId);
+            request.AddParameter("client_secret", _comdirectCredentials.ClientSecret);
+            request.AddParameter("grant_type", "password");
+            request.AddParameter("username", _comdirectCredentials.Username);
+            request.AddParameter("password", _comdirectCredentials.Pin);
+
+            // Execute the request asynchronously
+            var response = await client.ExecuteAsync(request, Method.Post);
+
+            // Check the response status code
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                // If the status code is not OK, throw an exception
+                throw new ApplicationException("Could not get token - check client id/secrets configuration! Status Code: " + response.StatusCode);
+            }
+
+            // Deserialize the response content into a ComdirectOAuthToken object
+            return JsonConvert.DeserializeObject<ComdirectOAuthToken>(response.Content);
+        }
+
+        /// <summary>
+        /// Posts the secondary flow async.
+        /// </summary>
+        /// <param name="accessToken">The access token.</param>
+        /// <returns>A Task.</returns>
+        public async Task<ComdirectOAuthToken> PostSecondaryFlowAsync(string accessToken)
         {
             var client = new RestClient("https://api.comdirect.de/oauth/token");
-            client.Timeout = -1;
-            var request = new RestRequest(Method.POST);
+            var request = new RestRequest();
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddHeader("Accept", "application/json");
             request.AddParameter("client_id", _comdirectCredentials.ClientId);
             request.AddParameter("client_secret", _comdirectCredentials.ClientSecret);
             request.AddParameter("grant_type", "cd_secondary");
             request.AddParameter("token", accessToken);
-            IRestResponse response = client.Execute(request);
+            var response = await client.ExecuteAsync(request, Method.Post);
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
                 throw new ApplicationException("Could not get token - check client id/secrets configuration! Status Code: " + response.StatusCode);
@@ -164,16 +201,52 @@ namespace Comdirect.Rest.Api
             return token;
         }
 
-        public bool RevokeToken(string accessToken)
+        /// <summary>
+        /// Posts the validate session status async.
+        /// </summary>
+        /// <param name="accessToken">The access token.</param>
+        /// <param name="sessionUUID">The session u u i d.</param>
+        /// <returns>A Task.</returns>
+        public async Task<ValidateSessionAsync> PostValidateSessionStatusAsync(string accessToken, string sessionUUID)
+        {
+            var client = new RestClient($"{BaseUrl}/session/clients/user/v1/sessions/{sessionUUID}/validate");
+            var request = new RestRequest();
+            request.AddHeader("Accept", "application/json");
+            request.AddHeader("Authorization", $"Bearer {accessToken}");
+            SetRequestSessionInfo(request);
+            request.AddHeader("Content-Type", "application/json");
+            SetBody(sessionUUID, request);
+            var response = await client.ExecuteAsync(request, Method.Post);
+
+            if (response.StatusCode != System.Net.HttpStatusCode.Created)
+            {
+                throw new ApplicationException("Post validate session failed!");
+            }
+
+            var responseAuthHeader = response.Headers.FirstOrDefault(x => x.Name == "x-once-authentication-info");
+            if (responseAuthHeader.Value != null)
+            {
+                var comdirectValidateSessionResponse = JsonConvert.DeserializeObject<ValidateSessionAsync>(responseAuthHeader.Value.ToString());
+                return comdirectValidateSessionResponse;
+            }
+
+            throw new ApplicationException("Post validate session failed!");
+        }
+
+        /// <summary>
+        /// Revokes the token async.
+        /// </summary>
+        /// <param name="accessToken">The access token.</param>
+        /// <returns>A Task.</returns>
+        public async Task<bool> RevokeTokenAsync(string accessToken)
         {
             var client = new RestClient("https://api.comdirect.de/oauth/revoke");
-            client.Timeout = -1;
-            var request = new RestRequest(Method.DELETE);
+            var request = new RestRequest();
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddHeader("Accept", "application/json");
             request.AddHeader("Authorization", $"Bearer {accessToken}");
-            request.AddParameter("application/x-www-form-urlencoded", "", ParameterType.RequestBody);
-            IRestResponse response = client.Execute(request);
+            request.AddParameter("application/x-www-form-urlencoded", string.Empty, ParameterType.RequestBody);
+            var response = await client.ExecuteAsync(request, Method.Delete);
             if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
             {
                 return true;
@@ -181,10 +254,59 @@ namespace Comdirect.Rest.Api
             return false;
         }
 
+        /// <summary>
+        /// Sets the request session info.
+        /// This method is used to add a custom header to the RestRequest object.
+        /// The header contains session and request IDs in a serialized JSON format.
+        /// </summary>
+        /// <param name="request">The RestRequest object to which the header will be added.</param>
+        public void SetRequestSessionInfo(RestRequest request)
+        {
+            // Generate the serialized JSON string containing session and request IDs
+            string serializedHttpRequestInfo = GetHttpRequestInfoValue();
+
+            // Add the custom header to the RestRequest object
+            request.AddHeader("x-http-request-info", serializedHttpRequestInfo);
+        }
+
+        /// <summary>
+        /// Generates the digits.
+        /// </summary>
+        /// <param name="length">The length.</param>
+        /// <returns>A string.</returns>
         private static string GenerateDigits(int length)
         {
             var rndDigits = new System.Text.StringBuilder().Insert(0, "0123456789", length).ToString().ToCharArray();
-            return string.Join("", rndDigits.OrderBy(o => Guid.NewGuid()).Take(length));
+            return string.Join(string.Empty, rndDigits.OrderBy(o => Guid.NewGuid()).Take(length));
+        }
+
+        /// <summary>
+        /// Gets the HTTP request info value.
+        /// This method is used to create a JSON string that contains session and request IDs.
+        /// This string is then used as a header in HTTP requests to Comdirect API.
+        /// </summary>
+        /// <returns>A string containing the serialized HTTP request info.</returns>
+        private string GetHttpRequestInfoValue()
+        {
+            // Define an anonymous type to hold the session and request IDs
+            var httpRequestInfo = new { clientRequestId = new { sessionId = SessionId, requestId = RequestId } };
+
+            // Serialize the anonymous type to a JSON string
+            var serializedHttpRequestInfo = JsonConvert.SerializeObject(httpRequestInfo);
+
+            // Return the serialized JSON string
+            return serializedHttpRequestInfo;
+        }
+
+        /// <summary>
+        /// Sets the body.
+        /// </summary>
+        /// <param name="sessionUUID">The session u u i d.</param>
+        /// <param name="request">The request.</param>
+        private static void SetBody(string sessionUUID, RestRequest request)
+        {
+            var parameter = "{\r\n\"identifier\": \"" + sessionUUID + "\",\r\n\"sessionTanActive\": true,\r\n\"activated2FA\": true\r\n}";
+            request.AddParameter("application/json", parameter, ParameterType.RequestBody);
         }
     }
 }
