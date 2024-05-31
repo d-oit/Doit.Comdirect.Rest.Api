@@ -71,7 +71,7 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("user");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/banking/clients/user/v2/accounts/balances?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/banking/clients/user/v2/accounts/balances?");
             if (without_attr != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("without-attr") + "=").Append(System.Uri.EscapeDataString(ConvertToString(without_attr, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -177,7 +177,7 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("accountId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/banking/v1/accounts/{accountId}/transactions?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/banking/v1/accounts/{accountId}/transactions?");
             urlBuilder_.Replace("{accountId}", System.Uri.EscapeDataString(ConvertToString(accountId, System.Globalization.CultureInfo.InvariantCulture)));
             if (transactionState != null)
             {
@@ -290,7 +290,7 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("accountId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/banking/v2/accounts/{accountId}/balances?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/banking/v2/accounts/{accountId}/balances?");
             urlBuilder_.Replace("{accountId}", System.Uri.EscapeDataString(ConvertToString(accountId, System.Globalization.CultureInfo.InvariantCulture)));
             if (without_attr != null)
             {
@@ -389,7 +389,7 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("userId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/clients/{userId}/v3/depots");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/brokerage/clients/{userId}/v3/depots");
             urlBuilder_.Replace("{userId}", System.Uri.EscapeDataString(ConvertToString(userId, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -509,7 +509,7 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("depotId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/depots/{depotId}/v3/orders?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/brokerage/depots/{depotId}/v3/orders?");
             urlBuilder_.Replace("{depotId}", System.Uri.EscapeDataString(ConvertToString(depotId, System.Globalization.CultureInfo.InvariantCulture)));
             if (with_attr != null)
             {
@@ -662,15 +662,15 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("instrumentId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v1/instruments/{instrumentId}?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/brokerage/v1/instruments/{instrumentId}?");
             urlBuilder_.Replace("{instrumentId}", System.Uri.EscapeDataString(ConvertToString(instrumentId, System.Globalization.CultureInfo.InvariantCulture)));
             if (with_attr != null)
             {
-                foreach (var item_ in with_attr) { urlBuilder_.Append(System.Uri.EscapeDataString("with-attr") + "=").Append((item_ == null) ? "" : System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+                foreach (var item_ in with_attr) { urlBuilder_.Append(System.Uri.EscapeDataString("with-attr") + "=").Append((item_ == null) ? string.Empty : System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
             if (without_attr != null)
             {
-                foreach (var item_ in without_attr) { urlBuilder_.Append(System.Uri.EscapeDataString("without-attr") + "=").Append((item_ == null) ? "" : System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+                foreach (var item_ in without_attr) { urlBuilder_.Append(System.Uri.EscapeDataString("without-attr") + "=").Append((item_ == null) ? string.Empty : System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
             urlBuilder_.Length--;
 
@@ -771,7 +771,7 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("depotId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/depots/{depotId}/positions?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/brokerage/v3/depots/{depotId}/positions?");
             urlBuilder_.Replace("{depotId}", System.Uri.EscapeDataString(ConvertToString(depotId, System.Globalization.CultureInfo.InvariantCulture)));
             if (instrumentId != null)
             {
@@ -779,7 +779,7 @@ namespace Comdirect.Rest.Api.Comdirect
             }
             if (without_attr != null)
             {
-                foreach (var item_ in without_attr) { urlBuilder_.Append(System.Uri.EscapeDataString("without-attr") + "=").Append((item_ == null) ? "" : System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+                foreach (var item_ in without_attr) { urlBuilder_.Append(System.Uri.EscapeDataString("without-attr") + "=").Append((item_ == null) ? string.Empty : System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
             if (with_attr != null)
             {
@@ -891,7 +891,7 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("positionId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/depots/{depotId}/positions/{positionId}?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/brokerage/v3/depots/{depotId}/positions/{positionId}?");
             urlBuilder_.Replace("{depotId}", System.Uri.EscapeDataString(ConvertToString(depotId, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{positionId}", System.Uri.EscapeDataString(ConvertToString(positionId, System.Globalization.CultureInfo.InvariantCulture)));
             if (with_attr != null)
@@ -1009,7 +1009,7 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("depotId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/depots/{depotId}/transactions?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/brokerage/v3/depots/{depotId}/transactions?");
             urlBuilder_.Replace("{depotId}", System.Uri.EscapeDataString(ConvertToString(depotId, System.Globalization.CultureInfo.InvariantCulture)));
             if (isin != null)
             {
@@ -1125,7 +1125,7 @@ namespace Comdirect.Rest.Api.Comdirect
         public async System.Threading.Tasks.Task<Order> BrokerageV3OrdersPostAsync(Order body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/orders");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/brokerage/v3/orders");
 
             var client_ = _httpClient;
             try
@@ -1225,7 +1225,7 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("order");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/orders/costindicationexante");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/brokerage/v3/orders/costindicationexante");
 
             var client_ = _httpClient;
             try
@@ -1332,7 +1332,7 @@ namespace Comdirect.Rest.Api.Comdirect
         public async System.Threading.Tasks.Task<ListResourceDimensions> BrokerageV3OrdersDimensionsAsync(string instrumentId, string isin, string wkn, string custodyType, string venueId, OrderType3? orderType, Side2? side, string country, Type? type, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/orders/dimensions?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/brokerage/v3/orders/dimensions?");
             if (instrumentId != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("instrumentId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(instrumentId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -1467,7 +1467,7 @@ namespace Comdirect.Rest.Api.Comdirect
         public async System.Threading.Tasks.Task<Order> BrokerageV3OrdersPrevalidationPostAsync(Order body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/orders/prevalidation");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/brokerage/v3/orders/prevalidation");
 
             var client_ = _httpClient;
             try
@@ -1562,7 +1562,7 @@ namespace Comdirect.Rest.Api.Comdirect
         public async System.Threading.Tasks.Task<Order> BrokerageV3OrdersValidationPostAsync(Order body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/orders/validation");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/brokerage/v3/orders/validation");
 
             var client_ = _httpClient;
             try
@@ -1664,7 +1664,7 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("orderId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/orders/{orderId}?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/brokerage/v3/orders/{orderId}?");
             urlBuilder_.Replace("{orderId}", System.Uri.EscapeDataString(ConvertToString(orderId, System.Globalization.CultureInfo.InvariantCulture)));
             if (without_attr != null)
             {
@@ -1773,7 +1773,7 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("orderId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/orders/{orderId}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/brokerage/v3/orders/{orderId}");
             urlBuilder_.Replace("{orderId}", System.Uri.EscapeDataString(ConvertToString(orderId, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -1877,7 +1877,7 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("orderId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/orders/{orderId}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/brokerage/v3/orders/{orderId}");
             urlBuilder_.Replace("{orderId}", System.Uri.EscapeDataString(ConvertToString(orderId, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -1989,7 +1989,7 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("order");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/orders/{orderId}/costindicationexante");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/brokerage/v3/orders/{orderId}/costindicationexante");
             urlBuilder_.Replace("{orderId}", System.Uri.EscapeDataString(ConvertToString(orderId, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -2090,7 +2090,7 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("orderId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/orders/{orderId}/prevalidation");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/brokerage/v3/orders/{orderId}/prevalidation");
             urlBuilder_.Replace("{orderId}", System.Uri.EscapeDataString(ConvertToString(orderId, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -2197,7 +2197,7 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("orderId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/orders/{orderId}/validation");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/brokerage/v3/orders/{orderId}/validation");
             urlBuilder_.Replace("{orderId}", System.Uri.EscapeDataString(ConvertToString(orderId, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -2299,7 +2299,7 @@ namespace Comdirect.Rest.Api.Comdirect
         public async System.Threading.Tasks.Task<Quote> BrokerageV3QuotesAsync(Quote body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/quotes");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/brokerage/v3/quotes");
 
             var client_ = _httpClient;
             try
@@ -2395,7 +2395,7 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("order");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/quoteticket");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/brokerage/v3/quoteticket");
 
             var client_ = _httpClient;
             try
@@ -2489,7 +2489,7 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("ticketId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/quoteticket/{ticketId}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/brokerage/v3/quoteticket/{ticketId}");
             urlBuilder_.Replace("{ticketId}", System.Uri.EscapeDataString(ConvertToString(ticketId, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -2582,7 +2582,7 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("user");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/messages/clients/{user}/v2/documents?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/messages/clients/{user}/v2/documents?");
             urlBuilder_.Replace("{user}", System.Uri.EscapeDataString(ConvertToString(user, System.Globalization.CultureInfo.InvariantCulture)));
             if (paging_first != null)
             {
@@ -2687,7 +2687,7 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("documentId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/messages/v2/documents/{documentId}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/messages/v2/documents/{documentId}");
             urlBuilder_.Replace("{documentId}", System.Uri.EscapeDataString(ConvertToString(documentId, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -2783,7 +2783,7 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("documentId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/messages/v2/documents/{documentId}/predocument");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/messages/v2/documents/{documentId}/predocument");
             urlBuilder_.Replace("{documentId}", System.Uri.EscapeDataString(ConvertToString(documentId, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -2889,23 +2889,23 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("user");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/reports/participants/{user}/v1/allbalances?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/reports/participants/{user}/v1/allbalances?");
             urlBuilder_.Replace("{user}", System.Uri.EscapeDataString(ConvertToString(user, System.Globalization.CultureInfo.InvariantCulture)));
             if (clientConnectionType != null)
             {
-                foreach (var item_ in clientConnectionType) { urlBuilder_.Append(System.Uri.EscapeDataString("clientConnectionType") + "=").Append((item_ == null) ? "" : System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+                foreach (var item_ in clientConnectionType) { urlBuilder_.Append(System.Uri.EscapeDataString("clientConnectionType") + "=").Append((item_ == null) ? string.Empty : System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
             if (targetClientId != null)
             {
-                foreach (var item_ in targetClientId) { urlBuilder_.Append(System.Uri.EscapeDataString("targetClientId") + "=").Append((item_ == null) ? "" : System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+                foreach (var item_ in targetClientId) { urlBuilder_.Append(System.Uri.EscapeDataString("targetClientId") + "=").Append((item_ == null) ? string.Empty : System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
             if (without_attr != null)
             {
-                foreach (var item_ in without_attr) { urlBuilder_.Append(System.Uri.EscapeDataString("without-attr") + "=").Append((item_ == null) ? "" : System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+                foreach (var item_ in without_attr) { urlBuilder_.Append(System.Uri.EscapeDataString("without-attr") + "=").Append((item_ == null) ? string.Empty : System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
             if (productType != null)
             {
-                foreach (var item_ in productType) { urlBuilder_.Append(System.Uri.EscapeDataString("productType") + "=").Append((item_ == null) ? "" : System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+                foreach (var item_ in productType) { urlBuilder_.Append(System.Uri.EscapeDataString("productType") + "=").Append((item_ == null) ? string.Empty : System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
             urlBuilder_.Length--;
 
@@ -3004,7 +3004,7 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("user");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/session/clients/{user}/v1/sessions");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/session/clients/{user}/v1/sessions");
             urlBuilder_.Replace("{user}", System.Uri.EscapeDataString(ConvertToString(user, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -3091,7 +3091,7 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("session");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/session/clients/{user}/v1/sessions/{session}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/session/clients/{user}/v1/sessions/{session}");
             urlBuilder_.Replace("{user}", System.Uri.EscapeDataString(ConvertToString(user, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{session}", System.Uri.EscapeDataString(ConvertToString(session, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -3188,7 +3188,7 @@ namespace Comdirect.Rest.Api.Comdirect
                 throw new System.ArgumentNullException("session");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/session/clients/{user}/v1/sessions/{session}/validate");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : string.Empty).Append("/session/clients/{user}/v1/sessions/{session}/validate");
             urlBuilder_.Replace("{user}", System.Uri.EscapeDataString(ConvertToString(user, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{session}", System.Uri.EscapeDataString(ConvertToString(session, System.Globalization.CultureInfo.InvariantCulture)));
 

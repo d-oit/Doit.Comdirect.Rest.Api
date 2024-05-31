@@ -1,4 +1,4 @@
-![Build and Test - release branch](https://github.com/do-it-ger/Doit.Comdirect.Rest.Api/workflows/Build%20and%20Test%20-%20release%20branch/badge.svg)
+[![.NET](https://github.com/d-oit/Doit.Comdirect.Rest.Api/actions/workflows/dotnetBuildRelease.yml/badge.svg?branch=release)](https://github.com/d-oit/Doit.Comdirect.Rest.Api/actions/workflows/dotnetBuildRelease.yml)
 
 # Doit.Comdirect.Rest.Api
 C# .NET Rest API for comdirect

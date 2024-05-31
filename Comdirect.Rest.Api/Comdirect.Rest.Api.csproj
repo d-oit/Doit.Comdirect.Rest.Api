@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <UserSecretsId>118e6fba-54fe-4bbd-96bc-7b5e3f4c63f7</UserSecretsId>
@@ -6,15 +6,24 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Authors>Dominik Oswald</Authors>
     <Company>D.O.it</Company>
-    <Description>C# .NET Standard Rest API for comdirect</Description>
+    <Description>C# .NET Rest API for comdirect</Description>
     <RepositoryUrl>https://github.com/do-it-ger/Comdirect.Rest.Api</RepositoryUrl>
     <PackageId>Doit.Comdirect.RestApi</PackageId>
     <Product>Doit.Comdirect.RestApi</Product>
+    <PackageProjectUrl>https://github.com/d-oit/Doit.Comdirect.Rest.Api</PackageProjectUrl>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationMarkdown>$(MSBuildProjectDirectory)\docs\API.md</DocumentationMarkdown>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="RestSharp" Version="111.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Vsxmd" Version="1.4.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services" />
