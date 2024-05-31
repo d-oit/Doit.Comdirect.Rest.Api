@@ -8,12 +8,7 @@ jobs:
     name: build, pack & publish
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      # - name: Setup dotnet
-      #   uses: actions/setup-dotnet@v1
-      #   with:
-      #     dotnet-version: 3.1.200
+      - uses: actions/checkout@v4
 
       # Publish
       - name: publish on version change
@@ -24,7 +19,7 @@ jobs:
           PROJECT_FILE_PATH: Doit.Comdirect.Rest.Api/Comdirect.Rest.Api.csproj
 
           # Configuration to build and package
-          # BUILD_CONFIGURATION: Release
+          BUILD_CONFIGURATION: Release
 
           # Platform target to compile (default is empty/AnyCPU)
           # BUILD_PLATFORM: x64
