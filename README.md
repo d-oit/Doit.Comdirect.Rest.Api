@@ -1,7 +1,10 @@
 ![Build and Test - release branch](https://github.com/do-it-ger/Doit.Comdirect.Rest.Api/workflows/Build%20and%20Test%20-%20release%20branch/badge.svg)
 
 # Doit.Comdirect.Rest.Api
-C# .NET Standard Rest API for comdirect
+C# .NET Rest API for comdirect
+
+Get your oAuth client credentials before you start:
+https://kunde.comdirect.de/itx/oauth/privatkunden?execution=e3s1
 
 ## Requirements
 
@@ -11,9 +14,9 @@ C# .NET Standard Rest API for comdirect
       "type": "oauth2",
       "tokenUrl": "https://api.comdirect.de/oauth/token",
       "flow": "cd_secondary", >>  "flow": "password",
-3. Install the Visual Studio 2017/2019 extension to generate the C# Client: https://github.com/unchase/Unchase.OpenAPI.Connectedservice      
+3. Install the Visual Studio extension to generate the C# Client: https://github.com/unchase/Unchase.OpenAPI.Connectedservice      
 4. Generate the client [![comdirect-unchase-openapi.png](https://i.postimg.cc/bvjFpBWf/comdirect-unchase-openapi.png)](https://postimg.cc/75mNNmqK)
-5. Manage user secrets for the project with your comdirect credentials. Define in the appsettings.json
+5. Manage user secrets for the project with your comdirect credentials. Define in the appsettings.json 
 {
   "ComdirectCredentials": {
     "ClientId": null,
@@ -23,7 +26,6 @@ C# .NET Standard Rest API for comdirect
   }
 }
 
-https://kunde.comdirect.de/itx/oauth/privatkunden?execution=e3s1
 
 ## Test the flow
 
