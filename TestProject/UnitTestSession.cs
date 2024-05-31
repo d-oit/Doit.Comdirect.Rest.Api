@@ -17,7 +17,6 @@ namespace TestProject
                 .AddUserSecrets<UnitTestSession>().Build();
 
             var section = configuration.GetSection("ComdirectCredentials");
-
             ComdirectCredentials = section.Get<ComdirectCredentials>();
 
         }

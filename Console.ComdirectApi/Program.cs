@@ -46,8 +46,10 @@ namespace ConsoleApp.ComdirectApi
                 {
                     Console.WriteLine("login ok - get banking balances");
 
-                    var validComdirectToken = authClient.PostSecondaryFlowAsync(token.access_token);
+                    var validComdirectToken = await authClient.PostSecondaryFlowAsync(token.access_token);
+                    //authClient.PostRefreshTokenFlow(token.access_token);
                     var comdirectClient = new ComdirectClient(httpClient);
+                    
 
                     ListResourceAccountBalance balance = await comdirectClient.BankingClientsV2AccountsBalancesAsync("", null);
                     if (balance!= null)

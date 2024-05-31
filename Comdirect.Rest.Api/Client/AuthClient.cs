@@ -115,7 +115,7 @@ namespace Comdirect.Rest.Api
         /// This method retrieves an access token and validates the user's session.
         /// </summary>
         /// <returns>A Task that represents the asynchronous operation. The task result is the ValidateSessionAsync object.</returns>
-        public async Task<ValidateSessionAsync> GetTokenAndValidateSessionAsync()
+        public async Task<ValidateSession> GetTokenAndValidateSessionAsync()
         {
             // Retrieve an access token
             var token = await GetTokenAsync();
@@ -207,7 +207,7 @@ namespace Comdirect.Rest.Api
         /// <param name="accessToken">The access token.</param>
         /// <param name="sessionUUID">The session u u i d.</param>
         /// <returns>A Task.</returns>
-        public async Task<ValidateSessionAsync> PostValidateSessionStatusAsync(string accessToken, string sessionUUID)
+        public async Task<ValidateSession> PostValidateSessionStatusAsync(string accessToken, string sessionUUID)
         {
             var client = new RestClient($"{BaseUrl}/session/clients/user/v1/sessions/{sessionUUID}/validate");
             var request = new RestRequest();
@@ -226,7 +226,7 @@ namespace Comdirect.Rest.Api
             var responseAuthHeader = response.Headers.FirstOrDefault(x => x.Name == "x-once-authentication-info");
             if (responseAuthHeader.Value != null)
             {
-                var comdirectValidateSessionResponse = JsonConvert.DeserializeObject<ValidateSessionAsync>(responseAuthHeader.Value.ToString());
+                var comdirectValidateSessionResponse = JsonConvert.DeserializeObject<ValidateSession>(responseAuthHeader.Value.ToString());
                 return comdirectValidateSessionResponse;
             }
 
