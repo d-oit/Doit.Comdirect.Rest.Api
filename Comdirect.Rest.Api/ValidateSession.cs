@@ -14,10 +14,10 @@
         public string href { get; set; }
         public string rel { get; set; }
         public string method { get; set; }
-        //public Type type { get; set; }
+        // TODO public SessionType type { get; set; }
     }
 
-    public class Type
+    public class SessionType
     {
         public string mimeType { get; set; }
         public string charset { get; set; }

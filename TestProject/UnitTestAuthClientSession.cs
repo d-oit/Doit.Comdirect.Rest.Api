@@ -7,18 +7,19 @@ using System.Net;
 
 namespace TestProject
 {
-    public class UnitTestSession
+    public class UnitTestAuthClientSession
     {
-        private ComdirectCredentials ComdirectCredentials = null;
-        public UnitTestSession()
+        private ComdirectCredentials ComdirectCredentials;
+
+        public UnitTestAuthClientSession()
         {
-
             var configuration = new ConfigurationBuilder()
-                .AddUserSecrets<UnitTestSession>().Build();
+                .AddUserSecrets<UnitTestAuthClientSession>()
+                .Build();
 
+            // get credentials from user.secrets -> see appsettings.json Comdirect.Rest.Api.csproj
             var section = configuration.GetSection("ComdirectCredentials");
             ComdirectCredentials = section.Get<ComdirectCredentials>();
-
         }
 
         [Fact]
@@ -30,15 +31,14 @@ namespace TestProject
             var accessToken = "validAccessToken";
 
             // Mock the HTTP response
-            var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent("[]")
-            };
-            mockHttpClient.Setup(httpClient => httpClient.SendAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()))
-               .ReturnsAsync(httpResponseMessage);
+            var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("[]") };
+            mockHttpClient.Setup(
+                httpClient => httpClient.SendAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(httpResponseMessage);
 
             // Act and Assert
-            var exception = await Assert.ThrowsAsync<ApplicationException>(async () => await authClient.GetSessionStatusAsync(accessToken));
+            var exception = await Assert.ThrowsAsync<ApplicationException>(
+                async () => await authClient.GetSessionStatusAsync(accessToken));
             Assert.Equal("Could not generate token! Status Code: OK", exception.Message);
         }
 
@@ -51,15 +51,14 @@ namespace TestProject
             var accessToken = "validAccessToken";
 
             // Mock the HTTP response
-            var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent("null")
-            };
-            mockHttpClient.Setup(httpClient => httpClient.SendAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()))
-               .ReturnsAsync(httpResponseMessage);
+            var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("null") };
+            mockHttpClient.Setup(
+                httpClient => httpClient.SendAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(httpResponseMessage);
 
             // Act and Assert
-            var exception = await Assert.ThrowsAsync<ApplicationException>(async () => await authClient.GetSessionStatusAsync(accessToken));
+            var exception = await Assert.ThrowsAsync<ApplicationException>(
+                async () => await authClient.GetSessionStatusAsync(accessToken));
             Assert.Equal("Could not generate token! Status Code: OK", exception.Message);
         }
 
@@ -76,8 +75,9 @@ namespace TestProject
             {
                 Content = new StringContent("[{\"identifier\": \"session1\"}, {\"identifier\": \"session2\"}]")
             };
-            mockHttpClient.Setup(httpClient => httpClient.SendAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()))
-               .ReturnsAsync(httpResponseMessage);
+            mockHttpClient.Setup(
+                httpClient => httpClient.SendAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(httpResponseMessage);
 
             // Act
             var session = await authClient.GetSessionStatusAsync(accessToken);
@@ -109,12 +109,14 @@ namespace TestProject
             var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.InternalServerError);
 
             // Setting up the mock HttpClient to return the mocked HTTP response
-            mockHttpClient.Setup(httpClient => httpClient.SendAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()))
-               .ReturnsAsync(httpResponseMessage);
+            mockHttpClient.Setup(
+                httpClient => httpClient.SendAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(httpResponseMessage);
 
             // Act and Assert
             // Asserting that the method throws ApplicationException with the expected error message when the HTTP response status code is not OK
-            var exception = await Assert.ThrowsAsync<ApplicationException>(async () => await authClient.GetSessionStatusAsync(accessToken));
+            var exception = await Assert.ThrowsAsync<ApplicationException>(
+                async () => await authClient.GetSessionStatusAsync(accessToken));
             Assert.Equal("Could not generate token! Status Code: InternalServerError", exception.Message);
         }
     }
