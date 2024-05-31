@@ -12,11 +12,10 @@
 
 namespace Comdirect.Rest.Api.Comdirect
 {
-    using RestSharp;
     using System = global::System;
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.7.0.0 (NJsonSchema v10.1.24.0 (Newtonsoft.Json v12.0.0.2))")]
-    public partial class ComdirectClient 
+    public partial class ComdirectClient
     {
         private string _baseUrl = "https://api.comdirect.de/api";
         private System.Net.Http.HttpClient _httpClient;
@@ -27,28 +26,28 @@ namespace Comdirect.Rest.Api.Comdirect
             _httpClient = httpClient;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
-    
+
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
             var settings = new Newtonsoft.Json.JsonSerializerSettings();
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
-    
-        public string BaseUrl 
+
+        public string BaseUrl
         {
             get { return _baseUrl; }
             set { _baseUrl = value; }
         }
-    
+
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
-    
+
         partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
         partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
 
-     
+
 
         /// <summary>Request for account information, including cash balance and buying power, for all accounts</summary>
         /// <param name="user">Can be either the customer identification number (UUID) or 'user'</param>
@@ -59,7 +58,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return BankingClientsV2AccountsBalancesAsync(user, without_attr, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Request for account information, including cash balance and buying power, for all accounts</summary>
         /// <param name="user">Can be either the customer identification number (UUID) or 'user'</param>
@@ -70,16 +69,15 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (user == null)
                 throw new System.ArgumentNullException("user");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/banking/clients/user/v2/accounts/balances?");
-            // TODO - not working. Postman comdirect = {{url}}/banking/clients/user/v2/accounts/balances - generated code:  urlBuilder_.Replace("{user}", System.Uri.EscapeDataString(ConvertToString(user, System.Globalization.CultureInfo.InvariantCulture)));
-            if (without_attr != null) 
+            if (without_attr != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("without-attr") + "=").Append(System.Uri.EscapeDataString(ConvertToString(without_attr, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
-    
+
             var client_ = _httpClient;
             try
             {
@@ -87,12 +85,12 @@ namespace Comdirect.Rest.Api.Comdirect
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -102,9 +100,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
@@ -118,24 +116,24 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 422)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Unprocessable Entity", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Unexpected Error", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -150,7 +148,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Requests and returns a list of transactions for the given account</summary>
         /// <param name="accountId">Account identifier (UUID)</param>
         /// <param name="transactionState">Filters for AccountTransactions. Will return all AccountTransactions (BOTH), or return all booked AccountTransactions (BOOKED), or all not booked AccountTransactions (NOTBOOKED).</param>
@@ -163,7 +161,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return BankingV1AccountsTransactionsAsync(accountId, transactionState, transactionDirection, paging_first, with_attr, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Requests and returns a list of transactions for the given account</summary>
         /// <param name="accountId">Account identifier (UUID)</param>
@@ -177,28 +175,28 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (accountId == null)
                 throw new System.ArgumentNullException("accountId");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/banking/v1/accounts/{accountId}/transactions?");
             urlBuilder_.Replace("{accountId}", System.Uri.EscapeDataString(ConvertToString(accountId, System.Globalization.CultureInfo.InvariantCulture)));
-            if (transactionState != null) 
+            if (transactionState != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("transactionState") + "=").Append(System.Uri.EscapeDataString(ConvertToString(transactionState, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (transactionDirection != null) 
+            if (transactionDirection != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("transactionDirection") + "=").Append(System.Uri.EscapeDataString(ConvertToString(transactionDirection, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (paging_first != null) 
+            if (paging_first != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("paging-first") + "=").Append(System.Uri.EscapeDataString(ConvertToString(paging_first, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (with_attr != null) 
+            if (with_attr != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("with-attr") + "=").Append(System.Uri.EscapeDataString(ConvertToString(with_attr, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
-    
+
             var client_ = _httpClient;
             try
             {
@@ -206,12 +204,12 @@ namespace Comdirect.Rest.Api.Comdirect
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -221,9 +219,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
@@ -237,24 +235,24 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("No transactions found", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 422)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Error in request parameter", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("An internal Error occurred", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -269,7 +267,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Request for account information, including cash balance and buying power</summary>
         /// <param name="accountId">Account identifier (UUID)</param>
         /// <param name="without_attr">Suppresses the master data of the account</param>
@@ -279,7 +277,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return BankingV2AccountsBalancesAsync(accountId, without_attr, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Request for account information, including cash balance and buying power</summary>
         /// <param name="accountId">Account identifier (UUID)</param>
@@ -290,16 +288,16 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (accountId == null)
                 throw new System.ArgumentNullException("accountId");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/banking/v2/accounts/{accountId}/balances?");
             urlBuilder_.Replace("{accountId}", System.Uri.EscapeDataString(ConvertToString(accountId, System.Globalization.CultureInfo.InvariantCulture)));
-            if (without_attr != null) 
+            if (without_attr != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("without-attr") + "=").Append(System.Uri.EscapeDataString(ConvertToString(without_attr, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
-    
+
             var client_ = _httpClient;
             try
             {
@@ -307,12 +305,12 @@ namespace Comdirect.Rest.Api.Comdirect
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -322,9 +320,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
@@ -338,24 +336,24 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 422)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Unprocessable Entity", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Unexpected Error", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -370,7 +368,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Request for a list of the master data for the securities accounts of the registered user</summary>
         /// <param name="userId">UUID of the user to search depots for, or the string 'user' to use the logged in user</param>
         /// <returns>successful operation</returns>
@@ -379,7 +377,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return BrokerageClientsV3DepotsAsync(userId, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Request for a list of the master data for the securities accounts of the registered user</summary>
         /// <param name="userId">UUID of the user to search depots for, or the string 'user' to use the logged in user</param>
@@ -389,11 +387,11 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (userId == null)
                 throw new System.ArgumentNullException("userId");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/clients/{userId}/v3/depots");
             urlBuilder_.Replace("{userId}", System.Uri.EscapeDataString(ConvertToString(userId, System.Globalization.CultureInfo.InvariantCulture)));
-    
+
             var client_ = _httpClient;
             try
             {
@@ -401,12 +399,12 @@ namespace Comdirect.Rest.Api.Comdirect
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -416,9 +414,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
@@ -432,7 +430,7 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
@@ -448,12 +446,12 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Unexpected Error", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -468,7 +466,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Delivers a list of all orders for the given depotId.</summary>
         /// <param name="depotId">Reference to securities account number (as UUID).</param>
         /// <param name="with_attr">enables attribute: instrument.</param>
@@ -488,7 +486,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return BrokerageDepotsV3OrdersAsync(depotId, with_attr, without_attr, instrumentId, isin, wkn, orderStatus, venueId, orderType, min_creationTimeStamp, max_creationTimeStamp, side, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Delivers a list of all orders for the given depotId.</summary>
         /// <param name="depotId">Reference to securities account number (as UUID).</param>
@@ -509,56 +507,56 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (depotId == null)
                 throw new System.ArgumentNullException("depotId");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/depots/{depotId}/v3/orders?");
             urlBuilder_.Replace("{depotId}", System.Uri.EscapeDataString(ConvertToString(depotId, System.Globalization.CultureInfo.InvariantCulture)));
-            if (with_attr != null) 
+            if (with_attr != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("with-attr") + "=").Append(System.Uri.EscapeDataString(ConvertToString(with_attr, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (without_attr != null) 
+            if (without_attr != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("without-attr") + "=").Append(System.Uri.EscapeDataString(ConvertToString(without_attr, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (instrumentId != null) 
+            if (instrumentId != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("instrumentId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(instrumentId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (isin != null) 
+            if (isin != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("isin") + "=").Append(System.Uri.EscapeDataString(ConvertToString(isin, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (wkn != null) 
+            if (wkn != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("wkn") + "=").Append(System.Uri.EscapeDataString(ConvertToString(wkn, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (orderStatus != null) 
+            if (orderStatus != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("orderStatus") + "=").Append(System.Uri.EscapeDataString(ConvertToString(orderStatus, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (venueId != null) 
+            if (venueId != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("venueId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(venueId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (orderType != null) 
+            if (orderType != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("orderType") + "=").Append(System.Uri.EscapeDataString(ConvertToString(orderType, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (min_creationTimeStamp != null) 
+            if (min_creationTimeStamp != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("min-creationTimeStamp") + "=").Append(System.Uri.EscapeDataString(ConvertToString(min_creationTimeStamp, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (max_creationTimeStamp != null) 
+            if (max_creationTimeStamp != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("max-creationTimeStamp") + "=").Append(System.Uri.EscapeDataString(ConvertToString(max_creationTimeStamp, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (side != null) 
+            if (side != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("side") + "=").Append(System.Uri.EscapeDataString(ConvertToString(side, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
-    
+
             var client_ = _httpClient;
             try
             {
@@ -566,12 +564,12 @@ namespace Comdirect.Rest.Api.Comdirect
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -581,9 +579,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
@@ -597,7 +595,7 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
@@ -613,18 +611,18 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Internal Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 503)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Service Unavailable", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -639,7 +637,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Request for an instrument's information</summary>
         /// <param name="instrumentId">Instrument identification - can be either the WKN, the ISIN or the symbol of the instrument</param>
         /// <param name="with_attr">Enables attribute: orderDimensions</param>
@@ -650,7 +648,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return BrokerageV1InstrumentsAsync(instrumentId, with_attr, without_attr, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Request for an instrument's information</summary>
         /// <param name="instrumentId">Instrument identification - can be either the WKN, the ISIN or the symbol of the instrument</param>
@@ -662,20 +660,20 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (instrumentId == null)
                 throw new System.ArgumentNullException("instrumentId");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v1/instruments/{instrumentId}?");
             urlBuilder_.Replace("{instrumentId}", System.Uri.EscapeDataString(ConvertToString(instrumentId, System.Globalization.CultureInfo.InvariantCulture)));
-            if (with_attr != null) 
+            if (with_attr != null)
             {
                 foreach (var item_ in with_attr) { urlBuilder_.Append(System.Uri.EscapeDataString("with-attr") + "=").Append((item_ == null) ? "" : System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
-            if (without_attr != null) 
+            if (without_attr != null)
             {
                 foreach (var item_ in without_attr) { urlBuilder_.Append(System.Uri.EscapeDataString("without-attr") + "=").Append((item_ == null) ? "" : System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
             urlBuilder_.Length--;
-    
+
             var client_ = _httpClient;
             try
             {
@@ -683,12 +681,12 @@ namespace Comdirect.Rest.Api.Comdirect
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -698,9 +696,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
@@ -714,24 +712,24 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 422)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Unprocessable Entity", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Internal Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -746,7 +744,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Request for securities positions, optionally including only the total balance with securities account information</summary>
         /// <param name="depotId">Reference to securities account number (as UUID).</param>
         /// <param name="instrumentId">Instrument identification - can either be the WKN, the ISIN or the UUID of the instrument.</param>
@@ -758,7 +756,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return BrokerageV3DepotsPositionsGetAsync(depotId, instrumentId, without_attr, with_attr, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Request for securities positions, optionally including only the total balance with securities account information</summary>
         /// <param name="depotId">Reference to securities account number (as UUID).</param>
@@ -771,24 +769,24 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (depotId == null)
                 throw new System.ArgumentNullException("depotId");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/depots/{depotId}/positions?");
             urlBuilder_.Replace("{depotId}", System.Uri.EscapeDataString(ConvertToString(depotId, System.Globalization.CultureInfo.InvariantCulture)));
-            if (instrumentId != null) 
+            if (instrumentId != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("instrumentId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(instrumentId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (without_attr != null) 
+            if (without_attr != null)
             {
                 foreach (var item_ in without_attr) { urlBuilder_.Append(System.Uri.EscapeDataString("without-attr") + "=").Append((item_ == null) ? "" : System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
-            if (with_attr != null) 
+            if (with_attr != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("with-attr") + "=").Append(System.Uri.EscapeDataString(ConvertToString(with_attr, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
-    
+
             var client_ = _httpClient;
             try
             {
@@ -796,12 +794,12 @@ namespace Comdirect.Rest.Api.Comdirect
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -811,9 +809,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
@@ -827,30 +825,30 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 422)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Unprocessable Entity", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Unexpected Error", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 503)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Service Unavailable", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -865,7 +863,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Request for retrieving a single position of specific depot.</summary>
         /// <param name="depotId">Reference to securities account number (as UUID).</param>
         /// <param name="positionId">Position identification number in securities account (as UUID)</param>
@@ -876,7 +874,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return BrokerageV3DepotsPositionsGetAsync(depotId, positionId, with_attr, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Request for retrieving a single position of specific depot.</summary>
         /// <param name="depotId">Reference to securities account number (as UUID).</param>
@@ -888,20 +886,20 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (depotId == null)
                 throw new System.ArgumentNullException("depotId");
-    
+
             if (positionId == null)
                 throw new System.ArgumentNullException("positionId");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/depots/{depotId}/positions/{positionId}?");
             urlBuilder_.Replace("{depotId}", System.Uri.EscapeDataString(ConvertToString(depotId, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{positionId}", System.Uri.EscapeDataString(ConvertToString(positionId, System.Globalization.CultureInfo.InvariantCulture)));
-            if (with_attr != null) 
+            if (with_attr != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("with-attr") + "=").Append(System.Uri.EscapeDataString(ConvertToString(with_attr, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
-    
+
             var client_ = _httpClient;
             try
             {
@@ -909,12 +907,12 @@ namespace Comdirect.Rest.Api.Comdirect
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -924,9 +922,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
@@ -940,7 +938,7 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
@@ -956,18 +954,18 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Unexpected Error", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 503)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Service Unavailable", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -982,7 +980,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Depot transactions.</summary>
         /// <param name="depotId">Reference to securities account number (as UUID).</param>
         /// <param name="isin">ISIN</param>
@@ -995,7 +993,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return BrokerageV3DepotsTransactionsAsync(depotId, isin, wkn, instrumentId, min_bookingDate, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Depot transactions.</summary>
         /// <param name="depotId">Reference to securities account number (as UUID).</param>
@@ -1009,28 +1007,28 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (depotId == null)
                 throw new System.ArgumentNullException("depotId");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/depots/{depotId}/transactions?");
             urlBuilder_.Replace("{depotId}", System.Uri.EscapeDataString(ConvertToString(depotId, System.Globalization.CultureInfo.InvariantCulture)));
-            if (isin != null) 
+            if (isin != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("isin") + "=").Append(System.Uri.EscapeDataString(ConvertToString(isin, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (wkn != null) 
+            if (wkn != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("wkn") + "=").Append(System.Uri.EscapeDataString(ConvertToString(wkn, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (instrumentId != null) 
+            if (instrumentId != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("instrumentId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(instrumentId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (min_bookingDate != null) 
+            if (min_bookingDate != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("min-bookingDate") + "=").Append(System.Uri.EscapeDataString(ConvertToString(min_bookingDate, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
-    
+
             var client_ = _httpClient;
             try
             {
@@ -1038,12 +1036,12 @@ namespace Comdirect.Rest.Api.Comdirect
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -1053,9 +1051,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
@@ -1069,7 +1067,7 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
@@ -1085,18 +1083,18 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Internal Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 503)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Service Unavailable", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -1111,7 +1109,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Order entry.</summary>
         /// <returns>successful operation</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -1119,7 +1117,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return BrokerageV3OrdersPostAsync(body, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Order entry.</summary>
         /// <returns>successful operation</returns>
@@ -1128,7 +1126,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/orders");
-    
+
             var client_ = _httpClient;
             try
             {
@@ -1139,12 +1137,12 @@ namespace Comdirect.Rest.Api.Comdirect
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -1154,9 +1152,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 201)
                         {
@@ -1180,18 +1178,18 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Internal Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 503)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Service Unavailable", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -1206,7 +1204,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Generation of the ex-ante cost indication on the basis of the order data.</summary>
         /// <param name="order">The Order for which the cost indication is to be calculated</param>
         /// <returns>successful operation</returns>
@@ -1215,7 +1213,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return BrokerageV3OrdersCostindicationexantePostAsync(order, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Generation of the ex-ante cost indication on the basis of the order data.</summary>
         /// <param name="order">The Order for which the cost indication is to be calculated</param>
@@ -1225,10 +1223,10 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (order == null)
                 throw new System.ArgumentNullException("order");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/orders/costindicationexante");
-    
+
             var client_ = _httpClient;
             try
             {
@@ -1239,12 +1237,12 @@ namespace Comdirect.Rest.Api.Comdirect
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -1254,9 +1252,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 201)
                         {
@@ -1280,12 +1278,12 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Internal Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -1300,7 +1298,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Request for the trading venue and order options for a particular instrument</summary>
         /// <param name="instrumentId">Instrument id (UUID), unique identification of an instrument (security, derivative, etc.).</param>
         /// <param name="isin">ISIN</param>
@@ -1317,7 +1315,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return BrokerageV3OrdersDimensionsAsync(instrumentId, isin, wkn, custodyType, venueId, orderType, side, country, type, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Request for the trading venue and order options for a particular instrument</summary>
         /// <param name="instrumentId">Instrument id (UUID), unique identification of an instrument (security, derivative, etc.).</param>
@@ -1335,44 +1333,44 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/orders/dimensions?");
-            if (instrumentId != null) 
+            if (instrumentId != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("instrumentId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(instrumentId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (isin != null) 
+            if (isin != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("isin") + "=").Append(System.Uri.EscapeDataString(ConvertToString(isin, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (wkn != null) 
+            if (wkn != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("wkn") + "=").Append(System.Uri.EscapeDataString(ConvertToString(wkn, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (custodyType != null) 
+            if (custodyType != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("custodyType") + "=").Append(System.Uri.EscapeDataString(ConvertToString(custodyType, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (venueId != null) 
+            if (venueId != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("venueId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(venueId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (orderType != null) 
+            if (orderType != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("orderType") + "=").Append(System.Uri.EscapeDataString(ConvertToString(orderType, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (side != null) 
+            if (side != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("side") + "=").Append(System.Uri.EscapeDataString(ConvertToString(side, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (country != null) 
+            if (country != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("country") + "=").Append(System.Uri.EscapeDataString(ConvertToString(country, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (type != null) 
+            if (type != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("type") + "=").Append(System.Uri.EscapeDataString(ConvertToString(type, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
-    
+
             var client_ = _httpClient;
             try
             {
@@ -1380,12 +1378,12 @@ namespace Comdirect.Rest.Api.Comdirect
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -1395,9 +1393,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
@@ -1411,7 +1409,7 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
@@ -1427,18 +1425,18 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Internal Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 503)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Service Unavailable", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -1453,7 +1451,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Prevalidation of the order</summary>
         /// <returns>successful operation</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -1461,7 +1459,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return BrokerageV3OrdersPrevalidationPostAsync(body, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Prevalidation of the order</summary>
         /// <returns>successful operation</returns>
@@ -1470,7 +1468,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/orders/prevalidation");
-    
+
             var client_ = _httpClient;
             try
             {
@@ -1481,12 +1479,12 @@ namespace Comdirect.Rest.Api.Comdirect
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -1496,9 +1494,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
@@ -1522,18 +1520,18 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Internal Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 503)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Service Unavailable", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -1548,7 +1546,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Validation of an order entry and triggering of a TAN-Challenge in a non-usage case of a Session-TAN.</summary>
         /// <returns>successful operation</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -1556,7 +1554,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return BrokerageV3OrdersValidationPostAsync(body, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Validation of an order entry and triggering of a TAN-Challenge in a non-usage case of a Session-TAN.</summary>
         /// <returns>successful operation</returns>
@@ -1565,7 +1563,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/orders/validation");
-    
+
             var client_ = _httpClient;
             try
             {
@@ -1576,12 +1574,12 @@ namespace Comdirect.Rest.Api.Comdirect
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -1591,9 +1589,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 201)
                         {
@@ -1617,18 +1615,18 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Internal Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 503)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Service Unavailable", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -1643,7 +1641,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Delivers an order for the given orderId.</summary>
         /// <param name="orderId">Unique orderId (UUID).</param>
         /// <param name="without_attr">Disables attribute: executions.</param>
@@ -1653,7 +1651,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return BrokerageV3OrdersGetAsync(orderId, without_attr, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Delivers an order for the given orderId.</summary>
         /// <param name="orderId">Unique orderId (UUID).</param>
@@ -1664,16 +1662,16 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (orderId == null)
                 throw new System.ArgumentNullException("orderId");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/orders/{orderId}?");
             urlBuilder_.Replace("{orderId}", System.Uri.EscapeDataString(ConvertToString(orderId, System.Globalization.CultureInfo.InvariantCulture)));
-            if (without_attr != null) 
+            if (without_attr != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("without-attr") + "=").Append(System.Uri.EscapeDataString(ConvertToString(without_attr, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
-    
+
             var client_ = _httpClient;
             try
             {
@@ -1681,12 +1679,12 @@ namespace Comdirect.Rest.Api.Comdirect
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -1696,9 +1694,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
@@ -1712,7 +1710,7 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
@@ -1728,18 +1726,18 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Internal Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 503)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Service Unavailable", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -1754,7 +1752,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Order cancellation.</summary>
         /// <param name="orderId">Reference to order identifier (as UUID).</param>
         /// <returns>successful operation</returns>
@@ -1763,7 +1761,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return BrokerageV3OrdersDeleteAsync(orderId, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Order cancellation.</summary>
         /// <param name="orderId">Reference to order identifier (as UUID).</param>
@@ -1773,11 +1771,11 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (orderId == null)
                 throw new System.ArgumentNullException("orderId");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/orders/{orderId}");
             urlBuilder_.Replace("{orderId}", System.Uri.EscapeDataString(ConvertToString(orderId, System.Globalization.CultureInfo.InvariantCulture)));
-    
+
             var client_ = _httpClient;
             try
             {
@@ -1785,12 +1783,12 @@ namespace Comdirect.Rest.Api.Comdirect
                 {
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -1800,9 +1798,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
@@ -1816,7 +1814,7 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
@@ -1832,18 +1830,18 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Internal Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 503)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Service Unavailable", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -1858,7 +1856,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Order modification.</summary>
         /// <param name="orderId">Reference to order identifier (as UUID).</param>
         /// <returns>successful operation</returns>
@@ -1867,7 +1865,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return BrokerageV3OrdersPatchAsync(body, orderId, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Order modification.</summary>
         /// <param name="orderId">Reference to order identifier (as UUID).</param>
@@ -1877,11 +1875,11 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (orderId == null)
                 throw new System.ArgumentNullException("orderId");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/orders/{orderId}");
             urlBuilder_.Replace("{orderId}", System.Uri.EscapeDataString(ConvertToString(orderId, System.Globalization.CultureInfo.InvariantCulture)));
-    
+
             var client_ = _httpClient;
             try
             {
@@ -1892,12 +1890,12 @@ namespace Comdirect.Rest.Api.Comdirect
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PATCH");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -1907,9 +1905,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
@@ -1923,7 +1921,7 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
@@ -1939,18 +1937,18 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Internal Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 503)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Service Unavailable", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -1965,7 +1963,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Generation of the ex-ante cost indication on the basis of the order data.</summary>
         /// <param name="orderId">Reference to order identifier (as UUID).</param>
         /// <param name="order">The Order for which the cost indication is to be calculated</param>
@@ -1975,7 +1973,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return BrokerageV3OrdersCostindicationexantePostAsync(orderId, order, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Generation of the ex-ante cost indication on the basis of the order data.</summary>
         /// <param name="orderId">Reference to order identifier (as UUID).</param>
@@ -1986,14 +1984,14 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (orderId == null)
                 throw new System.ArgumentNullException("orderId");
-    
+
             if (order == null)
                 throw new System.ArgumentNullException("order");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/orders/{orderId}/costindicationexante");
             urlBuilder_.Replace("{orderId}", System.Uri.EscapeDataString(ConvertToString(orderId, System.Globalization.CultureInfo.InvariantCulture)));
-    
+
             var client_ = _httpClient;
             try
             {
@@ -2004,12 +2002,12 @@ namespace Comdirect.Rest.Api.Comdirect
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -2019,9 +2017,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 201)
                         {
@@ -2035,7 +2033,7 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
@@ -2051,12 +2049,12 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Internal Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -2071,7 +2069,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Prevalidation of an order modfication</summary>
         /// <param name="orderId">Reference to order identifier (as UUID).</param>
         /// <returns>successful operation</returns>
@@ -2080,7 +2078,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return BrokerageV3OrdersPrevalidationPostAsync(orderId, body, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Prevalidation of an order modfication</summary>
         /// <param name="orderId">Reference to order identifier (as UUID).</param>
@@ -2090,11 +2088,11 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (orderId == null)
                 throw new System.ArgumentNullException("orderId");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/orders/{orderId}/prevalidation");
             urlBuilder_.Replace("{orderId}", System.Uri.EscapeDataString(ConvertToString(orderId, System.Globalization.CultureInfo.InvariantCulture)));
-    
+
             var client_ = _httpClient;
             try
             {
@@ -2105,12 +2103,12 @@ namespace Comdirect.Rest.Api.Comdirect
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -2120,9 +2118,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
@@ -2136,7 +2134,7 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
@@ -2152,18 +2150,18 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Internal Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 503)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Service Unavailable", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -2178,7 +2176,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Validation of an order modification or order cancellation and triggering of a TAN Challenge in a non-usage case of a Session-TAN.</summary>
         /// <param name="orderId">Reference to order identifier (as UUID).</param>
         /// <returns>successful operation</returns>
@@ -2187,7 +2185,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return BrokerageV3OrdersValidationPostAsync(orderId, body, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Validation of an order modification or order cancellation and triggering of a TAN Challenge in a non-usage case of a Session-TAN.</summary>
         /// <param name="orderId">Reference to order identifier (as UUID).</param>
@@ -2197,11 +2195,11 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (orderId == null)
                 throw new System.ArgumentNullException("orderId");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/orders/{orderId}/validation");
             urlBuilder_.Replace("{orderId}", System.Uri.EscapeDataString(ConvertToString(orderId, System.Globalization.CultureInfo.InvariantCulture)));
-    
+
             var client_ = _httpClient;
             try
             {
@@ -2212,12 +2210,12 @@ namespace Comdirect.Rest.Api.Comdirect
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -2227,9 +2225,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 201)
                         {
@@ -2243,7 +2241,7 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
@@ -2259,18 +2257,18 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Internal Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 503)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Service Unavailable", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -2285,7 +2283,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Sends a quote request to a venue</summary>
         /// <returns>successful operation</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -2293,7 +2291,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return BrokerageV3QuotesAsync(body, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Sends a quote request to a venue</summary>
         /// <returns>successful operation</returns>
@@ -2302,7 +2300,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/quotes");
-    
+
             var client_ = _httpClient;
             try
             {
@@ -2313,12 +2311,12 @@ namespace Comdirect.Rest.Api.Comdirect
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -2328,9 +2326,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
@@ -2344,24 +2342,24 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 422)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Unprocessable Entity", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Internal Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -2376,7 +2374,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Initiates a TAN-Challenge</summary>
         /// <param name="order">The order for which a ticket will be acquired</param>
         /// <returns>successful operation</returns>
@@ -2385,7 +2383,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return BrokerageV3QuoteticketPostAsync(order, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Initiates a TAN-Challenge</summary>
         /// <param name="order">The order for which a ticket will be acquired</param>
@@ -2395,10 +2393,10 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (order == null)
                 throw new System.ArgumentNullException("order");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/quoteticket");
-    
+
             var client_ = _httpClient;
             try
             {
@@ -2409,12 +2407,12 @@ namespace Comdirect.Rest.Api.Comdirect
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -2424,9 +2422,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
@@ -2440,24 +2438,24 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 422)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Unprocessable Entity", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Internal Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -2472,7 +2470,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Initiate a TAN-Challange</summary>
         /// <param name="ticketId">Reference to the quote ticket (as UUID).</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -2480,7 +2478,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return BrokerageV3QuoteticketPatchAsync(ticketId, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Initiate a TAN-Challange</summary>
         /// <param name="ticketId">Reference to the quote ticket (as UUID).</param>
@@ -2489,11 +2487,11 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (ticketId == null)
                 throw new System.ArgumentNullException("ticketId");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/brokerage/v3/quoteticket/{ticketId}");
             urlBuilder_.Replace("{ticketId}", System.Uri.EscapeDataString(ConvertToString(ticketId, System.Globalization.CultureInfo.InvariantCulture)));
-    
+
             var client_ = _httpClient;
             try
             {
@@ -2501,12 +2499,12 @@ namespace Comdirect.Rest.Api.Comdirect
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PATCH");
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -2516,25 +2514,25 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 422)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Unprocessable Entity", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Internal Server Error", status_, responseText_, headers_, null);
                         }
                         else
@@ -2544,7 +2542,7 @@ namespace Comdirect.Rest.Api.Comdirect
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -2559,7 +2557,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Delivers a list of documents for the customer.</summary>
         /// <param name="user">The literal "user" or the unique ID of the client.</param>
         /// <param name="paging_first">Index of the returning results.</param>
@@ -2570,7 +2568,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return MessagesClientsV2DocumentsAsync(user, paging_first, paging_count, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Delivers a list of documents for the customer.</summary>
         /// <param name="user">The literal "user" or the unique ID of the client.</param>
@@ -2582,20 +2580,20 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (user == null)
                 throw new System.ArgumentNullException("user");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/messages/clients/{user}/v2/documents?");
             urlBuilder_.Replace("{user}", System.Uri.EscapeDataString(ConvertToString(user, System.Globalization.CultureInfo.InvariantCulture)));
-            if (paging_first != null) 
+            if (paging_first != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("paging-first") + "=").Append(System.Uri.EscapeDataString(ConvertToString(paging_first, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (paging_count != null) 
+            if (paging_count != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("paging-count") + "=").Append(System.Uri.EscapeDataString(ConvertToString(paging_count, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
-    
+
             var client_ = _httpClient;
             try
             {
@@ -2603,12 +2601,12 @@ namespace Comdirect.Rest.Api.Comdirect
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -2618,9 +2616,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
@@ -2634,7 +2632,7 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
@@ -2650,12 +2648,12 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Internal Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -2670,7 +2668,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Delivers a document for the given UUID.</summary>
         /// <param name="documentId">The unique ID of the document.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -2678,7 +2676,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return MessagesV2DocumentsAsync(documentId, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Delivers a document for the given UUID.</summary>
         /// <param name="documentId">The unique ID of the document.</param>
@@ -2687,23 +2685,23 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (documentId == null)
                 throw new System.ArgumentNullException("documentId");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/messages/v2/documents/{documentId}");
             urlBuilder_.Replace("{documentId}", System.Uri.EscapeDataString(ConvertToString(documentId, System.Globalization.CultureInfo.InvariantCulture)));
-    
+
             var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -2713,13 +2711,13 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
@@ -2735,13 +2733,13 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Internal Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 503)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Service Unavailable", status_, responseText_, headers_, null);
                         }
                         else
@@ -2751,7 +2749,7 @@ namespace Comdirect.Rest.Api.Comdirect
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -2766,7 +2764,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Delivers a predocument for the given UUID.</summary>
         /// <param name="documentId">The unique ID of the document.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -2774,7 +2772,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return MessagesV2DocumentsPredocumentAsync(documentId, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Delivers a predocument for the given UUID.</summary>
         /// <param name="documentId">The unique ID of the document.</param>
@@ -2783,23 +2781,23 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (documentId == null)
                 throw new System.ArgumentNullException("documentId");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/messages/v2/documents/{documentId}/predocument");
             urlBuilder_.Replace("{documentId}", System.Uri.EscapeDataString(ConvertToString(documentId, System.Globalization.CultureInfo.InvariantCulture)));
-    
+
             var client_ = _httpClient;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -2809,13 +2807,13 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
@@ -2831,13 +2829,13 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Internal Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 503)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Service Unavailable", status_, responseText_, headers_, null);
                         }
                         else
@@ -2847,7 +2845,7 @@ namespace Comdirect.Rest.Api.Comdirect
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -2862,7 +2860,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>List of all balances for a client's own and connected products.</summary>
         /// <param name="user">The literal "user" or the UUID of the participant.</param>
         /// <param name="clientConnectionType">A single ConnectionType of a client connection or a list of ConnectionTypes.</param>
@@ -2875,7 +2873,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return ReportsParticipantsV1AllbalancesAsync(user, clientConnectionType, targetClientId, without_attr, productType, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>List of all balances for a client's own and connected products.</summary>
         /// <param name="user">The literal "user" or the UUID of the participant.</param>
@@ -2889,28 +2887,28 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (user == null)
                 throw new System.ArgumentNullException("user");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/reports/participants/{user}/v1/allbalances?");
             urlBuilder_.Replace("{user}", System.Uri.EscapeDataString(ConvertToString(user, System.Globalization.CultureInfo.InvariantCulture)));
-            if (clientConnectionType != null) 
+            if (clientConnectionType != null)
             {
                 foreach (var item_ in clientConnectionType) { urlBuilder_.Append(System.Uri.EscapeDataString("clientConnectionType") + "=").Append((item_ == null) ? "" : System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
-            if (targetClientId != null) 
+            if (targetClientId != null)
             {
                 foreach (var item_ in targetClientId) { urlBuilder_.Append(System.Uri.EscapeDataString("targetClientId") + "=").Append((item_ == null) ? "" : System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
-            if (without_attr != null) 
+            if (without_attr != null)
             {
                 foreach (var item_ in without_attr) { urlBuilder_.Append(System.Uri.EscapeDataString("without-attr") + "=").Append((item_ == null) ? "" : System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
-            if (productType != null) 
+            if (productType != null)
             {
                 foreach (var item_ in productType) { urlBuilder_.Append(System.Uri.EscapeDataString("productType") + "=").Append((item_ == null) ? "" : System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
             urlBuilder_.Length--;
-    
+
             var client_ = _httpClient;
             try
             {
@@ -2918,12 +2916,12 @@ namespace Comdirect.Rest.Api.Comdirect
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -2933,9 +2931,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
@@ -2949,7 +2947,7 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 404)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
@@ -2965,12 +2963,12 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 501)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Not Implemented", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -2985,7 +2983,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Returns the current Session-Objects for the specified client, can handle the literal "user" for the currently logged in client.</summary>
         /// <param name="user">The literal "user" or the UUID of the client.</param>
         /// <returns>successful operation</returns>
@@ -2994,7 +2992,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return SessionClientsV1SessionsGetAsync(user, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Returns the current Session-Objects for the specified client, can handle the literal "user" for the currently logged in client.</summary>
         /// <param name="user">The literal "user" or the UUID of the client.</param>
@@ -3004,11 +3002,11 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (user == null)
                 throw new System.ArgumentNullException("user");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/session/clients/{user}/v1/sessions");
             urlBuilder_.Replace("{user}", System.Uri.EscapeDataString(ConvertToString(user, System.Globalization.CultureInfo.InvariantCulture)));
-    
+
             var client_ = _httpClient;
             try
             {
@@ -3016,12 +3014,12 @@ namespace Comdirect.Rest.Api.Comdirect
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -3031,9 +3029,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
@@ -3047,12 +3045,12 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Internal Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -3067,7 +3065,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Writes updates to a session</summary>
         /// <param name="user">The literal "user" or the UUID of the client.</param>
         /// <param name="session">Reference to the session (UUID)</param>
@@ -3077,7 +3075,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return SessionClientsV1SessionsPatchAsync(body, user, session, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Writes updates to a session</summary>
         /// <param name="user">The literal "user" or the UUID of the client.</param>
@@ -3088,15 +3086,15 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (user == null)
                 throw new System.ArgumentNullException("user");
-    
+
             if (session == null)
                 throw new System.ArgumentNullException("session");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/session/clients/{user}/v1/sessions/{session}");
             urlBuilder_.Replace("{user}", System.Uri.EscapeDataString(ConvertToString(user, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{session}", System.Uri.EscapeDataString(ConvertToString(session, System.Globalization.CultureInfo.InvariantCulture)));
-    
+
             var client_ = _httpClient;
             try
             {
@@ -3107,12 +3105,12 @@ namespace Comdirect.Rest.Api.Comdirect
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PATCH");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -3122,9 +3120,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
@@ -3138,18 +3136,18 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 422)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Unprocessable Entity", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Internal Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -3164,7 +3162,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         /// <summary>Validates the input and checks if the client is able to update the current session. An activated session TAN cannot be deactivated in the current session. It is necessary to provide a TAN when patching the activation of the session TAN.</summary>
         /// <param name="user">The literal "user" or the UUID of the client.</param>
         /// <param name="session">Reference to the session (UUID)</param>
@@ -3174,7 +3172,7 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             return SessionClientsV1SessionsValidateAsync(body, user, session, System.Threading.CancellationToken.None);
         }
-    
+
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Validates the input and checks if the client is able to update the current session. An activated session TAN cannot be deactivated in the current session. It is necessary to provide a TAN when patching the activation of the session TAN.</summary>
         /// <param name="user">The literal "user" or the UUID of the client.</param>
@@ -3185,15 +3183,15 @@ namespace Comdirect.Rest.Api.Comdirect
         {
             if (user == null)
                 throw new System.ArgumentNullException("user");
-    
+
             if (session == null)
                 throw new System.ArgumentNullException("session");
-    
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/session/clients/{user}/v1/sessions/{session}/validate");
             urlBuilder_.Replace("{user}", System.Uri.EscapeDataString(ConvertToString(user, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{session}", System.Uri.EscapeDataString(ConvertToString(session, System.Globalization.CultureInfo.InvariantCulture)));
-    
+
             var client_ = _httpClient;
             try
             {
@@ -3204,12 +3202,12 @@ namespace Comdirect.Rest.Api.Comdirect
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
+
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
                     PrepareRequest(client_, request_, url_);
-    
+
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                     try
                     {
@@ -3219,9 +3217,9 @@ namespace Comdirect.Rest.Api.Comdirect
                             foreach (var item_ in response_.Content.Headers)
                                 headers_[item_.Key] = item_.Value;
                         }
-    
+
                         ProcessResponse(client_, response_);
-    
+
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
@@ -3235,18 +3233,18 @@ namespace Comdirect.Rest.Api.Comdirect
                         else
                         if (status_ == 422)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Unprocessable Entity", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
                         {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("Internal Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
@@ -3261,7 +3259,7 @@ namespace Comdirect.Rest.Api.Comdirect
             {
             }
         }
-    
+
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -3269,21 +3267,21 @@ namespace Comdirect.Rest.Api.Comdirect
                 this.Object = responseObject;
                 this.Text = responseText;
             }
-    
+
             public T Object { get; }
-    
+
             public string Text { get; }
         }
-    
+
         public bool ReadResponseAsString { get; set; }
-        
+
         protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
         {
             if (response == null || response.Content == null)
             {
                 return new ObjectResponseResult<T>(default(T), string.Empty);
             }
-        
+
             if (ReadResponseAsString)
             {
                 var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -3318,14 +3316,14 @@ namespace Comdirect.Rest.Api.Comdirect
                 }
             }
         }
-    
+
         private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value == null)
             {
                 return null;
             }
-        
+
             if (value is System.Enum)
             {
                 var name = System.Enum.GetName(value.GetType(), value);
@@ -3334,31 +3332,31 @@ namespace Comdirect.Rest.Api.Comdirect
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
                     if (field != null)
                     {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute))
                             as System.Runtime.Serialization.EnumMemberAttribute;
                         if (attribute != null)
                         {
                             return attribute.Value != null ? attribute.Value : name;
                         }
                     }
-        
+
                     return System.Convert.ToString(System.Convert.ChangeType(value, System.Enum.GetUnderlyingType(value.GetType()), cultureInfo));
                 }
             }
-            else if (value is bool) 
+            else if (value is bool)
             {
                 return System.Convert.ToString((bool)value, cultureInfo).ToLowerInvariant();
             }
             else if (value is byte[])
             {
-                return System.Convert.ToBase64String((byte[]) value);
+                return System.Convert.ToBase64String((byte[])value);
             }
             else if (value.GetType().IsArray)
             {
-                var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
+                var array = System.Linq.Enumerable.OfType<object>((System.Array)value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
-        
+
             var result = System.Convert.ToString(value, cultureInfo);
             return (result is null) ? string.Empty : result;
         }
@@ -3366,2470 +3364,2470 @@ namespace Comdirect.Rest.Api.Comdirect
 
     /// <summary>Master data of an account</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public class Account 
+    public class Account
     {
         /// <summary>Account identifier (UUID)</summary>
         [Newtonsoft.Json.JsonProperty("accountId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string AccountId { get; set; }
-    
+
         /// <summary>Account identfier</summary>
         [Newtonsoft.Json.JsonProperty("accountDisplayId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string AccountDisplayId { get; set; }
-    
+
         /// <summary>Account currency</summary>
         [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Currency { get; set; }
-    
+
         /// <summary>Identification Code of the client (UUID)</summary>
         [Newtonsoft.Json.JsonProperty("clientId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ClientId { get; set; }
-    
+
         /// <summary>Account type. 'key' contains the product type, 'text' a description</summary>
         [Newtonsoft.Json.JsonProperty("accountType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public EnumText AccountType { get; set; }
-    
+
         /// <summary>IBAN (International bank account number), if available</summary>
         [Newtonsoft.Json.JsonProperty("iban", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Iban { get; set; }
-    
+
         /// <summary>Credit limit, if available</summary>
         [Newtonsoft.Json.JsonProperty("creditLimit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue CreditLimit { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Account information, including cash balance and buying power</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public class AccountBalance 
+    public class AccountBalance
     {
         /// <summary>The master data of this account (attribute can be suppressed by using the parameter 'without-attr=account')</summary>
         [Newtonsoft.Json.JsonProperty("account", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Account Account { get; set; }
-    
+
         /// <summary>Account identifier (UUID)</summary>
         [Newtonsoft.Json.JsonProperty("accountId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string AccountId { get; set; }
-    
+
         /// <summary>Current balance</summary>
         [Newtonsoft.Json.JsonProperty("balance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue Balance { get; set; }
-    
+
         /// <summary>Current balance in EUR</summary>
         [Newtonsoft.Json.JsonProperty("balanceEUR", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue BalanceEUR { get; set; }
-    
+
         /// <summary>Sum of current account balance + credit limit - sum of funds, which are already planned but not yet booked. This is the maximum cash limit</summary>
         [Newtonsoft.Json.JsonProperty("availableCashAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue AvailableCashAmount { get; set; }
-    
+
         /// <summary>As 'availableCashAmount', but in EUR</summary>
         [Newtonsoft.Json.JsonProperty("availableCashAmountEUR", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue AvailableCashAmountEUR { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Model for the information of an account (debtor/creditor).</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class AccountInformation 
+    public partial class AccountInformation
     {
         /// <summary>name of the account owner</summary>
         [Newtonsoft.Json.JsonProperty("holderName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string HolderName { get; set; }
-    
+
         /// <summary>The IBAN (International bank account number) for the account - if available</summary>
         [Newtonsoft.Json.JsonProperty("iban", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Iban { get; set; }
-    
+
         /// <summary>The BIC (Bank Identifier Code) for the IBAN - if available</summary>
         [Newtonsoft.Json.JsonProperty("bic", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Bic { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Model for an account transaction.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class AccountTransaction 
+    public partial class AccountTransaction
     {
         /// <summary>unique reference code of the transaction</summary>
         [Newtonsoft.Json.JsonProperty("reference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Reference { get; set; }
-    
+
         /// <summary>Status of transaction</summary>
         [Newtonsoft.Json.JsonProperty("bookingStatus", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public AccountTransactionBookingStatus? BookingStatus { get; set; }
-    
+
         /// <summary>The booking date</summary>
         [Newtonsoft.Json.JsonProperty("bookingDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string BookingDate { get; set; }
-    
+
         /// <summary>The amount</summary>
         [Newtonsoft.Json.JsonProperty("amount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue Amount { get; set; }
-    
+
         /// <summary>Account information of name, IBAN and BIC of the remitter.</summary>
         [Newtonsoft.Json.JsonProperty("remitter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AccountInformation Remitter { get; set; }
-    
+
         /// <summary>Account information of name, IBAN and BIC of the debtor</summary>
         [Newtonsoft.Json.JsonProperty("deptor", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AccountInformation Deptor { get; set; }
-    
+
         /// <summary>includes the account information of the name, IBAN and BIC from the creditor</summary>
         [Newtonsoft.Json.JsonProperty("creditor", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AccountInformation Creditor { get; set; }
-    
+
         /// <summary>Availability date (yyyy-mm-dd). Could be an invalid date e.g. 2019-12-32</summary>
         [Newtonsoft.Json.JsonProperty("valutaDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ValutaDate { get; set; }
-    
+
         /// <summary>Gives back the creditor identifier of an account transaction, if it is a direct debit.</summary>
         [Newtonsoft.Json.JsonProperty("directDebitCreditorId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string DirectDebitCreditorId { get; set; }
-    
+
         /// <summary>Gives back the mandateId of an account transaction, if it is a direct debit.</summary>
         [Newtonsoft.Json.JsonProperty("directDebitMandateId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string DirectDebitMandateId { get; set; }
-    
+
         /// <summary>Gives back the end-to-end-reference of an account transaction, if it is a direct debit.</summary>
         [Newtonsoft.Json.JsonProperty("endToEndReference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string EndToEndReference { get; set; }
-    
+
         /// <summary>Shows whether the client has seen the account transaction in web.</summary>
         [Newtonsoft.Json.JsonProperty("newTransaction", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? NewTransaction { get; set; } = false;
-    
+
         /// <summary>remittance information of the transaction. This can be more then one line with a length of 35 symbols. The lines will be numbered in case of an already booked transaction.</summary>
         [Newtonsoft.Json.JsonProperty("remittanceInfo", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string RemittanceInfo { get; set; }
-    
+
         /// <summary>Definition of account transaction type.</summary>
         [Newtonsoft.Json.JsonProperty("transactionType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public EnumText TransactionType { get; set; }
-    
-    
+
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class AggregatedInfo 
+    public partial class AggregatedInfo
     {
-    
+
     }
-    
+
     /// <summary>Represents the amount value with the currency.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class AmountValue 
+    public partial class AmountValue
     {
         /// <summary>Nominal value in corresponding unit</summary>
         [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Value { get; set; }
-    
+
         /// <summary>{XXX, XXC, XXM, XXP, XXU} or currencies according to ISO-4217 (EUR, USD, GBP,...)</summary>
         [Newtonsoft.Json.JsonProperty("unit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(3, MinimumLength = 3)]
         public string Unit { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>A balance object is equal to one of the types indicated by the attributes in this definition.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class Balance 
+    public partial class Balance
     {
         /// <summary>Balance object for an account</summary>
         [Newtonsoft.Json.JsonProperty("accountBalance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AccountBalance AccountBalance { get; set; }
-    
+
         /// <summary>Balance object for a card</summary>
         [Newtonsoft.Json.JsonProperty("cardBalance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public CardBalance CardBalance { get; set; }
-    
+
         /// <summary>Aggregation object for a depot</summary>
         [Newtonsoft.Json.JsonProperty("depotAggregation", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public DepotAggregation DepotAggregation { get; set; }
-    
+
         /// <summary>Balance object for a fixed term saving</summary>
         [Newtonsoft.Json.JsonProperty("fixedTermSavings", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public FixedTermSavings FixedTermSavings { get; set; }
-    
+
         /// <summary>Balance object for an installment loan</summary>
         [Newtonsoft.Json.JsonProperty("installmentLoanBalance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public InstallmentLoanBalance InstallmentLoanBalance { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Model for an error</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class BusinessMessage 
+    public partial class BusinessMessage
     {
         /// <summary>Identifier for the error</summary>
         [Newtonsoft.Json.JsonProperty("key", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public BusinessMessageKey? Key { get; set; }
-    
+
         /// <summary>Severity level of the error</summary>
         [Newtonsoft.Json.JsonProperty("severity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public BusinessMessageSeverity? Severity { get; set; }
-    
+
         /// <summary>Default error message</summary>
         [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Message { get; set; }
-    
+
         /// <summary>List of properties causing validation errors</summary>
         [Newtonsoft.Json.JsonProperty("origin", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> Origin { get; set; }
-    
+
         /// <summary>Arguments for the error message</summary>
         [Newtonsoft.Json.JsonProperty("args", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<object> Args { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Model for a card.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class Card 
+    public partial class Card
     {
         /// <summary>Card identifier (UUID).</summary>
         [Newtonsoft.Json.JsonProperty("cardId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string CardId { get; set; }
-    
+
         /// <summary>Type of the card. 'key' contains the card type, 'text' a description</summary>
         [Newtonsoft.Json.JsonProperty("cardType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public EnumText CardType { get; set; }
-    
+
         /// <summary>Client connection uniquely assigned to the credit card account.</summary>
         [Newtonsoft.Json.JsonProperty("clientId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ClientId { get; set; }
-    
+
         /// <summary>Contract code of the client uniquely assigned to the credit card account.</summary>
         [Newtonsoft.Json.JsonProperty("participantId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ParticipantId { get; set; }
-    
+
         /// <summary>Name of the card holder</summary>
         [Newtonsoft.Json.JsonProperty("holderName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string HolderName { get; set; }
-    
+
         /// <summary>Default settlement account number uniquely assigned to the credit card account. In this case, it has to be the current account.</summary>
         [Newtonsoft.Json.JsonProperty("settlementAccountId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string SettlementAccountId { get; set; }
-    
+
         /// <summary>Partially masked credit card number.</summary>
         [Newtonsoft.Json.JsonProperty("cardDisplayId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string CardDisplayId { get; set; }
-    
+
         /// <summary>validity of the card. Format: MM/YY</summary>
         [Newtonsoft.Json.JsonProperty("cardValidity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string CardValidity { get; set; }
-    
+
         /// <summary>Image of the card.</summary>
         [Newtonsoft.Json.JsonProperty("cardImage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public VisaCardImage CardImage { get; set; }
-    
+
         /// <summary>Last 4 digits of the credit card number</summary>
         [Newtonsoft.Json.JsonProperty("primaryAccountNumberSuffix", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string PrimaryAccountNumberSuffix { get; set; }
-    
+
         /// <summary>Card limit if available. Will be 0.00 EUR if card has no limit.</summary>
         [Newtonsoft.Json.JsonProperty("cardLimit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue CardLimit { get; set; }
-    
+
         /// <summary>Status of the card.</summary>
         [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public CardStatus? Status { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Model for a card balance.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class CardBalance 
+    public partial class CardBalance
     {
         /// <summary>Card identifier (UUID).</summary>
         [Newtonsoft.Json.JsonProperty("cardId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string CardId { get; set; }
-    
+
         /// <summary>Master data of the card.</summary>
         [Newtonsoft.Json.JsonProperty("card", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Card Card { get; set; }
-    
+
         /// <summary>Current balance.</summary>
         [Newtonsoft.Json.JsonProperty("balance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue Balance { get; set; }
-    
+
         /// <summary>Sum of current account balance + credit limit - sum of scheduled amounts which are not booked yet. This is the maximum cash limit.</summary>
         [Newtonsoft.Json.JsonProperty("availableCashAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue AvailableCashAmount { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Cost entry of a cost group.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class CostEntry 
+    public partial class CostEntry
     {
         /// <summary>Type of the cost entry</summary>
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public CostEntryType? Type { get; set; }
-    
+
         /// <summary>Label of the cost entry</summary>
         [Newtonsoft.Json.JsonProperty("label", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Label { get; set; }
-    
+
         /// <summary>Cost in trading currency</summary>
         [Newtonsoft.Json.JsonProperty("amount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue Amount { get; set; }
-    
+
         /// <summary>Cost in reporting currency</summary>
         [Newtonsoft.Json.JsonProperty("amountReportingCurrency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue AmountReportingCurrency { get; set; }
-    
+
         /// <summary>Inducement of the cost entry</summary>
         [Newtonsoft.Json.JsonProperty("inducement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Inducement Inducement { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Model for a cost group including a list of cost entries for this cost group.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class CostGroup 
+    public partial class CostGroup
     {
         /// <summary>Type of cost group. K: Costs of securities purchase, H: Costs of the holding period (per year), V: Costs of the sale of securities</summary>
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public CostGroupType? Type { get; set; }
-    
+
         /// <summary>Name of cost group for showing in the cost-note</summary>
         [Newtonsoft.Json.JsonProperty("label", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Label { get; set; }
-    
+
         /// <summary>Sum of the cost group in trading currency (quantity.amount.unit)</summary>
         [Newtonsoft.Json.JsonProperty("sum", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue Sum { get; set; }
-    
+
         /// <summary>Sum of the cost group in reporting currency</summary>
         [Newtonsoft.Json.JsonProperty("sumReportingCurrency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue SumReportingCurrency { get; set; }
-    
+
         /// <summary>List of costs per cost group</summary>
         [Newtonsoft.Json.JsonProperty("costs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<CostEntry> Costs { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Ex-ante cost indication on the basis of the order data.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class CostIndicationExAnte 
+    public partial class CostIndicationExAnte
     {
         /// <summary>Securities account number (UUID)</summary>
         [Newtonsoft.Json.JsonProperty("depotId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string DepotId { get; set; }
-    
+
         /// <summary>Result of calculation of cost indication; if false, linkCosts will link to a generic cost indication</summary>
         [Newtonsoft.Json.JsonProperty("calculationSuccessful", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? CalculationSuccessful { get; set; } = false;
-    
+
         /// <summary>Instrument name analogous to Instrument.name</summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Name { get; set; }
-    
+
         /// <summary>WKN analogous to Instrument.wkn</summary>
         [Newtonsoft.Json.JsonProperty("wkn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Wkn { get; set; }
-    
+
         /// <summary>Type of transaction analogous to Order.side</summary>
         [Newtonsoft.Json.JsonProperty("side", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public CostIndicationExAnteSide? Side { get; set; }
-    
+
         /// <summary>Quantity analogous to Order.quantity</summary>
         [Newtonsoft.Json.JsonProperty("quantity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue Quantity { get; set; }
-    
+
         /// <summary>Limit analogous to Order.limit with trading currency</summary>
         [Newtonsoft.Json.JsonProperty("limit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue Limit { get; set; }
-    
+
         /// <summary>Expected value (net costs) of the order: in trading currency</summary>
         [Newtonsoft.Json.JsonProperty("expectedValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue ExpectedValue { get; set; }
-    
+
         /// <summary>Execution venue as name for the display</summary>
         [Newtonsoft.Json.JsonProperty("venueName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string VenueName { get; set; }
-    
+
         /// <summary>Settlement currency analogous to Account.currency</summary>
         [Newtonsoft.Json.JsonProperty("settlementCurrency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string SettlementCurrency { get; set; }
-    
+
         /// <summary>Trading currency</summary>
         [Newtonsoft.Json.JsonProperty("tradingCurrency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string TradingCurrency { get; set; }
-    
+
         /// <summary>Reporting currency</summary>
         [Newtonsoft.Json.JsonProperty("reportingCurrency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ReportingCurrency { get; set; }
-    
+
         /// <summary>Exchange rate for settlement currency to FX, for buy and sell (both sides for conversion depending on BUY/SELL)</summary>
         [Newtonsoft.Json.JsonProperty("fxRate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public FXRateEUR FxRate { get; set; }
-    
+
         /// <summary>Expected costs for order analogue (real) settlement costs</summary>
         [Newtonsoft.Json.JsonProperty("expectedSettlementCosts", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue ExpectedSettlementCosts { get; set; }
-    
+
         /// <summary>CostGroup type K</summary>
         [Newtonsoft.Json.JsonProperty("purchaseCosts", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public CostGroup PurchaseCosts { get; set; }
-    
+
         /// <summary>CostGroup type H</summary>
         [Newtonsoft.Json.JsonProperty("holdingCosts", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public CostGroup HoldingCosts { get; set; }
-    
+
         /// <summary>CostGroup type V</summary>
         [Newtonsoft.Json.JsonProperty("salesCosts", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public CostGroup SalesCosts { get; set; }
-    
+
         /// <summary>Holding period in years, displayed on purchase</summary>
         [Newtonsoft.Json.JsonProperty("holdingPeriod", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string HoldingPeriod { get; set; }
-    
+
         /// <summary>Absolute amount of the total costs</summary>
         [Newtonsoft.Json.JsonProperty("totalCostsAbs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue TotalCostsAbs { get; set; }
-    
+
         /// <summary>Amount of total costs relative to the investment</summary>
         [Newtonsoft.Json.JsonProperty("totalCostsRel", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PercentageString TotalCostsRel { get; set; }
-    
+
         /// <summary>Total cost block including total cost entries segregated as: E (own service costs of bank), F (external service costs), and P (product costs)</summary>
         [Newtonsoft.Json.JsonProperty("totalCostsDetail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public TotalCostBlock TotalCostsDetail { get; set; }
-    
+
         /// <summary>List of cost blocks over time</summary>
         [Newtonsoft.Json.JsonProperty("totalHoldingCosts", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public TotalHoldingCostBlock TotalHoldingCosts { get; set; }
-    
+
         /// <summary>HTTP link to further cost information</summary>
         [Newtonsoft.Json.JsonProperty("linkCosts", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string LinkCosts { get; set; }
-    
+
         /// <summary>HTTP link to key information document</summary>
         [Newtonsoft.Json.JsonProperty("linkKid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string LinkKid { get; set; }
-    
-    
+
+
     }
-    
-  
-    
+
+
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class Depot 
+    public partial class Depot
     {
         /// <summary>Securities account Identifier (UUID)</summary>
         [Newtonsoft.Json.JsonProperty("depotId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string DepotId { get; set; }
-    
+
         /// <summary>Securities account Number</summary>
         [Newtonsoft.Json.JsonProperty("depotDisplayId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string DepotDisplayId { get; set; }
-    
+
         /// <summary>Identification code of the client uniquely assigned to the securities account</summary>
         [Newtonsoft.Json.JsonProperty("clientId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ClientId { get; set; }
-    
+
         /// <summary>Default settlement account number uniquely assigned to the securities account</summary>
         [Newtonsoft.Json.JsonProperty("defaultSettlementAccountId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string DefaultSettlementAccountId { get; set; }
-    
+
         /// <summary>List of other settlement account identification numbers assigned to the securities account</summary>
         [Newtonsoft.Json.JsonProperty("settlementAccountIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> SettlementAccountIds { get; set; }
-    
-    
+
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class DepotAggregation 
+    public partial class DepotAggregation
     {
         /// <summary>The master data of this securities account (this attribute can be suppressed by using the parameter 'without-attr=depot')</summary>
         [Newtonsoft.Json.JsonProperty("depot", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Depot Depot { get; set; }
-    
+
         /// <summary>Securities account Identifier (UUID)</summary>
         [Newtonsoft.Json.JsonProperty("depotId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string DepotId { get; set; }
-    
+
         /// <summary>Date of the last update of securities holdings &amp; master data. YYYY-MM-DD</summary>
         [Newtonsoft.Json.JsonProperty("dateLastUpdate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string DateLastUpdate { get; set; }
-    
+
         /// <summary>Current value of the securities account (the sum of all the securities holdings at their current prices)</summary>
         [Newtonsoft.Json.JsonProperty("currentValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue CurrentValue { get; set; }
-    
+
         /// <summary>Sum of the purchase values of all the securities holdings</summary>
         [Newtonsoft.Json.JsonProperty("purchaseValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue PurchaseValue { get; set; }
-    
+
         /// <summary>Value of the securities account (the sum of all the securities holdings at the closing prices of the previous day)</summary>
         [Newtonsoft.Json.JsonProperty("prevDayValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue PrevDayValue { get; set; }
-    
+
         /// <summary>Sum of the lending values of all of the securities holdings</summary>
         [Newtonsoft.Json.JsonProperty("lendingValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue LendingValue { get; set; }
-    
+
         /// <summary>Profit/loss at the absolute purchase value</summary>
         [Newtonsoft.Json.JsonProperty("profitLossPurchaseAbs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue ProfitLossPurchaseAbs { get; set; }
-    
+
         /// <summary>Profit/loss relative to purchase value in percentage</summary>
         [Newtonsoft.Json.JsonProperty("profitLossPurchaseRel", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PercentageString ProfitLossPurchaseRel { get; set; }
-    
+
         /// <summary>Absolute profit/loss compared to the previous day</summary>
         [Newtonsoft.Json.JsonProperty("profitLossPrevDayAbs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue ProfitLossPrevDayAbs { get; set; }
-    
+
         /// <summary>Profit/Loss compared to the previous day in percentage</summary>
         [Newtonsoft.Json.JsonProperty("profitLossPrevDayRel", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PercentageString ProfitLossPrevDayRel { get; set; }
-    
-    
+
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class DepotPosition 
+    public partial class DepotPosition
     {
         /// <summary>Securities account Identifier (UUID)</summary>
         [Newtonsoft.Json.JsonProperty("depotId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string DepotId { get; set; }
-    
+
         /// <summary>Position identification number in securities account</summary>
         [Newtonsoft.Json.JsonProperty("positionId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string PositionId { get; set; }
-    
+
         /// <summary>Identification number of the instrument</summary>
         [Newtonsoft.Json.JsonProperty("wkn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Wkn { get; set; }
-    
+
         /// <summary>Custody type</summary>
         [Newtonsoft.Json.JsonProperty("custodyType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string CustodyType { get; set; }
-    
+
         /// <summary>Quantity or nominal amount in case of a percentage quotation</summary>
         [Newtonsoft.Json.JsonProperty("quantity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue Quantity { get; set; }
-    
+
         /// <summary>Available quantity or nominal amount in case of a percentage quotation</summary>
         [Newtonsoft.Json.JsonProperty("availableQuantity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue AvailableQuantity { get; set; }
-    
+
         /// <summary>Current price, if available</summary>
         [Newtonsoft.Json.JsonProperty("currentPrice", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Price CurrentPrice { get; set; }
-    
+
         /// <summary>Purchase price, if available</summary>
         [Newtonsoft.Json.JsonProperty("purchasePrice", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue PurchasePrice { get; set; }
-    
+
         /// <summary>Price of the previous day, if available</summary>
         [Newtonsoft.Json.JsonProperty("prevDayPrice", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Price PrevDayPrice { get; set; }
-    
+
         /// <summary>Current value of the position</summary>
         [Newtonsoft.Json.JsonProperty("currentValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue CurrentValue { get; set; }
-    
+
         /// <summary>Average purchase value of the position</summary>
         [Newtonsoft.Json.JsonProperty("purchaseValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue PurchaseValue { get; set; }
-    
+
         /// <summary>Position value at previous day's closing price</summary>
         [Newtonsoft.Json.JsonProperty("prevDayValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue PrevDayValue { get; set; }
-    
+
         /// <summary>Absolute profit/loss at purchase price, if available</summary>
         [Newtonsoft.Json.JsonProperty("profitLossPurchaseAbs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue ProfitLossPurchaseAbs { get; set; }
-    
+
         /// <summary>Profit/loss relative to purchase value in percentage, if available</summary>
         [Newtonsoft.Json.JsonProperty("profitLossPurchaseRel", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PercentageString ProfitLossPurchaseRel { get; set; }
-    
+
         /// <summary>Absolute profit/loss compared to previous day, if available</summary>
         [Newtonsoft.Json.JsonProperty("profitLossPrevDayAbs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue ProfitLossPrevDayAbs { get; set; }
-    
+
         /// <summary>Profit/Loss compared to previous day in percentage, if available</summary>
         [Newtonsoft.Json.JsonProperty("profitLossPrevDayRel", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PercentageString ProfitLossPrevDayRel { get; set; }
-    
+
         /// <summary>Information about the instrument of the securities position</summary>
         [Newtonsoft.Json.JsonProperty("instrument", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Instrument Instrument { get; set; }
-    
+
         /// <summary>Position version, if available</summary>
         [Newtonsoft.Json.JsonProperty("version", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Version { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Model for a depot transaction.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class DepotTransaction 
+    public partial class DepotTransaction
     {
         /// <summary>Transaction Identifier (UUID)</summary>
         [Newtonsoft.Json.JsonProperty("transactionId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string TransactionId { get; set; }
-    
+
         /// <summary>Status of transaction</summary>
         [Newtonsoft.Json.JsonProperty("bookingStatus", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public DepotTransactionBookingStatus? BookingStatus { get; set; }
-    
+
         /// <summary>The booking date</summary>
         [Newtonsoft.Json.JsonProperty("bookingDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string BookingDate { get; set; }
-    
+
         /// <summary>Date and time of settlement</summary>
         [Newtonsoft.Json.JsonProperty("settlementDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string SettlementDate { get; set; }
-    
+
         /// <summary>The business date</summary>
         [Newtonsoft.Json.JsonProperty("businessDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string BusinessDate { get; set; }
-    
+
         /// <summary>The quantity</summary>
         [Newtonsoft.Json.JsonProperty("quantity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue Quantity { get; set; }
-    
+
         /// <summary>InstrumentId as UUID</summary>
         [Newtonsoft.Json.JsonProperty("instrumentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string InstrumentId { get; set; }
-    
+
         /// <summary>Information about the instrument of the securities position</summary>
         [Newtonsoft.Json.JsonProperty("instrument", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Instrument Instrument { get; set; }
-    
+
         /// <summary>Price of the execution</summary>
         [Newtonsoft.Json.JsonProperty("executionPrice", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue ExecutionPrice { get; set; }
-    
+
         /// <summary>Value of the transaction</summary>
         [Newtonsoft.Json.JsonProperty("transactionValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue TransactionValue { get; set; }
-    
+
         /// <summary>Transaction direction</summary>
         [Newtonsoft.Json.JsonProperty("transactionDirection", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public DepotTransactionTransactionDirection? TransactionDirection { get; set; }
-    
+
         /// <summary>On the basis of securities account turnover transaction type</summary>
         [Newtonsoft.Json.JsonProperty("transactionType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public DepotTransactionTransactionType? TransactionType { get; set; }
-    
+
         /// <summary>Exchange rate settlement currency EUR to FX if exectionPrice amount is not notated in EUR</summary>
         [Newtonsoft.Json.JsonProperty("fxRate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public FXRateEUR FxRate { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>additional data of a derivative</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class DerivativeData 
+    public partial class DerivativeData
     {
         /// <summary>the underlying instrument</summary>
         [Newtonsoft.Json.JsonProperty("underlyingInstrument", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Instrument UnderlyingInstrument { get; set; }
-    
+
         /// <summary>Price of the underlying</summary>
         [Newtonsoft.Json.JsonProperty("underlyingPrice", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Price UnderlyingPrice { get; set; }
-    
+
         /// <summary>Certificate Type</summary>
         [Newtonsoft.Json.JsonProperty("certificateType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public DerivativeDataCertificateType? CertificateType { get; set; }
-    
+
         /// <summary>rating</summary>
         [Newtonsoft.Json.JsonProperty("rating", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Rating Rating { get; set; }
-    
+
         /// <summary>strike price of the underlying</summary>
         [Newtonsoft.Json.JsonProperty("strikePrice", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue StrikePrice { get; set; }
-    
+
         /// <summary>Leverage of the derivate</summary>
         [Newtonsoft.Json.JsonProperty("leverage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Leverage { get; set; }
-    
+
         /// <summary>multiplier of the underlying</summary>
         [Newtonsoft.Json.JsonProperty("multiplier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Multiplier { get; set; }
-    
+
         /// <summary>expiry date of a derivative</summary>
         [Newtonsoft.Json.JsonProperty("expiryDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ExpiryDate { get; set; }
-    
+
         /// <summary>yield p.a.</summary>
         [Newtonsoft.Json.JsonProperty("yieldPA", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string YieldPA { get; set; }
-    
+
         /// <summary>remaining Term (expiryDate-today)</summary>
         [Newtonsoft.Json.JsonProperty("remainingTermInYears", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string RemainingTermInYears { get; set; }
-    
+
         /// <summary>nominal rate</summary>
         [Newtonsoft.Json.JsonProperty("nominalRate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string NominalRate { get; set; }
-    
+
         /// <summary>Warrant Type</summary>
         [Newtonsoft.Json.JsonProperty("warrantType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public DerivativeDataWarrantType? WarrantType { get; set; }
-    
+
         /// <summary>maturity Date of a bonds</summary>
         [Newtonsoft.Json.JsonProperty("maturityDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string MaturityDate { get; set; }
-    
+
         /// <summary>date of the interest payment of a bond</summary>
         [Newtonsoft.Json.JsonProperty("interestPaymentDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string InterestPaymentDate { get; set; }
-    
+
         /// <summary>interval of the interest payment of a bond",allowableValues = "monthly, quarterly, biannualy, annualy</summary>
         [Newtonsoft.Json.JsonProperty("interestPaymentInterval", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public DerivativeDataInterestPaymentInterval? InterestPaymentInterval { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Model for dimensions.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class Dimensions 
+    public partial class Dimensions
     {
         [Newtonsoft.Json.JsonProperty("venues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<Venue> Venues { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Model for a document.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class Document 
+    public partial class Document
     {
         /// <summary>Unique ID of the document (UUID)</summary>
         [Newtonsoft.Json.JsonProperty("documentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string DocumentId { get; set; }
-    
+
         /// <summary>Name or description of the document.</summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(50)]
         public string Name { get; set; }
-    
+
         /// <summary>Date at which the Document was assigned to the client.</summary>
         [Newtonsoft.Json.JsonProperty("dateCreation", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string DateCreation { get; set; }
-    
+
         /// <summary>The native mimeType of the document.</summary>
         [Newtonsoft.Json.JsonProperty("mimeType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string MimeType { get; set; }
-    
+
         /// <summary>Is the client allowed to delete the document?</summary>
         [Newtonsoft.Json.JsonProperty("deletable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? Deletable { get; set; } = false;
-    
+
         /// <summary>Is the document advertising comdirect products?</summary>
         [Newtonsoft.Json.JsonProperty("advertisement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? Advertisement { get; set; } = false;
-    
+
         /// <summary>Object containing optional information about the document. Available information will differ between categories.</summary>
         [Newtonsoft.Json.JsonProperty("documentMetaData", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public DocumentMetadata DocumentMetaData { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Model for category-specific metadata of documents.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class DocumentMetadata 
+    public partial class DocumentMetadata
     {
         /// <summary>Is document archived?</summary>
         [Newtonsoft.Json.JsonProperty("archived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? Archived { get; set; } = false;
-    
+
         /// <summary>Date on which the document was read.</summary>
         [Newtonsoft.Json.JsonProperty("dateRead", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string DateRead { get; set; }
-    
+
         /// <summary>Has the document been read?</summary>
         [Newtonsoft.Json.JsonProperty("alreadyRead", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? AlreadyRead { get; set; } = false;
-    
+
         [Newtonsoft.Json.JsonProperty("predocumentExists", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? PredocumentExists { get; set; } = false;
-    
-    
+
+
     }
-    
+
     /// <summary>Holds a unique key and the corresponding text.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class EnumText 
+    public partial class EnumText
     {
         /// <summary>Unique key value for an enumeration type.</summary>
         [Newtonsoft.Json.JsonProperty("key", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(40, MinimumLength = 1)]
         public string Key { get; set; }
-    
+
         /// <summary>Display text in German language.</summary>
         [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(65)]
         public string Text { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Model for an order's execution.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class Execution 
+    public partial class Execution
     {
         /// <summary>Execution ID (UUID)</summary>
         [Newtonsoft.Json.JsonProperty("executionId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(40)]
         public string ExecutionId { get; set; }
-    
+
         /// <summary>Position (by time) of the execution of an order</summary>
         [Newtonsoft.Json.JsonProperty("executionNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? ExecutionNumber { get; set; }
-    
+
         /// <summary>Quantity of executed units or nominal amount</summary>
         [Newtonsoft.Json.JsonProperty("executedQuantity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue ExecutedQuantity { get; set; }
-    
+
         /// <summary>Execution price</summary>
         [Newtonsoft.Json.JsonProperty("executionPrice", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue ExecutionPrice { get; set; }
-    
+
         /// <summary>Date/timestamp of the order entry in UTC in the following format: (MiFID II) YYYY-MM-DDThh:mm:ss,ffffff+zz</summary>
         [Newtonsoft.Json.JsonProperty("executionTimestamp", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public TimestampString ExecutionTimestamp { get; set; }
-    
-    
+
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class FixedTermSavings 
+    public partial class FixedTermSavings
     {
         /// <summary>UUID of the deposit account.</summary>
         [Newtonsoft.Json.JsonProperty("fixedTermSavingsId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string FixedTermSavingsId { get; set; }
-    
+
         /// <summary>Total of investment.</summary>
         [Newtonsoft.Json.JsonProperty("savingsAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue SavingsAmount { get; set; }
-    
+
         /// <summary>Interest rate of the deposit account.</summary>
         [Newtonsoft.Json.JsonProperty("interestRate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string InterestRate { get; set; }
-    
+
         /// <summary>Type of the deposit account.</summary>
         [Newtonsoft.Json.JsonProperty("fixedTermSavingsType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public FixedTermSavingsType? FixedTermSavingsType { get; set; }
-    
+
         /// <summary>Name of the deposit account.</summary>
         [Newtonsoft.Json.JsonProperty("fixedTermSavingsDisplayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string FixedTermSavingsDisplayName { get; set; }
-    
+
         /// <summary>Contract period of the deposit account in months.</summary>
         [Newtonsoft.Json.JsonProperty("contractPeriodInMonths", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? ContractPeriodInMonths { get; set; }
-    
+
         /// <summary>Start date of investment.</summary>
         [Newtonsoft.Json.JsonProperty("creationDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string CreationDate { get; set; }
-    
+
         /// <summary>End date of investment.</summary>
         [Newtonsoft.Json.JsonProperty("expirationDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ExpirationDate { get; set; }
-    
+
         /// <summary>Amount of money for prolongation.</summary>
         [Newtonsoft.Json.JsonProperty("prolongationAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue ProlongationAmount { get; set; }
-    
+
         /// <summary>Indicates whether the investment can be extended.</summary>
         [Newtonsoft.Json.JsonProperty("extendable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? Extendable { get; set; } = false;
-    
-    
+
+
     }
-    
+
     /// <summary>additional fund data, if the instrument is a fund</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class FundDistribution 
+    public partial class FundDistribution
     {
         /// <summary>Status of fund</summary>
         [Newtonsoft.Json.JsonProperty("fundStatus", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public FundDistributionFundStatus? FundStatus { get; set; }
-    
+
         /// <summary>List of different features of funds</summary>
         [Newtonsoft.Json.JsonProperty("fundFlags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> FundFlags { get; set; }
-    
+
         /// <summary>currency of fund</summary>
         [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Currency { get; set; }
-    
+
         /// <summary>Regular issue surcharge</summary>
         [Newtonsoft.Json.JsonProperty("regularIssueSurcharge", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string RegularIssueSurcharge { get; set; }
-    
+
         /// <summary>Discount issue surcharge</summary>
         [Newtonsoft.Json.JsonProperty("discountIssueSurcharge", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string DiscountIssueSurcharge { get; set; }
-    
+
         /// <summary>Reduced issue surcharge</summary>
         [Newtonsoft.Json.JsonProperty("reducedIssueSurcharge", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ReducedIssueSurcharge { get; set; }
-    
+
         /// <summary>Individual issue surcharge</summary>
         [Newtonsoft.Json.JsonProperty("individualIssueSurcharge", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string IndividualIssueSurcharge { get; set; }
-    
+
         /// <summary>Is individual issue surcharge corrected</summary>
         [Newtonsoft.Json.JsonProperty("isIndividualIssueSurchargeCorrected", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? IsIndividualIssueSurchargeCorrected { get; set; } = false;
-    
+
         /// <summary>Bonification</summary>
         [Newtonsoft.Json.JsonProperty("bonification", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Bonification { get; set; }
-    
+
         /// <summary>Investment category</summary>
         [Newtonsoft.Json.JsonProperty("investmentCategory", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string InvestmentCategory { get; set; }
-    
+
         /// <summary>Total expense ratio</summary>
         [Newtonsoft.Json.JsonProperty("totalExpenseRatio", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string TotalExpenseRatio { get; set; }
-    
+
         /// <summary>Rating</summary>
         [Newtonsoft.Json.JsonProperty("rating", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Rating Rating { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Exchange rate for settlement currency to FX.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class FXRateEUR 
+    public partial class FXRateEUR
     {
         /// <summary>Bid rate of settlement currency to FX</summary>
         [Newtonsoft.Json.JsonProperty("bid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue Bid { get; set; }
-    
+
         /// <summary>Ask rate of settlement currency to FX</summary>
         [Newtonsoft.Json.JsonProperty("ask", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue Ask { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Model for an inducement.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class Inducement 
+    public partial class Inducement
     {
         /// <summary>Amount of the inducement</summary>
         [Newtonsoft.Json.JsonProperty("amount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue Amount { get; set; }
-    
+
         /// <summary>TRUE, if the amount is an estimation</summary>
         [Newtonsoft.Json.JsonProperty("estimated", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? Estimated { get; set; } = false;
-    
-    
+
+
     }
-    
+
     /// <summary>Master data of an installment loan</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class InstallmentLoan 
+    public partial class InstallmentLoan
     {
         /// <summary>Installment loan identifier (UUID).</summary>
         [Newtonsoft.Json.JsonProperty("installmentLoanId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string InstallmentLoanId { get; set; }
-    
+
         /// <summary>SWK number of the installment loan.</summary>
         [Newtonsoft.Json.JsonProperty("productDisplayId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ProductDisplayId { get; set; }
-    
+
         /// <summary>Approved loan amount of the initial conclusion of the loan in EUR, including residual debt insurance and interest.</summary>
         [Newtonsoft.Json.JsonProperty("creditAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue CreditAmount { get; set; }
-    
+
         /// <summary>Approved loan amount of the initial conclusion of the loan in EUR, before residual debt insurance and interest.</summary>
         [Newtonsoft.Json.JsonProperty("netCreditAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue NetCreditAmount { get; set; }
-    
+
         /// <summary>Paid out amount of the approved loan, can include additions or deductions for residual debt insurance or interest.</summary>
         [Newtonsoft.Json.JsonProperty("paidOutAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue PaidOutAmount { get; set; }
-    
+
         /// <summary>Amount of the installment loan in EUR.</summary>
         [Newtonsoft.Json.JsonProperty("installmentAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue InstallmentAmount { get; set; }
-    
+
         /// <summary>Runtime of the installment loan in months.</summary>
         [Newtonsoft.Json.JsonProperty("contractPeriodInMonths", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? ContractPeriodInMonths { get; set; }
-    
+
         /// <summary>Effective interest rate.</summary>
         [Newtonsoft.Json.JsonProperty("effectiveInterest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string EffectiveInterest { get; set; }
-    
+
         /// <summary>Nominal interest rate.</summary>
         [Newtonsoft.Json.JsonProperty("nominalInterest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string NominalInterest { get; set; }
-    
+
         /// <summary>Date of conclusion of the installment loan.</summary>
         [Newtonsoft.Json.JsonProperty("contractConclusionDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ContractConclusionDate { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Balance and master data of an installment loan</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class InstallmentLoanBalance 
+    public partial class InstallmentLoanBalance
     {
         /// <summary>Installment loan identifier (UUID).</summary>
         [Newtonsoft.Json.JsonProperty("installmentLoanId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string InstallmentLoanId { get; set; }
-    
+
         /// <summary>Master data of the installment loan.</summary>
         [Newtonsoft.Json.JsonProperty("installmentLoan", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public InstallmentLoan InstallmentLoan { get; set; }
-    
+
         /// <summary>Current balance of the installment loan in EUR, including residual debt insurance and interest.</summary>
         [Newtonsoft.Json.JsonProperty("balance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue Balance { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Model for an instrument.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class Instrument 
+    public partial class Instrument
     {
         /// <summary>Instrument id (UUID), unique identification of an instrument (security, derivative, etc.) for future use</summary>
         [Newtonsoft.Json.JsonProperty("instrumentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string InstrumentId { get; set; }
-    
+
         /// <summary>WKN</summary>
         [Newtonsoft.Json.JsonProperty("wkn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Wkn { get; set; }
-    
+
         /// <summary>ISIN</summary>
         [Newtonsoft.Json.JsonProperty("isin", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Isin { get; set; }
-    
+
         /// <summary>Security symbol according to WM data-service</summary>
         [Newtonsoft.Json.JsonProperty("mnemonic", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Mnemonic { get; set; }
-    
+
         /// <summary>Name of the instrument</summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Name { get; set; }
-    
+
         /// <summary>Short name of the instrument</summary>
         [Newtonsoft.Json.JsonProperty("shortName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ShortName { get; set; }
-    
+
         /// <summary>Static data of the instrument, e.g., notation, instrument type</summary>
         [Newtonsoft.Json.JsonProperty("staticData", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public StaticData StaticData { get; set; }
-    
+
         /// <summary>List of the trading venues including the attributes (orderDimensions)</summary>
         [Newtonsoft.Json.JsonProperty("orderDimensions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Dimensions OrderDimensions { get; set; }
-    
+
         /// <summary>additional fund data, if the instrument is a fund</summary>
         [Newtonsoft.Json.JsonProperty("fundsDistribution", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public FundDistribution FundsDistribution { get; set; }
-    
+
         /// <summary>additional data of a derivative</summary>
         [Newtonsoft.Json.JsonProperty("derivativeData", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public DerivativeData DerivativeData { get; set; }
-    
-    
+
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class ListResourceAccountBalance 
+    public partial class ListResourceAccountBalance
     {
         [Newtonsoft.Json.JsonProperty("paging", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PagingInfo Paging { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("aggregated", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AggregatedInfo Aggregated { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("values", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<AccountBalance> Values { get; set; }
-    
-    
+
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class ListResourceAccountTransaction 
+    public partial class ListResourceAccountTransaction
     {
         [Newtonsoft.Json.JsonProperty("paging", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PagingInfo Paging { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("aggregated", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AggregatedInfo Aggregated { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("values", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<AccountTransaction> Values { get; set; }
-    
-    
+
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class ListResourceCostIndicationExAnte 
+    public partial class ListResourceCostIndicationExAnte
     {
         [Newtonsoft.Json.JsonProperty("paging", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PagingInfo Paging { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("aggregated", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AggregatedInfo Aggregated { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("values", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<CostIndicationExAnte> Values { get; set; }
-    
-    
+
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class ListResourceDepot 
+    public partial class ListResourceDepot
     {
         [Newtonsoft.Json.JsonProperty("paging", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PagingInfo Paging { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("aggregated", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AggregatedInfo Aggregated { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("values", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<Depot> Values { get; set; }
-    
-    
+
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class ListResourceDepotPosition 
+    public partial class ListResourceDepotPosition
     {
         [Newtonsoft.Json.JsonProperty("paging", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PagingInfo Paging { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("aggregated", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AggregatedInfo Aggregated { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("values", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<DepotPosition> Values { get; set; }
-    
-    
+
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class ListResourceDepotTransaction 
+    public partial class ListResourceDepotTransaction
     {
         [Newtonsoft.Json.JsonProperty("paging", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PagingInfo Paging { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("aggregated", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AggregatedInfo Aggregated { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("values", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<DepotTransaction> Values { get; set; }
-    
-    
+
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class ListResourceDimensions 
+    public partial class ListResourceDimensions
     {
         [Newtonsoft.Json.JsonProperty("paging", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PagingInfo Paging { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("aggregated", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AggregatedInfo Aggregated { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("values", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<Dimensions> Values { get; set; }
-    
-    
+
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class ListResourceDocument 
+    public partial class ListResourceDocument
     {
         [Newtonsoft.Json.JsonProperty("paging", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PagingInfo Paging { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("aggregated", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AggregatedInfo Aggregated { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("values", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<Document> Values { get; set; }
-    
-    
+
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class ListResourceInstrument 
+    public partial class ListResourceInstrument
     {
         [Newtonsoft.Json.JsonProperty("paging", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PagingInfo Paging { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("aggregated", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AggregatedInfo Aggregated { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("values", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<Instrument> Values { get; set; }
-    
-    
+
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class ListResourceProductBalance 
+    public partial class ListResourceProductBalance
     {
         [Newtonsoft.Json.JsonProperty("paging", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PagingInfo Paging { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("aggregated", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AggregatedInfo Aggregated { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("values", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<ProductBalance> Values { get; set; }
-    
-    
+
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class ListResourceOrder 
+    public partial class ListResourceOrder
     {
         [Newtonsoft.Json.JsonProperty("paging", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PagingInfo Paging { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("aggregated", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AggregatedInfo Aggregated { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("values", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<Order> Values { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Model for an order.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class Order 
+    public partial class Order
     {
         /// <summary>Unique securities account identification (as UUID)</summary>
         [Newtonsoft.Json.JsonProperty("depotId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(40)]
         public string DepotId { get; set; }
-    
+
         /// <summary>Reference settlement account for the securities account, if different from the settlement account assigned directly to the securities account (UUID)</summary>
         [Newtonsoft.Json.JsonProperty("settlementAccountId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(40)]
         public string SettlementAccountId { get; set; }
-    
+
         /// <summary>Unique order-Id (UUID)</summary>
         [Newtonsoft.Json.JsonProperty("orderId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(40)]
         public string OrderId { get; set; }
-    
+
         /// <summary>Date/timestamp of the order entry in UTC with the following format: YYYY-MM-DDThh:mm:ss,ffffff+zz</summary>
         [Newtonsoft.Json.JsonProperty("creationTimestamp", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public TimestampString CreationTimestamp { get; set; }
-    
+
         /// <summary>Order leg number (if ordertype is OCO or NEO)</summary>
         [Newtonsoft.Json.JsonProperty("legNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? LegNumber { get; set; }
-    
+
         /// <summary>Flag if order is a best-execution-order, default value is false</summary>
         [Newtonsoft.Json.JsonProperty("bestEx", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? BestEx { get; set; } = false;
-    
+
         /// <summary>Ordertype, partially executed and open orders are listed in the execution parameters</summary>
         [Newtonsoft.Json.JsonProperty("orderType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(30)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public OrderType4? OrderType { get; set; }
-    
+
         /// <summary>Status of the order</summary>
         [Newtonsoft.Json.JsonProperty("orderStatus", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(30)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public OrderStatus2? OrderStatus { get; set; }
-    
+
         /// <summary>Parts of the orders, e.g. combination orders OCO, NEO (Next Order) with different order legs or partially executed or partially cancelled orders with different parts of an order</summary>
         [Newtonsoft.Json.JsonProperty("subOrders", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<Order> SubOrders { get; set; }
-    
+
         /// <summary>Type of transaction</summary>
         [Newtonsoft.Json.JsonProperty("side", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(4)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public OrderSide? Side { get; set; }
-    
+
         /// <summary>WKN, ISIN or uuId; wkn will be returned if instrumentId is entered as wkn, an ISIN is returned if instrumentId is entered as ISIN, a uuId is returned if instrumentId is entered as uuId</summary>
         [Newtonsoft.Json.JsonProperty("instrumentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(40)]
         public string InstrumentId { get; set; }
-    
+
         /// <summary>Quote-Id as reference for the quote received from the trading venue (issuer or exchange) on the quote request</summary>
         [Newtonsoft.Json.JsonProperty("quoteId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(40)]
         public string QuoteId { get; set; }
-    
+
         /// <summary>UUID of the trading venue or partner. This is mandatory, if isBestEx=FALSE</summary>
         [Newtonsoft.Json.JsonProperty("venueId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(40)]
         public string VenueId { get; set; }
-    
+
         /// <summary>Quantity or nominal amount in the case of a percentage quotation</summary>
         [Newtonsoft.Json.JsonProperty("quantity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue Quantity { get; set; }
-    
+
         /// <summary>Open quantity or nominal amount</summary>
         [Newtonsoft.Json.JsonProperty("openQuantity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue OpenQuantity { get; set; }
-    
+
         /// <summary>Canceled quantity or nominal amount</summary>
         [Newtonsoft.Json.JsonProperty("cancelledQuantity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue CancelledQuantity { get; set; }
-    
+
         /// <summary>Canceled quantity or nominal amount</summary>
         [Newtonsoft.Json.JsonProperty("executedQuantity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue ExecutedQuantity { get; set; }
-    
+
         /// <summary>Order extensions (Fill-or-Kill, Immediate-or-Cancel, All-or-None)</summary>
         [Newtonsoft.Json.JsonProperty("limitExtension", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(3)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public OrderLimitExtension? LimitExtension { get; set; }
-    
+
         /// <summary>Restrictions on trade (Opening Auction Only, Auction Only, Closing Auction Only)</summary>
         [Newtonsoft.Json.JsonProperty("tradingRestriction", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(3)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public OrderTradingRestriction? TradingRestriction { get; set; }
-    
+
         /// <summary>Limit of the order, empty in case of a market order, stop market, trailing stop market order or a corresponding suborder</summary>
         [Newtonsoft.Json.JsonProperty("limit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue Limit { get; set; }
-    
+
         /// <summary>Trigger limit: stop limit by which a Stop order is triggered (Stop, TLS, OCO)</summary>
         [Newtonsoft.Json.JsonProperty("triggerLimit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue TriggerLimit { get; set; }
-    
+
         /// <summary>Distance trigger limit of the trailing stop order from the current absolute price</summary>
         [Newtonsoft.Json.JsonProperty("trailingLimitDistAbs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue TrailingLimitDistAbs { get; set; }
-    
+
         /// <summary>Distance trigger limit of the trailing stop order from the current price in percentage</summary>
         [Newtonsoft.Json.JsonProperty("trailingLimitDistRel", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PercentageString TrailingLimitDistRel { get; set; }
-    
+
         /// <summary>Type of order validity (Good-for-day (default), Good-til-date (incl. end of month))</summary>
         [Newtonsoft.Json.JsonProperty("validityType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(3)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public OrderValidityType? ValidityType { get; set; }
-    
+
         /// <summary>Date of order validity in format YYYY-MM-DD; required for validityType=GTD</summary>
         [Newtonsoft.Json.JsonProperty("validity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Validity { get; set; }
-    
+
         /// <summary>Expected value of the limit order</summary>
         [Newtonsoft.Json.JsonProperty("expectedValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue ExpectedValue { get; set; }
-    
+
         /// <summary>List of execution types for the order</summary>
         [Newtonsoft.Json.JsonProperty("executions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<Execution> Executions { get; set; }
-    
+
         /// <summary>Ticket UUID for the quote order. This is mandatory, if for a quote order</summary>
         [Newtonsoft.Json.JsonProperty("quoteTicketId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(40)]
         public string QuoteTicketId { get; set; }
-    
+
         /// <summary>Version of the position to be sold. Only applicable for sell</summary>
         [Newtonsoft.Json.JsonProperty("version", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Version { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Model for an order type.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class OrderType 
+    public partial class OrderType
     {
         /// <summary>Names of the possible limit extensions</summary>
         [Newtonsoft.Json.JsonProperty("limitExtensions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> LimitExtensions { get; set; }
-    
+
         /// <summary>Names of possible trading restrictions</summary>
         [Newtonsoft.Json.JsonProperty("tradingRestrictions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> TradingRestrictions { get; set; }
-    
-    
+
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class PagingInfo 
+    public partial class PagingInfo
     {
         [Newtonsoft.Json.JsonProperty("index", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? Index { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("matches", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? Matches { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Represents the percentage value.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class PercentageString 
+    public partial class PercentageString
     {
         /// <summary>Pre-decimal places</summary>
         [Newtonsoft.Json.JsonProperty("preDecimalPlaces", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(18)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^(0|[1-9][0-9]*)$")]
         public string PreDecimalPlaces { get; set; }
-    
+
         /// <summary>Decimal places</summary>
         [Newtonsoft.Json.JsonProperty("decimalPlaces", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[0-9]*$")]
         public string DecimalPlaces { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("percentString", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string PercentString { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Represents a price.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class Price 
+    public partial class Price
     {
         /// <summary>Type of the price. Can be one of the following: {LST, BID, ASK, MID}.</summary>
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(3, MinimumLength = 3)]
         public string Type { get; set; }
-    
+
         /// <summary>Price.</summary>
         [Newtonsoft.Json.JsonProperty("price", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue Price1 { get; set; }
-    
+
         /// <summary>Quantity or nominal amount in case of a percentage quotation.</summary>
         [Newtonsoft.Json.JsonProperty("quantity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue Quantity { get; set; }
-    
+
         /// <summary>Datetime with format: 'yyyy-MM-dd'T'HH:mm:ssX</summary>
         [Newtonsoft.Json.JsonProperty("priceDateTime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string PriceDateTime { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Model for a product balance.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class ProductBalance 
+    public partial class ProductBalance
     {
         /// <summary>Unique ID of the product (UUID).</summary>
         [Newtonsoft.Json.JsonProperty("productId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ProductId { get; set; }
-    
+
         /// <summary>Type of the product.</summary>
         [Newtonsoft.Json.JsonProperty("productType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public ProductBalanceProductType? ProductType { get; set; }
-    
+
         /// <summary>Unique Id of the target client (UUID).</summary>
         [Newtonsoft.Json.JsonProperty("targetClientId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string TargetClientId { get; set; }
-    
+
         /// <summary>Type of the client connection.</summary>
         [Newtonsoft.Json.JsonProperty("clientConnectionType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public ProductBalanceClientConnectionType? ClientConnectionType { get; set; }
-    
+
         /// <summary>Balance object based on the product type.</summary>
         [Newtonsoft.Json.JsonProperty("balance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Balance Balance { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Model for a quote request.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class Quote 
+    public partial class Quote
     {
         /// <summary>Unique securities account identification (as UUID)</summary>
         [Newtonsoft.Json.JsonProperty("depotId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(40)]
         public string DepotId { get; set; }
-    
+
         /// <summary>Type of transaction</summary>
         [Newtonsoft.Json.JsonProperty("side", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(4)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public QuoteSide? Side { get; set; }
-    
+
         /// <summary>WKN, ISIN or uuId; wkn will be returned if instrumentId is entered as wkn, an ISIN is returned if instrumentId is entered as ISIN, a uuId is returned if instrumentId is entered as uuId</summary>
         [Newtonsoft.Json.JsonProperty("instrumentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(40)]
         public string InstrumentId { get; set; }
-    
+
         /// <summary>UUID of the trading venue or partner. This is mandatory, if isBestEx=FALSE</summary>
         [Newtonsoft.Json.JsonProperty("venueId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(40)]
         public string VenueId { get; set; }
-    
+
         /// <summary>Quantity or nominal amount in the case of a percentage quotation</summary>
         [Newtonsoft.Json.JsonProperty("quantity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue Quantity { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Rating of the instrument.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class Rating 
+    public partial class Rating
     {
         /// <summary>Funds Rating</summary>
         [Newtonsoft.Json.JsonProperty("morningstar", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Morningstar { get; set; }
-    
+
         /// <summary>Bonds Rating</summary>
         [Newtonsoft.Json.JsonProperty("moodys", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Moodys { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Model for the current session.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class Session 
+    public partial class Session
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public long? Id { get; set; }
-    
+
         /// <summary>Identifier of the session</summary>
         [Newtonsoft.Json.JsonProperty("identifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Identifier { get; set; }
-    
+
         /// <summary>This boolean is used to point out whether or not the current session has an active session TAN (transaction authentication number). With an active session TAN some use cases, that are genuinely TAN protected, might be callable without asking the client for a TAN. The validation method of session TAN ready use cases will return "TAN_FREE" as a TAN type while the session TAN is activated. The session TAN will be available after a refresh of tokens and dies with the last pair of tokens (access and refresh token).</summary>
         [Newtonsoft.Json.JsonProperty("sessionTanActive", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? SessionTanActive { get; set; } = false;
-    
+
         /// <summary>Boolean indicating whether a second factor is already added to this session</summary>
         [Newtonsoft.Json.JsonProperty("activated2FA", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? Activated2FA { get; set; } = false;
-    
-    
+
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class StandardErrorResponse 
+    public partial class StandardErrorResponse
     {
         [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Code { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("messages", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<BusinessMessage> Messages { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Static data of the instrument.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class StaticData 
+    public partial class StaticData
     {
         /// <summary>Ticker symbol or notation of a security</summary>
         [Newtonsoft.Json.JsonProperty("notation", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public StaticDataNotation? Notation { get; set; }
-    
+
         /// <summary>instrument currency of a security, e.g., for bonds, bond and open real estate funds; additionally to ISO 4217 currency code the following values are possible: XXX (Pcs.), XXP (Pts.), XXU (Unknown)</summary>
         [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Currency { get; set; }
-    
+
         /// <summary>Instrument type</summary>
         [Newtonsoft.Json.JsonProperty("instrumentType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public StaticDataInstrumentType? InstrumentType { get; set; }
-    
+
         /// <summary>Flag indicating - if TRUE - that EU-regulation referring to Packaged Retail and Insurance-based Investment Products - PRIIPs) is relevant for the instrument</summary>
         [Newtonsoft.Json.JsonProperty("priipsRelevant", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? PriipsRelevant { get; set; } = false;
-    
+
         /// <summary>Flag indicating - if TRUE - that a Key Information Document (KID) of the issuer is electronically available. Before order placement a static note ought to displayed in such a case.</summary>
         [Newtonsoft.Json.JsonProperty("kidAvailable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? KidAvailable { get; set; } = false;
-    
+
         /// <summary>Flag indicating - if TRUE - that within prevalidation and before placement of a buy order the investor must approve, e.g., by a frontend checkbox that no shipping of fund sales information is required (waiver); a static note regarding that information ought to be displayed in such a case. Without an explicit waiver the order placement must be prevented in the frontend.</summary>
         [Newtonsoft.Json.JsonProperty("shippingWaiverRequired", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? ShippingWaiverRequired { get; set; } = false;
-    
+
         /// <summary>Flag indicating - if TRUE - that within prevalidation and before placement of a buy order a static note must be displayed indicating that the redemption of the fund is limited.</summary>
         [Newtonsoft.Json.JsonProperty("fundRedemptionLimited", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? FundRedemptionLimited { get; set; } = false;
-    
-    
+
+
     }
-    
+
     /// <summary>Represents the date with up to 6 fractions of seconds.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class TimestampString 
+    public partial class TimestampString
     {
         /// <summary>Date and time with following format: 'yyyy-MM-dd'T'HH:mm:ss,SSSSSSX'</summary>
         [Newtonsoft.Json.JsonProperty("timestamp", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? Timestamp { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Model for a total cost block including total cost entries segregated as: E (own service costs of bank), F (external service costs), and P (product costs).</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class TotalCostBlock 
+    public partial class TotalCostBlock
     {
         /// <summary>Total cost entry for own service costs of bank (E)</summary>
         [Newtonsoft.Json.JsonProperty("serviceCosts", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public TotalCostEntry ServiceCosts { get; set; }
-    
+
         /// <summary>Total amount of inducements for own service costs of bank</summary>
         [Newtonsoft.Json.JsonProperty("serviceInducement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue ServiceInducement { get; set; }
-    
+
         /// <summary>Total cost entry for external service costs (F)</summary>
         [Newtonsoft.Json.JsonProperty("externalCosts", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public TotalCostEntry ExternalCosts { get; set; }
-    
+
         /// <summary>Total cost entry for product costs (P)</summary>
         [Newtonsoft.Json.JsonProperty("productCosts", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public TotalCostEntry ProductCosts { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Model for a total cost entry.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class TotalCostEntry 
+    public partial class TotalCostEntry
     {
         /// <summary>Type of total cost entry</summary>
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public TotalCostEntryType? Type { get; set; }
-    
+
         /// <summary>Label of total cost entry</summary>
         [Newtonsoft.Json.JsonProperty("label", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Label { get; set; }
-    
+
         /// <summary>Total cost in reporting currency</summary>
         [Newtonsoft.Json.JsonProperty("amount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue Amount { get; set; }
-    
+
         /// <summary>Average return reduction per year</summary>
         [Newtonsoft.Json.JsonProperty("averageReturnPA", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PercentageString AverageReturnPA { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>List of cost blocks over time.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class TotalHoldingCostBlock 
+    public partial class TotalHoldingCostBlock
     {
         /// <summary>Total holding cost entry for the first year</summary>
         [Newtonsoft.Json.JsonProperty("year1", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public TotalHoldingCostEntry Year1 { get; set; }
-    
+
         /// <summary>Total holding cost entry for the second year</summary>
         [Newtonsoft.Json.JsonProperty("year2", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public TotalHoldingCostEntry Year2 { get; set; }
-    
+
         /// <summary>Total holding cost entry for the year of the sale</summary>
         [Newtonsoft.Json.JsonProperty("sales", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public TotalHoldingCostEntry Sales { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Model for cost block over time.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class TotalHoldingCostEntry 
+    public partial class TotalHoldingCostEntry
     {
         /// <summary>Type of total holding cost entry</summary>
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public TotalHoldingCostEntryType? Type { get; set; }
-    
+
         /// <summary>Cost in reporting currency</summary>
         [Newtonsoft.Json.JsonProperty("amount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AmountValue Amount { get; set; }
-    
+
         /// <summary>Average return reduction per year</summary>
         [Newtonsoft.Json.JsonProperty("averageReturnPA", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PercentageString AverageReturnPA { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Model for a venue.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class Venue 
+    public partial class Venue
     {
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Name { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("venueId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string VenueId { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("country", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Country { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Type { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("currencies", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> Currencies { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("sides", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> Sides { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("validityTypes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> ValidityTypes { get; set; }
-    
+
         [Newtonsoft.Json.JsonProperty("orderTypes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IDictionary<string, OrderType> OrderTypes { get; set; }
-    
-    
+
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
-    public partial class VisaCardImage 
+    public partial class VisaCardImage
     {
         /// <summary>Visa card image ID to be used in the application</summary>
         [Newtonsoft.Json.JsonProperty("visaCardImageId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string VisaCardImageId { get; set; }
-    
+
         /// <summary>Description of the image</summary>
         [Newtonsoft.Json.JsonProperty("imageDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ImageDescription { get; set; }
-    
+
         /// <summary>Base filename for the files representing the image. The name has to be extended with a postfix indicating the resolution and file type, e.g. -1x.jpg. The resulting filename can be used to retrieve the image from the comdirect CMS</summary>
         [Newtonsoft.Json.JsonProperty("imageBaseFilename", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ImageBaseFilename { get; set; }
-    
-    
+
+
     }
-    
+
     /// <summary>Filters for AccountTransactions. Will return all AccountTransactions (BOTH), or return all booked AccountTransactions (BOOKED), or all not booked AccountTransactions (NOTBOOKED).</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum TransactionState
     {
         [System.Runtime.Serialization.EnumMember(Value = @"BOOKED")]
         BOOKED = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"NOTBOOKED")]
         NOTBOOKED = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"BOTH")]
         BOTH = 2,
-    
+
     }
-    
+
     /// <summary>Filters for CREDIT, DEBIT or CREDIT_AND_DEBIT</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum TransactionDirection
     {
         [System.Runtime.Serialization.EnumMember(Value = @"CREDIT")]
         CREDIT = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"DEBIT")]
         DEBIT = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"CREDIT_AND_DEBIT")]
         CREDIT_AND_DEBIT = 2,
-    
+
     }
-    
+
     /// <summary>Status of the order.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum OrderStatus
     {
         [System.Runtime.Serialization.EnumMember(Value = @"PENDING")]
         PENDING = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"OPEN")]
         OPEN = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"EXECUTED")]
         EXECUTED = 2,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"SETTLED")]
         SETTLED = 3,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"CANCELLED_USER")]
         CANCELLED_USER = 4,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"EXPIRED")]
         EXPIRED = 5,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"CANCELLED_SYSTEM")]
         CANCELLED_SYSTEM = 6,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"CANCELLED_TRADE")]
         CANCELLED_TRADE = 7,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"UNKNOWN")]
         UNKNOWN = 8,
-    
+
     }
-    
+
     /// <summary>The order type.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum OrderType2
     {
         [System.Runtime.Serialization.EnumMember(Value = @"MARKET")]
         MARKET = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"LIMIT")]
         LIMIT = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"QUOTE")]
         QUOTE = 2,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"STOP_MARKET")]
         STOP_MARKET = 3,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"STOP_LIMIT")]
         STOP_LIMIT = 4,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"TRAILING_STOP_MARKET")]
         TRAILING_STOP_MARKET = 5,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"TRAILING_STOP_LIMIT")]
         TRAILING_STOP_LIMIT = 6,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"ONE_CANCELS_OTHER")]
         ONE_CANCELS_OTHER = 7,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"NEXT_ORDER")]
         NEXT_ORDER = 8,
-    
+
     }
-    
+
     /// <summary>Possible transaction types</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum Side
     {
         [System.Runtime.Serialization.EnumMember(Value = @"BUY")]
         BUY = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"SELL")]
         SELL = 1,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum Anonymous
     {
         [System.Runtime.Serialization.EnumMember(Value = @"orderDimensions")]
         OrderDimensions = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"fundDistribution")]
         FundDistribution = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"derivativeData")]
         DerivativeData = 2,
-    
+
     }
-    
+
     /// <summary>The order type.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum OrderType3
     {
         [System.Runtime.Serialization.EnumMember(Value = @"MARKET")]
         MARKET = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"LIMIT")]
         LIMIT = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"QUOTE")]
         QUOTE = 2,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"STOP_MARKET")]
         STOP_MARKET = 3,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"STOP_LIMIT")]
         STOP_LIMIT = 4,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"TRAILING_STOP_MARKET")]
         TRAILING_STOP_MARKET = 5,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"TRAILING_STOP_LIMIT")]
         TRAILING_STOP_LIMIT = 6,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"ONE_CANCELS_OTHER")]
         ONE_CANCELS_OTHER = 7,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"NEXT_ORDER")]
         NEXT_ORDER = 8,
-    
+
     }
-    
+
     /// <summary>Possible transaction types.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum Side2
     {
         [System.Runtime.Serialization.EnumMember(Value = @"BUY")]
         BUY = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"SELL")]
         SELL = 1,
-    
+
     }
-    
+
     /// <summary>Type of venue.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum Type
     {
         [System.Runtime.Serialization.EnumMember(Value = @"EXCHANGE")]
         EXCHANGE = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"FUND")]
         FUND = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"OFF")]
         OFF = 2,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum Anonymous2
     {
         [System.Runtime.Serialization.EnumMember(Value = @"balance.staticdata")]
         Balance_staticdata = 0,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum AccountTransactionBookingStatus
     {
         [System.Runtime.Serialization.EnumMember(Value = @"BOOKED")]
         BOOKED = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"NOTBOOKED")]
         NOTBOOKED = 1,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum BusinessMessageKey
     {
         [System.Runtime.Serialization.EnumMember(Value = @"request.object.invalid")]
         Request_object_invalid = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"request.query.invalid")]
         Request_query_invalid = 1,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum BusinessMessageSeverity
     {
         [System.Runtime.Serialization.EnumMember(Value = @"ERROR")]
         ERROR = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"INFO")]
         INFO = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"WARN")]
         WARN = 2,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum CardStatus
     {
         [System.Runtime.Serialization.EnumMember(Value = @"ACTIVE")]
         ACTIVE = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"INACTIVE")]
         INACTIVE = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"IN_CHANGE")]
         IN_CHANGE = 2,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"UNKNOWN")]
         UNKNOWN = 3,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum CostEntryType
     {
         [System.Runtime.Serialization.EnumMember(Value = @"E")]
         E = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"F")]
         F = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"P")]
         P = 2,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum CostGroupType
     {
         [System.Runtime.Serialization.EnumMember(Value = @"K")]
         K = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"H")]
         H = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"V")]
         V = 2,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum CostIndicationExAnteSide
     {
         [System.Runtime.Serialization.EnumMember(Value = @"BUY")]
         BUY = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"SELL")]
         SELL = 1,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum DepotTransactionBookingStatus
     {
         [System.Runtime.Serialization.EnumMember(Value = @"BOOKED")]
         BOOKED = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"NOTBOOKED")]
         NOTBOOKED = 1,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum DepotTransactionTransactionDirection
     {
         [System.Runtime.Serialization.EnumMember(Value = @"IN")]
         IN = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"OUT")]
         OUT = 1,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum DepotTransactionTransactionType
     {
         [System.Runtime.Serialization.EnumMember(Value = @"BUY")]
         BUY = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"SELL")]
         SELL = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"TRANSFER_IN")]
         TRANSFER_IN = 2,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"TRANSFER_OUT")]
         TRANSFER_OUT = 3,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"OTHER")]
         OTHER = 4,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum DerivativeDataCertificateType
     {
         [System.Runtime.Serialization.EnumMember(Value = @"Hebel")]
         Hebel = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"Index")]
         Index = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"Basket")]
         Basket = 2,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"Hedge-Fonds-Zertifikat")]
         HedgeFondsZertifikat = 3,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"Discount")]
         Discount = 4,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"Aktienanleihe")]
         Aktienanleihe = 5,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"Bandbreite")]
         Bandbreite = 6,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"Outperformance")]
         Outperformance = 7,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"Express")]
         Express = 8,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"Bonus")]
         Bonus = 9,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"Kapitalschutz")]
         Kapitalschutz = 10,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum DerivativeDataWarrantType
     {
         [System.Runtime.Serialization.EnumMember(Value = @"Call")]
         Call = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"Put")]
         Put = 1,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum DerivativeDataInterestPaymentInterval
     {
         [System.Runtime.Serialization.EnumMember(Value = @"MONTHLY")]
         MONTHLY = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"QUARTERLY")]
         QUARTERLY = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"SEMIANNUALLY")]
         SEMIANNUALLY = 2,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"ANNUALLY")]
         ANNUALLY = 3,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"OTHER")]
         OTHER = 4,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum FixedTermSavingsType
     {
         [System.Runtime.Serialization.EnumMember(Value = @"SHORT_TERM")]
         SHORT_TERM = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"LONG_TERM")]
         LONG_TERM = 1,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum FundDistributionFundStatus
     {
         [System.Runtime.Serialization.EnumMember(Value = @"A")]
         A = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"K")]
         K = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"P")]
         P = 2,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"R")]
         R = 3,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"V")]
         V = 4,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"N")]
         N = 5,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"L")]
         L = 6,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"D")]
         D = 7,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"F")]
         F = 8,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"I")]
         I = 9,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"M")]
         M = 10,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum OrderType4
     {
         [System.Runtime.Serialization.EnumMember(Value = @"MARKET")]
         MARKET = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"LIMIT")]
         LIMIT = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"QUOTE")]
         QUOTE = 2,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"STOP_MARKET")]
         STOP_MARKET = 3,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"STOP_LIMIT")]
         STOP_LIMIT = 4,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"TRAILING_STOP_MARKET")]
         TRAILING_STOP_MARKET = 5,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"TRAILING_STOP_LIMIT")]
         TRAILING_STOP_LIMIT = 6,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"ONE_CANCELS_OTHER")]
         ONE_CANCELS_OTHER = 7,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"NEXT_ORDER")]
         NEXT_ORDER = 8,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum OrderStatus2
     {
         [System.Runtime.Serialization.EnumMember(Value = @"PENDING")]
         PENDING = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"OPEN")]
         OPEN = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"EXECUTED")]
         EXECUTED = 2,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"SETTLED")]
         SETTLED = 3,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"CANCELLED_USER")]
         CANCELLED_USER = 4,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"EXPIRED")]
         EXPIRED = 5,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"CANCELLED_SYSTEM")]
         CANCELLED_SYSTEM = 6,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"CANCELLED_TRADE")]
         CANCELLED_TRADE = 7,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"UNKNOWN")]
         UNKNOWN = 8,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum OrderSide
     {
         [System.Runtime.Serialization.EnumMember(Value = @"BUY")]
         BUY = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"SELL")]
         SELL = 1,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum OrderLimitExtension
     {
         [System.Runtime.Serialization.EnumMember(Value = @"FOK")]
         FOK = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"IOC")]
         IOC = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"AON")]
         AON = 2,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum OrderTradingRestriction
     {
         [System.Runtime.Serialization.EnumMember(Value = @"OAO")]
         OAO = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"AO")]
         AO = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"CAO")]
         CAO = 2,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum OrderValidityType
     {
         [System.Runtime.Serialization.EnumMember(Value = @"GFD")]
         GFD = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"GTD")]
         GTD = 1,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum ProductBalanceProductType
     {
         [System.Runtime.Serialization.EnumMember(Value = @"ACCOUNT")]
         ACCOUNT = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"CARD")]
         CARD = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"DEPOT")]
         DEPOT = 2,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"LOAN")]
         LOAN = 3,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"SAVINGS")]
         SAVINGS = 4,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum ProductBalanceClientConnectionType
     {
         [System.Runtime.Serialization.EnumMember(Value = @"CURRENT_CLIENT")]
         CURRENT_CLIENT = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"OTHER_COMDIRECT")]
         OTHER_COMDIRECT = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"OTHER_EXTERNAL")]
         OTHER_EXTERNAL = 2,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum QuoteSide
     {
         [System.Runtime.Serialization.EnumMember(Value = @"BUY")]
         BUY = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"SELL")]
         SELL = 1,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum StaticDataNotation
     {
         [System.Runtime.Serialization.EnumMember(Value = @"XXX")]
         XXX = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"XXC")]
         XXC = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"XXM")]
         XXM = 2,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"XXP")]
         XXP = 3,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"XXU")]
         XXU = 4,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum StaticDataInstrumentType
     {
         [System.Runtime.Serialization.EnumMember(Value = @"SHARE")]
         SHARE = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"BONDS")]
         BONDS = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"SUBSCRIPTION_RIGHT")]
         SUBSCRIPTION_RIGHT = 2,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"ETF")]
         ETF = 3,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"PROFIT_PART_CERTIFICATE")]
         PROFIT_PART_CERTIFICATE = 4,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"FUND")]
         FUND = 5,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"WARRANT")]
         WARRANT = 6,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"CERTIFICATE")]
         CERTIFICATE = 7,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"NOT_AVAILABLE")]
         NOT_AVAILABLE = 8,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum TotalCostEntryType
     {
         [System.Runtime.Serialization.EnumMember(Value = @"E")]
         E = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"F")]
         F = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"P")]
         P = 2,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     public enum TotalHoldingCostEntryType
     {
         [System.Runtime.Serialization.EnumMember(Value = @"IM_ERSTEN_JAHR")]
         IM_ERSTEN_JAHR = 0,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"IM_ZWEITEN_JAHR")]
         IM_ZWEITEN_JAHR = 1,
-    
+
         [System.Runtime.Serialization.EnumMember(Value = @"IM_JAHR_DER_VERAUESSERUNG")]
         IM_JAHR_DER_VERAUESSERUNG = 2,
-    
+
     }
-    
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.24.0 (Newtonsoft.Json v12.0.0.2)")]
     internal class DateFormatConverter : Newtonsoft.Json.Converters.IsoDateTimeConverter
     {
@@ -5858,14 +5856,14 @@ namespace Comdirect.Rest.Api.Comdirect
 
         public FileResponse(int statusCode, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.IO.Stream stream, System.IDisposable client, System.IDisposable response)
         {
-            StatusCode = statusCode; 
-            Headers = headers; 
-            Stream = stream; 
-            _client = client; 
+            StatusCode = statusCode;
+            Headers = headers;
+            Stream = stream;
+            _client = client;
             _response = response;
         }
 
-        public void Dispose() 
+        public void Dispose()
         {
             Stream.Dispose();
             if (_response != null)
@@ -5888,7 +5886,7 @@ namespace Comdirect.Rest.Api.Comdirect
             : base(message + "\n\nStatus: " + statusCode + "\nResponse: \n" + ((response == null) ? "(null)" : response.Substring(0, response.Length >= 512 ? 512 : response.Length)), innerException)
         {
             StatusCode = statusCode;
-            Response = response; 
+            Response = response;
             Headers = headers;
         }
 
@@ -5914,6 +5912,6 @@ namespace Comdirect.Rest.Api.Comdirect
 
 #pragma warning restore 1591
 #pragma warning restore 1573
-#pragma warning restore  472
-#pragma warning restore  114
-#pragma warning restore  108
+#pragma warning restore 472
+#pragma warning restore 114
+#pragma warning restore 108
