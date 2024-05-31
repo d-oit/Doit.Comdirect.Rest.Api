@@ -41,7 +41,7 @@ namespace Comdirect.Rest.Api
             // Assign the provided ComdirectCredentials instance to the _comdirectCredentials field
             _comdirectCredentials = comdirectCredentials;
         }
-             
+
         /// <summary>
         /// Activates the session tan async.
         /// </summary>
