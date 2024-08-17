@@ -44,7 +44,7 @@
   - [#ctor(httpClient,comdirectCredentials)](#M-Comdirect-Rest-Api-AuthClient-#ctor-System-Net-Http-HttpClient,Comdirect-Auth-CSharp-ComdirectCredentials- 'Comdirect.Rest.Api.AuthClient.#ctor(System.Net.Http.HttpClient,Comdirect.Auth.CSharp.ComdirectCredentials)')
   - [RequestId](#P-Comdirect-Rest-Api-AuthClient-RequestId 'Comdirect.Rest.Api.AuthClient.RequestId')
   - [SessionId](#P-Comdirect-Rest-Api-AuthClient-SessionId 'Comdirect.Rest.Api.AuthClient.SessionId')
-  - [ActivateSessionTanAsync(accessToken,sessionUUID,challangeId)](#M-Comdirect-Rest-Api-AuthClient-ActivateSessionTanAsync-System-String,System-String,System-String- 'Comdirect.Rest.Api.AuthClient.ActivateSessionTanAsync(System.String,System.String,System.String)')
+  - [ActivateSessionTanAsync(accessToken,sessionUUID,challengeId)](#M-Comdirect-Rest-Api-AuthClient-ActivateSessionTanAsync-System-String,System-String,System-String- 'Comdirect.Rest.Api.AuthClient.ActivateSessionTanAsync(System.String,System.String,System.String)')
   - [GenerateDigits(length)](#M-Comdirect-Rest-Api-AuthClient-GenerateDigits-System-Int32- 'Comdirect.Rest.Api.AuthClient.GenerateDigits(System.Int32)')
   - [GetHttpRequestInfoValue()](#M-Comdirect-Rest-Api-AuthClient-GetHttpRequestInfoValue 'Comdirect.Rest.Api.AuthClient.GetHttpRequestInfoValue')
   - [GetSessionStatusAsync(accessToken,accessToken)](#M-Comdirect-Rest-Api-AuthClient-GetSessionStatusAsync-System-String- 'Comdirect.Rest.Api.AuthClient.GetSessionStatusAsync(System.String)')
@@ -749,7 +749,7 @@ Gets or sets the request id.
 Gets or sets the session id.
 
 <a name='M-Comdirect-Rest-Api-AuthClient-ActivateSessionTanAsync-System-String,System-String,System-String-'></a>
-### ActivateSessionTanAsync(accessToken,sessionUUID,challangeId) `method`
+### ActivateSessionTanAsync(accessToken,sessionUUID,challengeId) `method`
 
 ##### Summary
 
@@ -765,7 +765,7 @@ A Task.
 | ---- | ---- | ----------- |
 | accessToken | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The access token. |
 | sessionUUID | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The session u u i d. |
-| challangeId | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The challange id. |
+| challengeId | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The challenge id. |
 
 <a name='M-Comdirect-Rest-Api-AuthClient-GenerateDigits-System-Int32-'></a>
 ### GenerateDigits(length) `method`
