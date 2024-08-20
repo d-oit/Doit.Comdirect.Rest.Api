@@ -47,11 +47,12 @@
   - [ActivateSessionTanAsync(accessToken,sessionUUID,challengeId)](#M-Comdirect-Rest-Api-AuthClient-ActivateSessionTanAsync-System-String,System-String,System-String- 'Comdirect.Rest.Api.AuthClient.ActivateSessionTanAsync(System.String,System.String,System.String)')
   - [GenerateDigits(length)](#M-Comdirect-Rest-Api-AuthClient-GenerateDigits-System-Int32- 'Comdirect.Rest.Api.AuthClient.GenerateDigits(System.Int32)')
   - [GetHttpRequestInfoValue()](#M-Comdirect-Rest-Api-AuthClient-GetHttpRequestInfoValue 'Comdirect.Rest.Api.AuthClient.GetHttpRequestInfoValue')
-  - [GetSessionStatusAsync(accessToken,accessToken)](#M-Comdirect-Rest-Api-AuthClient-GetSessionStatusAsync-System-String- 'Comdirect.Rest.Api.AuthClient.GetSessionStatusAsync(System.String)')
+  - [GetSessionStatusAsync(accessToken)](#M-Comdirect-Rest-Api-AuthClient-GetSessionStatusAsync-System-String- 'Comdirect.Rest.Api.AuthClient.GetSessionStatusAsync(System.String)')
   - [GetTokenAndValidateSessionAsync()](#M-Comdirect-Rest-Api-AuthClient-GetTokenAndValidateSessionAsync 'Comdirect.Rest.Api.AuthClient.GetTokenAndValidateSessionAsync')
   - [GetTokenAsync()](#M-Comdirect-Rest-Api-AuthClient-GetTokenAsync 'Comdirect.Rest.Api.AuthClient.GetTokenAsync')
   - [PostSecondaryFlowAsync(accessToken)](#M-Comdirect-Rest-Api-AuthClient-PostSecondaryFlowAsync-System-String- 'Comdirect.Rest.Api.AuthClient.PostSecondaryFlowAsync(System.String)')
   - [PostValidateSessionStatusAsync(accessToken,sessionUUID)](#M-Comdirect-Rest-Api-AuthClient-PostValidateSessionStatusAsync-System-String,System-String- 'Comdirect.Rest.Api.AuthClient.PostValidateSessionStatusAsync(System.String,System.String)')
+  - [RefreshTokenFlowAsync(comdirectOAuthToken)](#M-Comdirect-Rest-Api-AuthClient-RefreshTokenFlowAsync-Comdirect-Rest-Api-ComdirectOAuthToken- 'Comdirect.Rest.Api.AuthClient.RefreshTokenFlowAsync(Comdirect.Rest.Api.ComdirectOAuthToken)')
   - [RevokeTokenAsync(accessToken)](#M-Comdirect-Rest-Api-AuthClient-RevokeTokenAsync-System-String- 'Comdirect.Rest.Api.AuthClient.RevokeTokenAsync(System.String)')
   - [SetBody(sessionUUID,request)](#M-Comdirect-Rest-Api-AuthClient-SetBody-System-String,RestSharp-RestRequest- 'Comdirect.Rest.Api.AuthClient.SetBody(System.String,RestSharp.RestRequest)')
   - [SetRequestSessionInfo(request)](#M-Comdirect-Rest-Api-AuthClient-SetRequestSessionInfo-RestSharp-RestRequest- 'Comdirect.Rest.Api.AuthClient.SetRequestSessionInfo(RestSharp.RestRequest)')
@@ -272,6 +273,8 @@
   - [ExecutionNumber](#P-Comdirect-Rest-Api-Comdirect-Execution-ExecutionNumber 'Comdirect.Rest.Api.Comdirect.Execution.ExecutionNumber')
   - [ExecutionPrice](#P-Comdirect-Rest-Api-Comdirect-Execution-ExecutionPrice 'Comdirect.Rest.Api.Comdirect.Execution.ExecutionPrice')
   - [ExecutionTimestamp](#P-Comdirect-Rest-Api-Comdirect-Execution-ExecutionTimestamp 'Comdirect.Rest.Api.Comdirect.Execution.ExecutionTimestamp')
+- [Extension](#T-Comdirect-CSharp-Extension 'Comdirect.CSharp.Extension')
+  - [ConvertToString(value,cultureInfo)](#M-Comdirect-CSharp-Extension-ConvertToString-System-Object,System-Globalization-CultureInfo- 'Comdirect.CSharp.Extension.ConvertToString(System.Object,System.Globalization.CultureInfo)')
 - [FXRateEUR](#T-Comdirect-Rest-Api-Comdirect-FXRateEUR 'Comdirect.Rest.Api.Comdirect.FXRateEUR')
   - [Ask](#P-Comdirect-Rest-Api-Comdirect-FXRateEUR-Ask 'Comdirect.Rest.Api.Comdirect.FXRateEUR.Ask')
   - [Bid](#P-Comdirect-Rest-Api-Comdirect-FXRateEUR-Bid 'Comdirect.Rest.Api.Comdirect.FXRateEUR.Bid')
@@ -802,27 +805,27 @@ A string containing the serialized HTTP request info.
 This method has no parameters.
 
 <a name='M-Comdirect-Rest-Api-AuthClient-GetSessionStatusAsync-System-String-'></a>
-### GetSessionStatusAsync(accessToken,accessToken) `method`
+### GetSessionStatusAsync(accessToken) `method`
 
 ##### Summary
 
-Gets the session status async.
+Retrieves the user's session status asynchronously.
 
 ##### Returns
 
-A Task.
+A Task that represents the asynchronous operation. The task result is the Session object representing the user's session status.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| accessToken | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The access token. |
+| accessToken | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The access token to authenticate the request. |
 
 ##### Exceptions
 
 | Name | Description |
 | ---- | ----------- |
-| [System.ApplicationException](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.ApplicationException 'System.ApplicationException') | Thrown when the request to the Comdirect API fails. |
+| [System.ApplicationException](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.ApplicationException 'System.ApplicationException') | Thrown when the request to the Comdirect API fails or when the status code is not OK. |
 
 <a name='M-Comdirect-Rest-Api-AuthClient-GetTokenAndValidateSessionAsync'></a>
 ### GetTokenAndValidateSessionAsync() `method`
@@ -894,6 +897,24 @@ A Task.
 | ---- | ---- | ----------- |
 | accessToken | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The access token. |
 | sessionUUID | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The session u u i d. |
+
+<a name='M-Comdirect-Rest-Api-AuthClient-RefreshTokenFlowAsync-Comdirect-Rest-Api-ComdirectOAuthToken-'></a>
+### RefreshTokenFlowAsync(comdirectOAuthToken) `method`
+
+##### Summary
+
+Performs the refresh token flow asynchronously.
+This method is used to refresh an access token using a refresh token.
+
+##### Returns
+
+A Task that represents the asynchronous operation. The task result is a boolean value indicating whether the refresh flow was successful.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| comdirectOAuthToken | [Comdirect.Rest.Api.ComdirectOAuthToken](#T-Comdirect-Rest-Api-ComdirectOAuthToken 'Comdirect.Rest.Api.ComdirectOAuthToken') | The ComdirectOAuthToken object containing the refresh token. |
 
 <a name='M-Comdirect-Rest-Api-AuthClient-RevokeTokenAsync-System-String-'></a>
 ### RevokeTokenAsync(accessToken) `method`
@@ -3561,6 +3582,36 @@ Execution price
 ##### Summary
 
 Date/timestamp of the order entry in UTC in the following format: (MiFID II) YYYY-MM-DDThh:mm:ss,ffffff+zz
+
+<a name='T-Comdirect-CSharp-Extension'></a>
+## Extension `type`
+
+##### Namespace
+
+Comdirect.CSharp
+
+<a name='M-Comdirect-CSharp-Extension-ConvertToString-System-Object,System-Globalization-CultureInfo-'></a>
+### ConvertToString(value,cultureInfo) `method`
+
+##### Summary
+
+Converts the specified object to its equivalent string representation using the provided culture information.
+
+##### Returns
+
+The string representation of the value. If the value is null, the method returns null.
+If the value is an enum, the method returns the enum member's name or the value specified by the EnumMemberAttribute.
+If the value is a boolean, the method returns the lowercase string representation of the value.
+If the value is a byte array, the method returns the Base64 string representation of the value.
+If the value is an array, the method returns a comma-separated string representation of the array elements.
+For other types, the method returns the string representation of the value using the provided culture information.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| value | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | The object to convert. |
+| cultureInfo | [System.Globalization.CultureInfo](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Globalization.CultureInfo 'System.Globalization.CultureInfo') | The culture information to use for formatting the value. |
 
 <a name='T-Comdirect-Rest-Api-Comdirect-FXRateEUR'></a>
 ## FXRateEUR `type`

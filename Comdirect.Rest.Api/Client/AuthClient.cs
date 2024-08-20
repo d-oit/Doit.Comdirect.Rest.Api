@@ -70,17 +70,11 @@ namespace Comdirect.Rest.Api
         }
 
         /// <summary>
-        /// Gets the session status async.
-        /// </summary>
-        /// <param name="accessToken">The access token.</param>
-        /// <returns>A Task.</returns>
-        /// <summary>
-        /// Gets the session status async.
-        /// This method is used to retrieve the status of the user's session.
+        /// Retrieves the user's session status asynchronously.
         /// </summary>
         /// <param name="accessToken">The access token to authenticate the request.</param>
-        /// <returns>A Task that represents the asynchronous operation. The task result is the user's session.</returns>
-        /// <exception cref="ApplicationException">Thrown when the request to the Comdirect API fails.</exception>
+        /// <returns>A Task that represents the asynchronous operation. The task result is the Session object representing the user's session status.</returns>
+        /// <exception cref="ApplicationException">Thrown when the request to the Comdirect API fails or when the status code is not OK.</exception>
         public async Task<Session> GetSessionStatusAsync(string accessToken)
         {
             // Initialize a new RestClient with the base URL for session management
@@ -235,6 +229,12 @@ namespace Comdirect.Rest.Api
             throw new ApplicationException("Post validate session failed!");
         }
 
+        /// <summary>
+        /// Performs the refresh token flow asynchronously.
+        /// This method is used to refresh an access token using a refresh token.
+        /// </summary>
+        /// <param name="comdirectOAuthToken">The ComdirectOAuthToken object containing the refresh token.</param>
+        /// <returns>A Task that represents the asynchronous operation. The task result is a boolean value indicating whether the refresh flow was successful.</returns>
         public async Task<bool> RefreshTokenFlowAsync(ComdirectOAuthToken comdirectOAuthToken)
         {
             // Initialize a new RestClient with the base URL for token generation
