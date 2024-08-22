@@ -18,6 +18,7 @@ namespace Comdirect.Rest.Api
         private ComdirectCredentials _comdirectCredentials;
 
         public HttpClient _httpClient = new HttpClient();
+
         /// <summary>
         /// Gets or sets the request id.
         /// </summary>
@@ -47,9 +48,9 @@ namespace Comdirect.Rest.Api
         /// </summary>
         /// <param name="accessToken">The access token.</param>
         /// <param name="sessionUUID">The session u u i d.</param>
-        /// <param name="challangeId">The challange id.</param>
+        /// <param name="challengeId">The challenge id.</param>
         /// <returns>A Task.</returns>
-        public async Task<bool> ActivateSessionTanAsync(string accessToken, string sessionUUID, string challangeId)
+        public async Task<bool> ActivateSessionTanAsync(string accessToken, string sessionUUID, string challengeId)
         {
             var client = new RestClient($"{BaseUrl}/session/clients/user/v1/sessions/{sessionUUID}");
             var request = new RestRequest();
@@ -57,7 +58,7 @@ namespace Comdirect.Rest.Api
             request.AddHeader("Authorization", $"Bearer {accessToken}");
             SetRequestSessionInfo(request);
             request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("x-once-authentication-info", "{\"id\": " + challangeId + "}");
+            request.AddHeader("x-once-authentication-info", "{\"id\": " + challengeId + "}");
             request.AddHeader("x-once-authentication", "000000");
             SetBody(sessionUUID, request);
             var response = await client.ExecuteAsync(request, Method.Patch);
@@ -69,17 +70,11 @@ namespace Comdirect.Rest.Api
         }
 
         /// <summary>
-        /// Gets the session status async.
-        /// </summary>
-        /// <param name="accessToken">The access token.</param>
-        /// <returns>A Task.</returns>
-        /// <summary>
-        /// Gets the session status async.
-        /// This method is used to retrieve the status of the user's session.
+        /// Retrieves the user's session status asynchronously.
         /// </summary>
         /// <param name="accessToken">The access token to authenticate the request.</param>
-        /// <returns>A Task that represents the asynchronous operation. The task result is the user's session.</returns>
-        /// <exception cref="ApplicationException">Thrown when the request to the Comdirect API fails.</exception>
+        /// <returns>A Task that represents the asynchronous operation. The task result is the Session object representing the user's session status.</returns>
+        /// <exception cref="ApplicationException">Thrown when the request to the Comdirect API fails or when the status code is not OK.</exception>
         public async Task<Session> GetSessionStatusAsync(string accessToken)
         {
             // Initialize a new RestClient with the base URL for session management
@@ -195,7 +190,6 @@ namespace Comdirect.Rest.Api
             }
 
             var token = JsonConvert.DeserializeObject<ComdirectOAuthToken>(response.Content);
-
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(token.token_type, token.access_token);
             _httpClient.DefaultRequestHeaders.Add("x-http-request-info", GetHttpRequestInfoValue());
             return token;
@@ -203,6 +197,15 @@ namespace Comdirect.Rest.Api
 
         /// <summary>
         /// Posts the validate session status async.
+        /// ------------------ comdirect API Doc ---------------
+        /// Auszug API Dokumenation Kapitel: 2.3 Anlage Validierung einer Session-TAN
+        /// POST URL-Präfix / session / clients /{ clientId}/ v1 / sessions /{ sessionId}/ validate
+        /// Beschreibung: Für das nun bekannte Session - Objekt wird in diesem Schritt eine TAN-Challenge
+        /// angefordert.
+        /// Bitte beachten:
+        /// Das Abrufen von fünf TAN - Challenges ohne zwischenzeitliche Entwertung einer korrekten TAN führt zur
+        /// Sperrung des Onlinebanking - Zugangs!!
+        /// ------- Ende ---- comdirect API Doc --- Ende -------
         /// </summary>
         /// <param name="accessToken">The access token.</param>
         /// <param name="sessionUUID">The session u u i d.</param>
@@ -211,6 +214,7 @@ namespace Comdirect.Rest.Api
         {
             var client = new RestClient($"{BaseUrl}/session/clients/user/v1/sessions/{sessionUUID}/validate");
             var request = new RestRequest();
+
             request.AddHeader("Accept", "application/json");
             request.AddHeader("Authorization", $"Bearer {accessToken}");
             SetRequestSessionInfo(request);
@@ -234,6 +238,50 @@ namespace Comdirect.Rest.Api
         }
 
         /// <summary>
+        /// Performs the refresh token flow asynchronously.
+        /// This method is used to refresh an access token using a refresh token.
+        /// </summary>
+        /// <param name="comdirectOAuthToken">The ComdirectOAuthToken object containing the refresh token.</param>
+        /// <returns>A Task that represents the asynchronous operation. The task result is a boolean value indicating whether the refresh flow was successful.</returns>
+        public async Task<bool> RefreshTokenFlowAsync(ComdirectOAuthToken comdirectOAuthToken)
+        {
+            // Initialize a new RestClient with the base URL for token generation
+            var client = new RestClient("https://api.comdirect.de");
+
+            // Create a new RestRequest for the POST request to the token endpoint
+            var request = new RestRequest("/oauth/token", Method.Post);
+
+            // Add headers to the request
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddHeader("Accept", "application/json");
+
+            // Add parameters to the request
+            request.AddParameter("client_id", _comdirectCredentials.ClientId);
+            request.AddParameter("client_secret", _comdirectCredentials.ClientSecret);
+            request.AddParameter("grant_type", "refresh_token");
+            request.AddParameter("refresh_token", comdirectOAuthToken.refresh_token);
+
+            // Execute the request asynchronously
+            RestResponse response = await client.ExecuteAsync(request);
+
+            var result = JsonConvert.DeserializeObject<ComdirectOAuthToken>(response.Content);
+
+            comdirectOAuthToken.refresh_token = result.refresh_token;
+            comdirectOAuthToken.access_token = result.access_token;
+            comdirectOAuthToken.expires_in = result.expires_in;
+
+            // Check the response status code
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                // If the status code is NoContent, the refresh flow was successful
+                return true;
+            }
+
+            // If the status code is not NoContent, the refresh flow failed
+            return false;
+        }
+
+        /// <summary>
         /// Revokes the token async.
         /// </summary>
         /// <param name="accessToken">The access token.</param>
@@ -247,6 +295,7 @@ namespace Comdirect.Rest.Api
             request.AddHeader("Authorization", $"Bearer {accessToken}");
             request.AddParameter("application/x-www-form-urlencoded", string.Empty, ParameterType.RequestBody);
             var response = await client.ExecuteAsync(request, Method.Delete);
+
             if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
             {
                 return true;

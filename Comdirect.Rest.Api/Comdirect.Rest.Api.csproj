@@ -5,19 +5,28 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Authors>Dominik Oswald</Authors>
-    <Company>D.O.it</Company>
+    <Company>d.o.it</Company>
     <Description>C# .NET Rest API for comdirect</Description>
     <RepositoryUrl>https://github.com/do-it-ger/Comdirect.Rest.Api</RepositoryUrl>
     <PackageId>Doit.Comdirect.RestApi</PackageId>
     <Product>Doit.Comdirect.RestApi</Product>
     <PackageProjectUrl>https://github.com/d-oit/Doit.Comdirect.Rest.Api</PackageProjectUrl>
-    <AssemblyVersion>1.0.0.1</AssemblyVersion>
-    <FileVersion>1.0.0.1</FileVersion>
+    <AssemblyVersion>1.0.0.2</AssemblyVersion>
+    <FileVersion>$(AssemblyVersion)</FileVersion>
+	<Version>$(AssemblyVersion)</Version>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DocumentationMarkdown>$(MSBuildProjectDirectory)\docs\API.md</DocumentationMarkdown>
+    <Title>Doit.Comdirect.RestApi</Title>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="RestSharp" Version="111.1.0" />
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="RestSharp" Version="111.4.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Vsxmd" Version="1.4.5">

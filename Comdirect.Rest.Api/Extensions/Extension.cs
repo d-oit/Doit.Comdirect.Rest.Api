@@ -2,6 +2,19 @@
 {
     public static class Extension
     {
+        /// <summary>
+        /// Converts the specified object to its equivalent string representation using the provided culture information.
+        /// </summary>
+        /// <param name="value">The object to convert.</param>
+        /// <param name="cultureInfo">The culture information to use for formatting the value.</param>
+        /// <returns>
+        /// The string representation of the value. If the value is null, the method returns null.
+        /// If the value is an enum, the method returns the enum member's name or the value specified by the EnumMemberAttribute.
+        /// If the value is a boolean, the method returns the lowercase string representation of the value.
+        /// If the value is a byte array, the method returns the Base64 string representation of the value.
+        /// If the value is an array, the method returns a comma-separated string representation of the array elements.
+        /// For other types, the method returns the string representation of the value using the provided culture information.
+        /// </returns>
         public static string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
             if (value == null)
