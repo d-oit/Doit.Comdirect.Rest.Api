@@ -16,7 +16,7 @@ namespace ConsoleSample
         private readonly IConfiguration _configuration;
         private readonly ComdirectCredentials? _comdirectCredentials;
         readonly IRecurringJobManager _recurringJobs;
-        AuthClient? client;
+        AuthClient? _client;
 
         public ComdirectApiHostedService(
             IBackgroundJobClient backgroundJobs,
@@ -34,12 +34,23 @@ namespace ConsoleSample
 
         }
 
+        /// <summary>
+        /// This method is responsible for starting the background service.
+        /// It logs a message indicating that the service is starting, initializes the Comdirect API client,
+        /// and then calls the base implementation of StartAsync.
+        /// </summary>
+        /// <param name="cancellationToken">A CancellationToken that indicates when the execution should be stopped.</param>
+        /// <returns>
+        /// An asynchronous Task that completes when the service has been started.
+        /// If an exception occurs during the initialization of the Comdirect API client, the exception is logged and rethrown.
+        /// </returns>
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Starting");
             try
             {
-                client = await ComdirectSession();
+                // Init the comdirect session - activate the session with the comdirect PhotoTan APP
+                _client = await ComdirectSession();
             }
             catch (Exception ex)
             {
@@ -50,12 +61,27 @@ namespace ConsoleSample
             await base.StartAsync(cancellationToken);
         }
 
+        /// <summary>
+        /// This method is responsible for stopping the background service.
+        /// It logs a message indicating that the service is stopping and then calls the base implementation of StopAsync.
+        /// </summary>
+        /// <param name="cancellationToken">A CancellationToken that indicates when the execution should be stopped.</param>
+        /// <returns>
+        /// An asynchronous Task that completes when the service has been stopped.
+        /// </returns>
         public override Task StopAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Stop");
             return base.StopAsync(cancellationToken);
         }
 
+        /// <summary>
+        /// This method is responsible for executing the main logic of the ComdirectApiHostedService.
+        /// It continuously retrieves account balances from the Comdirect API, logs the elapsed time,
+        /// and waits for a specified delay before the next run.
+        /// </summary>
+        /// <param name="stoppingToken">A CancellationToken that indicates when the execution should be stopped.</param>
+        /// <returns>An asynchronous Task that completes when the execution is stopped or an exception is thrown.</returns>
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             try
@@ -64,7 +90,7 @@ namespace ConsoleSample
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     var sw = Stopwatch.StartNew();
-                    await GetComdirecAccountBalances(client);
+                    await GetComdirecAccountBalances(_client);
 
                     _logger.LogInformation($"Enqueued in {sw.Elapsed}");
                     Console.WriteLine($"Wait for {delayNextRunMinutes} minutes");
@@ -262,10 +288,10 @@ namespace ConsoleSample
             var validComdirectToken = await authClient.PostSecondaryFlowAsync(token.access_token);
 
             // Display the expiration time of the access token
-            Console.WriteLine("token expires in (sec): " + validComdirectToken.expires_in);
+            _logger.LogDebug("token expires in (sec): " + validComdirectToken.expires_in);
 
             // Save the session details for future use
-            SaveSessionApplication(authClient, token);
+            SaveSessionApplication(authClient, validComdirectToken);
         }
 
         /// <summary>

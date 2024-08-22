@@ -16,7 +16,7 @@
 	<Version>$(AssemblyVersion)</Version>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DocumentationMarkdown>$(MSBuildProjectDirectory)\docs\API.md</DocumentationMarkdown>
-    <Title></Title>
+    <Title>Doit.Comdirect.RestApi</Title>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>

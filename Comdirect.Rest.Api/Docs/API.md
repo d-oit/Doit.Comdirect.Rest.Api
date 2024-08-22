@@ -886,6 +886,15 @@ A Task.
 ##### Summary
 
 Posts the validate session status async.
+------------------ comdirect API Doc ---------------
+Auszug API Dokumenation Kapitel: 2.3 Anlage Validierung einer Session-TAN
+POST URL-Präfix / session / clients /{ clientId}/ v1 / sessions /{ sessionId}/ validate
+Beschreibung: Für das nun bekannte Session - Objekt wird in diesem Schritt eine TAN-Challenge
+angefordert.
+Bitte beachten:
+Das Abrufen von fünf TAN - Challenges ohne zwischenzeitliche Entwertung einer korrekten TAN führt zur
+Sperrung des Onlinebanking - Zugangs!!
+------- Ende ---- comdirect API Doc --- Ende -------
 
 ##### Returns
 

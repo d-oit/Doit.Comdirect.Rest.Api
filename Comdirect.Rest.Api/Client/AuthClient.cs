@@ -190,7 +190,6 @@ namespace Comdirect.Rest.Api
             }
 
             var token = JsonConvert.DeserializeObject<ComdirectOAuthToken>(response.Content);
-
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(token.token_type, token.access_token);
             _httpClient.DefaultRequestHeaders.Add("x-http-request-info", GetHttpRequestInfoValue());
             return token;
@@ -198,6 +197,15 @@ namespace Comdirect.Rest.Api
 
         /// <summary>
         /// Posts the validate session status async.
+        /// ------------------ comdirect API Doc ---------------
+        /// Auszug API Dokumenation Kapitel: 2.3 Anlage Validierung einer Session-TAN
+        /// POST URL-Präfix / session / clients /{ clientId}/ v1 / sessions /{ sessionId}/ validate
+        /// Beschreibung: Für das nun bekannte Session - Objekt wird in diesem Schritt eine TAN-Challenge
+        /// angefordert.
+        /// Bitte beachten:
+        /// Das Abrufen von fünf TAN - Challenges ohne zwischenzeitliche Entwertung einer korrekten TAN führt zur
+        /// Sperrung des Onlinebanking - Zugangs!!
+        /// ------- Ende ---- comdirect API Doc --- Ende -------
         /// </summary>
         /// <param name="accessToken">The access token.</param>
         /// <param name="sessionUUID">The session u u i d.</param>
@@ -260,6 +268,7 @@ namespace Comdirect.Rest.Api
 
             comdirectOAuthToken.refresh_token = result.refresh_token;
             comdirectOAuthToken.access_token = result.access_token;
+            comdirectOAuthToken.expires_in = result.expires_in;
 
             // Check the response status code
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
