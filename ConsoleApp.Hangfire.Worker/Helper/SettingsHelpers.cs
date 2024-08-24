@@ -1,7 +1,17 @@
-﻿namespace ConsoleSample
+﻿namespace ConsoleApp.Hangfire.Worker.Helper
 {
+    /// <summary>
+    /// static class SettingsHelpers
+    ///  </summary>
     public static class SettingsHelpers
     {
+        /// <summary>
+        /// Updates or adds a new app setting in the 'appsettings.json' file.
+        /// </summary>
+        /// <typeparam name="T">The type of the value to be set.</typeparam>
+        /// <param name="sectionPathKey">The section path and key in the format "section1:section2:key". 
+        /// This will navigate through the JSON object to find the correct section.</param>
+        /// <param name="value">The new value to be set for the specified key.</param>
         public static void AddOrUpdateAppSetting<T>(string sectionPathKey, T value)
         {
             try
@@ -21,6 +31,14 @@
             }
         }
 
+        /// <summary>
+        /// Recursively sets a value in a JSON object based on a given section path and key.
+        /// </summary>
+        /// <typeparam name="T">The type of the value to be set.</typeparam>
+        /// <param name="sectionPathKey">The section path and key in the format "section1:section2:key". 
+        /// This will navigate through the JSON object to find the correct section.</param>
+        /// <param name="jsonObj">The JSON object to be updated.</param>
+        /// <param name="value">The new value to be set for the specified key.</param>
         private static void SetValueRecursively<T>(string sectionPathKey, dynamic jsonObj, T value)
         {
             // split the string at the first ':' character
@@ -29,7 +47,7 @@
             var currentSection = remainingSections[0];
             if (remainingSections.Length > 1)
             {
-                // continue with the procress, moving down the tree
+                // continue with the process, moving down the tree
                 var nextSection = remainingSections[1];
                 SetValueRecursively(nextSection, jsonObj[currentSection], value);
             }

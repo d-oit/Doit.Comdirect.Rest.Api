@@ -1,11 +1,11 @@
 using Comdirect.Auth.CSharp;
 using Comdirect.Rest.Api;
+using ConsoleApp.Hangfire.Worker.Helper;
 using Hangfire;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-
 
 namespace ConsoleSample
 {
@@ -18,6 +18,17 @@ namespace ConsoleSample
         readonly IRecurringJobManager _recurringJobs;
         AuthClient? _client;
 
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ComdirectApiHostedService"/> class.
+        /// This class is responsible for managing the background service that interacts with the Comdirect API.
+        /// </summary>
+        /// <param name="backgroundJobs">An instance of <see cref="IBackgroundJobClient"/> for managing background jobs.</param>
+        /// <param name="recurringJobs">An instance of <see cref="IRecurringJobManager"/> for managing recurring jobs.</param>
+        /// <param name="logger">An instance of <see cref="ILogger{ComdirectApiHostedService}"/> for logging messages.</param>
+        /// <param name="configuration">An instance of <see cref="IConfiguration"/> for accessing application settings.</param>
+        /// <exception cref="ArgumentNullException">Thrown when any of the required parameters are null.</exception>
+        /// <exception cref="Exception">Thrown when the ComdirectCredentials configuration is missing in appsettings.json.</exception>
         public ComdirectApiHostedService(
             IBackgroundJobClient backgroundJobs,
             IRecurringJobManager recurringJobs,
@@ -28,21 +39,20 @@ namespace ConsoleSample
             _backgroundJobs = backgroundJobs ?? throw new ArgumentNullException(nameof(backgroundJobs));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-
-            var section = configuration.GetSection("ComdirectCredentials") ?? throw new Exception("missing ComdirectCredentials configuration in appsettings.json");
+            var section = configuration.GetSection("ComdirectCredentials") ??
+                throw new Exception("missing ComdirectCredentials configuration in appsettings.json");
             _comdirectCredentials = section.Get<ComdirectCredentials>();
-
         }
 
         /// <summary>
-        /// This method is responsible for starting the background service.
-        /// It logs a message indicating that the service is starting, initializes the Comdirect API client,
-        /// and then calls the base implementation of StartAsync.
+        /// This method is responsible for starting the background service. It logs a message indicating that the
+        /// service is starting, initializes the Comdirect API client, and then calls the base implementation of
+        /// StartAsync.
         /// </summary>
         /// <param name="cancellationToken">A CancellationToken that indicates when the execution should be stopped.</param>
         /// <returns>
-        /// An asynchronous Task that completes when the service has been started.
-        /// If an exception occurs during the initialization of the Comdirect API client, the exception is logged and rethrown.
+        /// An asynchronous Task that completes when the service has been started. If an exception occurs during the
+        /// initialization of the Comdirect API client, the exception is logged and rethrown.
         /// </returns>
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
@@ -57,13 +67,12 @@ namespace ConsoleSample
                 _logger.LogError(ex, "No active tan session! Exit program");
                 throw;
             }
-
             await base.StartAsync(cancellationToken);
         }
 
         /// <summary>
-        /// This method is responsible for stopping the background service.
-        /// It logs a message indicating that the service is stopping and then calls the base implementation of StopAsync.
+        /// This method is responsible for stopping the background service. It logs a message indicating that the
+        /// service is stopping and then calls the base implementation of StopAsync.
         /// </summary>
         /// <param name="cancellationToken">A CancellationToken that indicates when the execution should be stopped.</param>
         /// <returns>
@@ -76,9 +85,9 @@ namespace ConsoleSample
         }
 
         /// <summary>
-        /// This method is responsible for executing the main logic of the ComdirectApiHostedService.
-        /// It continuously retrieves account balances from the Comdirect API, logs the elapsed time,
-        /// and waits for a specified delay before the next run.
+        /// This method is responsible for executing the main logic of the ComdirectApiHostedService. It continuously
+        /// retrieves account balances from the Comdirect API, logs the elapsed time, and waits for a specified delay
+        /// before the next run.
         /// </summary>
         /// <param name="stoppingToken">A CancellationToken that indicates when the execution should be stopped.</param>
         /// <returns>An asynchronous Task that completes when the execution is stopped or an exception is thrown.</returns>
@@ -91,7 +100,6 @@ namespace ConsoleSample
                 {
                     var sw = Stopwatch.StartNew();
                     await GetComdirecAccountBalances(_client);
-
                     _logger.LogInformation($"Enqueued in {sw.Elapsed}");
                     Console.WriteLine($"Wait for {delayNextRunMinutes} minutes");
                     await Task.Delay(TimeSpan.FromMinutes(delayNextRunMinutes), stoppingToken);
@@ -105,18 +113,19 @@ namespace ConsoleSample
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuthClient"/> class for interacting with the Comdirect authentication API.
-        /// This method handles the authentication flow, including obtaining a valid access token and refresh token.
-        /// If a saved TAN can be reused, it will be used to refresh the session. Otherwise, the user will be prompted to enter a TAN.
+        /// Initializes a new instance of the <see cref="AuthClient"/> class for interacting with the Comdirect
+        /// authentication API. This method handles the authentication flow, including obtaining a valid access token
+        /// and refresh token. If a saved TAN can be reused, it will be used to refresh the session. Otherwise, the user
+        /// will be prompted to enter a TAN.
         /// </summary>
         /// <returns>
-        /// An asynchronous Task that returns an instance of the <see cref="AuthClient"/> class, representing the authenticated client.
+        /// An asynchronous Task that returns an instance of the <see cref="AuthClient"/> class, representing the
+        /// authenticated client.
         /// </returns>
         public async Task<AuthClient> ComdirectSession()
         {
             var httpClient = new HttpClient();
             var authClient = new AuthClient(httpClient, _comdirectCredentials);
-
             // Check if a saved TAN can be reused
             if (CheckReuseTan(_configuration))
             {
@@ -127,29 +136,29 @@ namespace ConsoleSample
             {
                 // Perform the initial authentication flow to obtain a valid access token
                 var token = await authClient.GetTokenAsync();
-
                 // Get the session status
                 var session = await authClient.GetSessionStatusAsync(token.access_token);
-
                 // Validate the session status
-                var validateSessionStatus = await authClient.PostValidateSessionStatusAsync(token.access_token, session.Identifier);
-
+                var validateSessionStatus = await authClient.PostValidateSessionStatusAsync(
+                    token.access_token,
+                    session.Identifier);
                 // Prompt the user to enter a TAN
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Active Tan with the comdirect app. Press any key if finished");
                 Console.ResetColor();
                 Console.ReadKey();
-
                 // Activate the session using the entered TAN
-                if (await authClient.ActivateSessionTanAsync(token.access_token, session.Identifier, validateSessionStatus.id))
+                if (await authClient.ActivateSessionTanAsync(
+                    token.access_token,
+                    session.Identifier,
+                    validateSessionStatus.id))
                 {
                     // Display a success message
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("login ok");
                     Console.ResetColor();
-
                     // Perform the secondary authentication flow
                     await AuthFlow(authClient, token);
                 }
@@ -161,7 +170,6 @@ namespace ConsoleSample
                     throw ex;
                 }
             }
-
             // Return the authenticated client
             return authClient;
         }
@@ -171,8 +179,8 @@ namespace ConsoleSample
         /// </summary>
         /// <param name="authClient">An instance of the AuthClient class for interacting with the Comdirect authentication API.</param>
         /// <returns>
-        /// An asynchronous Task that completes when the TAN session refresh is completed.
-        /// If the refresh token flow fails, an exception is thrown.
+        /// An asynchronous Task that completes when the TAN session refresh is completed. If the refresh token flow
+        /// fails, an exception is thrown.
         /// </returns>
         private async Task RefreshTan(AuthClient authClient)
         {
@@ -220,7 +228,6 @@ namespace ConsoleSample
         public async Task GetComdirecAccountBalances(AuthClient client)
         {
             _logger.LogDebug(nameof(GetComdirecAccountBalances));
-
             // Check if the saved TAN can be reused
             if (!CheckReuseTan(_configuration))
             {
@@ -228,16 +235,14 @@ namespace ConsoleSample
                 // Refresh the TAN session if the saved values are not valid
                 await RefreshTan(client);
             }
-
             // Get AccountBalances from all comdirect banking accounts
             var balances = await client.BankingClientsV2AccountsBalancesAsync(string.Empty, null);
-
             // Add your code to display the account balances and transactions    
             foreach (var balance in balances.Values)
             {
-                Console.WriteLine($"Account: {balance.Account.AccountDisplayId} - {balance.Account.AccountType.Text}, Balance (EUR): {balance.BalanceEUR.Value}");
+                Console.WriteLine(
+                    $"Account: {balance.Account.AccountDisplayId} - {balance.Account.AccountType.Text}, Balance (EUR): {balance.BalanceEUR.Value}");
             }
-
             _logger.LogDebug($"End -  {nameof(GetComdirecAccountBalances)} - ");
         }
 
@@ -250,54 +255,54 @@ namespace ConsoleSample
         private bool CheckReuseTan(IConfiguration config)
         {
             bool sessionValid = false;
-
             // Retrieve the last session date and time from the application's configuration
             var configlastSessionDateTime = config.GetValue<DateTime?>("ComdirectSavedSession:LastSessionDateTime");
-
             // Check if the last session date and time is available
             if (configlastSessionDateTime.HasValue)
             {
                 _logger.LogDebug($"Check Tan in: {nameof(CheckReuseTan)} configlastSessionDateTime.HasValue");
                 TimeSpan difference = DateTime.Now - configlastSessionDateTime.Value;
-
                 // Retrieve the session expiration time in seconds from the application's configuration
                 var expiresInSeconds = config.GetValue<int?>("ComdirectSavedSession:ExpiresInSeconds") ?? 500;
-
                 // Check if the session is still valid based on the expiration time
                 if (difference.TotalSeconds < (expiresInSeconds - 99))
                 {
                     sessionValid = true;
                 }
-
             }
             _logger.LogDebug($"Check Tan in: {nameof(CheckReuseTan)} sessionValid: {sessionValid}");
             return sessionValid;
         }
 
         /// <summary>
-        /// Performs the secondary authentication flow for the Comdirect API.
-        /// This method is responsible for obtaining a valid access token and refresh token,
-        /// and then saving the session details for future use.
+        /// Performs the secondary authentication flow for the Comdirect API. This method is responsible for obtaining a
+        /// valid access token and refresh token, and then saving the session details for future use.
         /// </summary>
-        /// <param name="authClient">An instance of the AuthClient class, which provides methods for interacting with the Comdirect authentication API.</param>
+        /// <param name="authClient">
+        /// An instance of the AuthClient class, which provides methods for interacting with the Comdirect
+        /// authentication API.
+        /// </param>
         /// <param name="token">The ComdirectOAuthToken object containing the access token obtained during the initial authentication flow.</param>
         /// <returns>An asynchronous Task that completes when the secondary authentication flow is completed.</returns>
         private async Task AuthFlow(AuthClient authClient, ComdirectOAuthToken token)
         {
             // Perform the secondary authentication flow by calling the PostSecondaryFlowAsync method
             var validComdirectToken = await authClient.PostSecondaryFlowAsync(token.access_token);
-
             // Display the expiration time of the access token
             _logger.LogDebug("token expires in (sec): " + validComdirectToken.expires_in);
-
             // Save the session details for future use
             SaveSessionApplication(authClient, validComdirectToken);
         }
 
         /// <summary>
-        /// Saves the session details for future use by updating the application's settings.
+        /// Saves the session details for future use by updating the application's settings. <code lang="json">
+        /// "ComdirectSavedSession": { "SessionId": null, "RequestId": null, "RefreshToken": null,
+        /// "LastSessionDateTime": null, "ExpiresInSeconds": null }</code>
         /// </summary>
-        /// <param name="authClient">An instance of the AuthClient class, which provides methods for interacting with the Comdirect authentication API.</param>
+        /// <param name="authClient">
+        /// An instance of the AuthClient class, which provides methods for interacting with the Comdirect
+        /// authentication API.
+        /// </param>
         /// <param name="token">The ComdirectOAuthToken object containing the access token obtained during the initial authentication flow.</param>
         private void SaveSessionApplication(AuthClient authClient, ComdirectOAuthToken token)
         {

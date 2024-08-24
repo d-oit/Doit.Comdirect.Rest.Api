@@ -42,6 +42,8 @@
   - [Value](#P-Comdirect-Rest-Api-Comdirect-AmountValue-Value 'Comdirect.Rest.Api.Comdirect.AmountValue.Value')
 - [AuthClient](#T-Comdirect-Rest-Api-AuthClient 'Comdirect.Rest.Api.AuthClient')
   - [#ctor(httpClient,comdirectCredentials)](#M-Comdirect-Rest-Api-AuthClient-#ctor-System-Net-Http-HttpClient,Comdirect-Auth-CSharp-ComdirectCredentials- 'Comdirect.Rest.Api.AuthClient.#ctor(System.Net.Http.HttpClient,Comdirect.Auth.CSharp.ComdirectCredentials)')
+  - [_comdirectCredentials](#F-Comdirect-Rest-Api-AuthClient-_comdirectCredentials 'Comdirect.Rest.Api.AuthClient._comdirectCredentials')
+  - [_httpClient](#F-Comdirect-Rest-Api-AuthClient-_httpClient 'Comdirect.Rest.Api.AuthClient._httpClient')
   - [RequestId](#P-Comdirect-Rest-Api-AuthClient-RequestId 'Comdirect.Rest.Api.AuthClient.RequestId')
   - [SessionId](#P-Comdirect-Rest-Api-AuthClient-SessionId 'Comdirect.Rest.Api.AuthClient.SessionId')
   - [ActivateSessionTanAsync(accessToken,sessionUUID,challengeId)](#M-Comdirect-Rest-Api-AuthClient-ActivateSessionTanAsync-System-String,System-String,System-String- 'Comdirect.Rest.Api.AuthClient.ActivateSessionTanAsync(System.String,System.String,System.String)')
@@ -331,6 +333,10 @@
   - [ShortName](#P-Comdirect-Rest-Api-Comdirect-Instrument-ShortName 'Comdirect.Rest.Api.Comdirect.Instrument.ShortName')
   - [StaticData](#P-Comdirect-Rest-Api-Comdirect-Instrument-StaticData 'Comdirect.Rest.Api.Comdirect.Instrument.StaticData')
   - [Wkn](#P-Comdirect-Rest-Api-Comdirect-Instrument-Wkn 'Comdirect.Rest.Api.Comdirect.Instrument.Wkn')
+- [Link](#T-Comdirect-Rest-Api-Link 'Comdirect.Rest.Api.Link')
+  - [href](#P-Comdirect-Rest-Api-Link-href 'Comdirect.Rest.Api.Link.href')
+  - [method](#P-Comdirect-Rest-Api-Link-method 'Comdirect.Rest.Api.Link.method')
+  - [rel](#P-Comdirect-Rest-Api-Link-rel 'Comdirect.Rest.Api.Link.rel')
 - [Order](#T-Comdirect-Rest-Api-Comdirect-Order 'Comdirect.Rest.Api.Comdirect.Order')
   - [BestEx](#P-Comdirect-Rest-Api-Comdirect-Order-BestEx 'Comdirect.Rest.Api.Comdirect.Order.BestEx')
   - [CancelledQuantity](#P-Comdirect-Rest-Api-Comdirect-Order-CancelledQuantity 'Comdirect.Rest.Api.Comdirect.Order.CancelledQuantity')
@@ -427,6 +433,11 @@
 - [TransactionDirection](#T-Comdirect-Rest-Api-Comdirect-TransactionDirection 'Comdirect.Rest.Api.Comdirect.TransactionDirection')
 - [TransactionState](#T-Comdirect-Rest-Api-Comdirect-TransactionState 'Comdirect.Rest.Api.Comdirect.TransactionState')
 - [Type](#T-Comdirect-Rest-Api-Comdirect-Type 'Comdirect.Rest.Api.Comdirect.Type')
+- [ValidateSession](#T-Comdirect-Rest-Api-ValidateSession 'Comdirect.Rest.Api.ValidateSession')
+  - [availableTypes](#P-Comdirect-Rest-Api-ValidateSession-availableTypes 'Comdirect.Rest.Api.ValidateSession.availableTypes')
+  - [id](#P-Comdirect-Rest-Api-ValidateSession-id 'Comdirect.Rest.Api.ValidateSession.id')
+  - [link](#P-Comdirect-Rest-Api-ValidateSession-link 'Comdirect.Rest.Api.ValidateSession.link')
+  - [typ](#P-Comdirect-Rest-Api-ValidateSession-typ 'Comdirect.Rest.Api.ValidateSession.typ')
 - [Venue](#T-Comdirect-Rest-Api-Comdirect-Venue 'Comdirect.Rest.Api.Comdirect.Venue')
 - [VisaCardImage](#T-Comdirect-Rest-Api-Comdirect-VisaCardImage 'Comdirect.Rest.Api.Comdirect.VisaCardImage')
   - [ImageBaseFilename](#P-Comdirect-Rest-Api-Comdirect-VisaCardImage-ImageBaseFilename 'Comdirect.Rest.Api.Comdirect.VisaCardImage.ImageBaseFilename')
@@ -737,19 +748,35 @@ Initializes a new instance of the [AuthClient](#T-Comdirect-Rest-Api-AuthClient 
 | httpClient | [System.Net.Http.HttpClient](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Net.Http.HttpClient 'System.Net.Http.HttpClient') | The HttpClient instance to be used for making HTTP requests. |
 | comdirectCredentials | [Comdirect.Auth.CSharp.ComdirectCredentials](#T-Comdirect-Auth-CSharp-ComdirectCredentials 'Comdirect.Auth.CSharp.ComdirectCredentials') | The ComdirectCredentials object containing the client id, client secret, username, and pin. |
 
+<a name='F-Comdirect-Rest-Api-AuthClient-_comdirectCredentials'></a>
+### _comdirectCredentials `constants`
+
+##### Summary
+
+ComdirectCredentials _comdirectCredentials
+
+<a name='F-Comdirect-Rest-Api-AuthClient-_httpClient'></a>
+### _httpClient `constants`
+
+##### Summary
+
+HttpClient _httpClient = new HttpClient()
+
 <a name='P-Comdirect-Rest-Api-AuthClient-RequestId'></a>
 ### RequestId `property`
 
 ##### Summary
 
 Gets or sets the request id.
+Default: GenerateDigits(9);
 
 <a name='P-Comdirect-Rest-Api-AuthClient-SessionId'></a>
 ### SessionId `property`
 
 ##### Summary
 
-Gets or sets the session id.
+Gets or sets the session id. 
+Default: Guid.NewGuid().ToString("N").ToLower();
 
 <a name='M-Comdirect-Rest-Api-AuthClient-ActivateSessionTanAsync-System-String,System-String,System-String-'></a>
 ### ActivateSessionTanAsync(accessToken,sessionUUID,challengeId) `method`
@@ -4038,6 +4065,38 @@ Static data of the instrument, e.g., notation, instrument type
 
 WKN
 
+<a name='T-Comdirect-Rest-Api-Link'></a>
+## Link `type`
+
+##### Namespace
+
+Comdirect.Rest.Api
+
+##### Summary
+
+Represents a hypermedia link.
+
+<a name='P-Comdirect-Rest-Api-Link-href'></a>
+### href `property`
+
+##### Summary
+
+The target URI of the link.
+
+<a name='P-Comdirect-Rest-Api-Link-method'></a>
+### method `property`
+
+##### Summary
+
+The HTTP method to use when following the link.
+
+<a name='P-Comdirect-Rest-Api-Link-rel'></a>
+### rel `property`
+
+##### Summary
+
+The relationship of the link to the context.
+
 <a name='T-Comdirect-Rest-Api-Comdirect-Order'></a>
 ## Order `type`
 
@@ -4797,6 +4856,45 @@ Comdirect.Rest.Api.Comdirect
 ##### Summary
 
 Type of venue.
+
+<a name='T-Comdirect-Rest-Api-ValidateSession'></a>
+## ValidateSession `type`
+
+##### Namespace
+
+Comdirect.Rest.Api
+
+##### Summary
+
+Represents a validated session with additional information.
+
+<a name='P-Comdirect-Rest-Api-ValidateSession-availableTypes'></a>
+### availableTypes `property`
+
+##### Summary
+
+Array of available types for the session.
+
+<a name='P-Comdirect-Rest-Api-ValidateSession-id'></a>
+### id `property`
+
+##### Summary
+
+Unique identifier of the session.
+
+<a name='P-Comdirect-Rest-Api-ValidateSession-link'></a>
+### link `property`
+
+##### Summary
+
+Link associated with the session.
+
+<a name='P-Comdirect-Rest-Api-ValidateSession-typ'></a>
+### typ `property`
+
+##### Summary
+
+Type of the session.
 
 <a name='T-Comdirect-Rest-Api-Comdirect-Venue'></a>
 ## Venue `type`
