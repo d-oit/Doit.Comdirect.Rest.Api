@@ -9,10 +9,12 @@ https://kunde.comdirect.de/itx/oauth/privatkunden?execution=e3s1
 
 1. Download the latest swagger json from https://kunde.comdirect.de/cms/media/comdirect_rest_api_swagger.json
 2. Change the comdirect type "cd_secondary" to  "password
+    ```json
     "CdSecondary": {
       "type": "oauth2",
       "tokenUrl": "https://api.comdirect.de/oauth/token",
-      "flow": "cd_secondary", >>  "flow": "password",
+      "flow": "cd_secondary", >>  **"flow": "password"**,
+      ```
 3. Install the Visual Studio extension to generate the C# Client: https://github.com/unchase/Unchase.OpenAPI.Connectedservice      
 4. Generate the client [![comdirect-unchase-openapi.png](https://i.postimg.cc/bvjFpBWf/comdirect-unchase-openapi.png)](https://postimg.cc/75mNNmqK)
 5. Manage user secrets for the project with your comdirect credentials. Define in the appsettings.json / secrets.json file:
@@ -50,13 +52,13 @@ The sample use **Serilog** to log messages configured in the **appsettings.json*
 #### comdirect API doc 
 
 > 2.3 Anlage Validierung einer Session-TAN
-> POST URL-Präfix/session/clients/{clientId}/v1/sessions/{sessionId}/validate
-> Beschreibung: Für das nun bekannte Session-Objekt wird in diesem Schritt eine TAN-Challenge
+> POST URL-PrÃ¤fix/session/clients/{clientId}/v1/sessions/{sessionId}/validate
+> Beschreibung: FÃ¼r das nun bekannte Session-Objekt wird in diesem Schritt eine TAN-Challenge
 > angefordert.
 
 > **Bitte beachten!**
 
-> [!CAUTION] Das Abrufen von **fünf** TAN-Challenges ohne zwischenzeitliche Entwertung einer korrekten TAN führt zur 
+> [!CAUTION] Das Abrufen von **fÃ¼nf** TAN-Challenges ohne zwischenzeitliche Entwertung einer korrekten TAN fÃ¼hrt zur 
 > [!CAUTION] **Sperrung des Onlinebanking-Zugangs**
 
 ## Links
