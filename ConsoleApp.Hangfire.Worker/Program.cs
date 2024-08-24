@@ -19,9 +19,9 @@ namespace ConsoleSample
         public static void Main(string[] args)
         {
             //https://github.com/dotnet/EntityFramework.Docs/issues/3939#issuecomment-1239576724
-            CreateHostBuilder(args).UseEnvironment("Development").Build().Run();
-
+            CreateHostBuilder(args).Build().Run();
         }
+
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
@@ -32,6 +32,7 @@ namespace ConsoleSample
                                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                                .AddEnvironmentVariables();
                      })
+                    // Use serilog log configuration from appsettings.json
                     .UseSerilog((context, services, configuration) => configuration
                         .ReadFrom.Configuration(context.Configuration)
                         .Enrich.FromLogContext())

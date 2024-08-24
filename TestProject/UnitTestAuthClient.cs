@@ -10,6 +10,9 @@ namespace TestProject
     {
         private ComdirectCredentials ComdirectCredentials;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UnitTestAuthClient"/> class.
+        /// </summary>
         public UnitTestAuthClient()
         {
             var configuration = new ConfigurationBuilder()
@@ -18,9 +21,8 @@ namespace TestProject
 
             // get credentials from user.secrets -> see appsettings.json Comdirect.Rest.Api.csproj
             var section = configuration.GetSection("ComdirectCredentials");
-            ComdirectCredentials = section.Get<ComdirectCredentials>();
+            ComdirectCredentials = section.Get<ComdirectCredentials>() ?? throw new ArgumentNullException(nameof(ComdirectCredentials));
         }
-
 
         /// This method is used to get the status of a session based on the provided access token.
         /// </summary>

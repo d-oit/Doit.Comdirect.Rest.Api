@@ -15,17 +15,25 @@ namespace Comdirect.Rest.Api
     /// </summary>
     public class AuthClient : ComdirectClient
     {
+        /// <summary>
+        /// ComdirectCredentials _comdirectCredentials
+        /// </summary>
         private ComdirectCredentials _comdirectCredentials;
 
+        /// <summary>
+        /// HttpClient _httpClient = new HttpClient()
+        /// </summary>
         public HttpClient _httpClient = new HttpClient();
 
         /// <summary>
         /// Gets or sets the request id.
+        /// Default: GenerateDigits(9);
         /// </summary>
         public string RequestId { get; set; } = GenerateDigits(9);
 
         /// <summary>
-        /// Gets or sets the session id.
+        /// Gets or sets the session id. 
+        /// Default: Guid.NewGuid().ToString("N").ToLower();
         /// </summary>
         public string SessionId { get; set; } = Guid.NewGuid().ToString("N").ToLower();
 

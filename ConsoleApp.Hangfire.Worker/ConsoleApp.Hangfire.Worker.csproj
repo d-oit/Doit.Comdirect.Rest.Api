@@ -14,7 +14,7 @@
 		<Company>d.o.it</Company>
 		<Description>C# .NET Rest API for comdirect Worker Sample with Hangfire</Description>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<DocumentationMarkdown>$(MSBuildProjectDirectory)\docs\API.md</DocumentationMarkdown>
+		<DocumentationMarkdown>$(MSBuildProjectDirectory)\docs\DoitComdirectWorkerAPI.md</DocumentationMarkdown>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -44,6 +44,10 @@
 		<None Update="appsettings.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="docs\" />
 	</ItemGroup>
 
 </Project>
