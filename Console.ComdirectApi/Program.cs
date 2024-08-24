@@ -84,6 +84,7 @@ namespace ConsoleApp.ComdirectApi
                         var token = new ComdirectOAuthToken();
                         token.refresh_token = refreshToken;
                         Console.WriteLine("Refresh token");
+                        // get access token
                         if (!await authClient.RefreshTokenFlowAsync(token))
                         {
                             SettingsHelpers.AddOrUpdateAppSetting<string>("ComdirectSavedSession:SessionId", string.Empty);
