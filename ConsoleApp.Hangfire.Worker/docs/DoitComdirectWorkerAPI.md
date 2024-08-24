@@ -14,9 +14,6 @@
   - [SaveSessionApplication(authClient,token)](#M-ConsoleSample-ComdirectApiHostedService-SaveSessionApplication-Comdirect-Rest-Api-AuthClient,Comdirect-Rest-Api-ComdirectOAuthToken- 'ConsoleSample.ComdirectApiHostedService.SaveSessionApplication(Comdirect.Rest.Api.AuthClient,Comdirect.Rest.Api.ComdirectOAuthToken)')
   - [StartAsync(cancellationToken)](#M-ConsoleSample-ComdirectApiHostedService-StartAsync-System-Threading-CancellationToken- 'ConsoleSample.ComdirectApiHostedService.StartAsync(System.Threading.CancellationToken)')
   - [StopAsync(cancellationToken)](#M-ConsoleSample-ComdirectApiHostedService-StopAsync-System-Threading-CancellationToken- 'ConsoleSample.ComdirectApiHostedService.StopAsync(System.Threading.CancellationToken)')
-- [SettingsHelpers](#T-ConsoleApp-Hangfire-Worker-Helper-SettingsHelpers 'ConsoleApp.Hangfire.Worker.Helper.SettingsHelpers')
-  - [AddOrUpdateAppSetting\`\`1(sectionPathKey,value)](#M-ConsoleApp-Hangfire-Worker-Helper-SettingsHelpers-AddOrUpdateAppSetting``1-System-String,``0- 'ConsoleApp.Hangfire.Worker.Helper.SettingsHelpers.AddOrUpdateAppSetting``1(System.String,``0)')
-  - [SetValueRecursively\`\`1(sectionPathKey,jsonObj,value)](#M-ConsoleApp-Hangfire-Worker-Helper-SettingsHelpers-SetValueRecursively``1-System-String,System-Object,``0- 'ConsoleApp.Hangfire.Worker.Helper.SettingsHelpers.SetValueRecursively``1(System.String,System.Object,``0)')
 - [Startup](#T-ConsoleSample-Startup 'ConsoleSample.Startup')
   - [Configure(app,env)](#M-ConsoleSample-Startup-Configure-Microsoft-AspNetCore-Builder-IApplicationBuilder,Microsoft-AspNetCore-Hosting-IWebHostEnvironment- 'ConsoleSample.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)')
   - [ConfigureServices(services)](#M-ConsoleSample-Startup-ConfigureServices-Microsoft-Extensions-DependencyInjection-IServiceCollection- 'ConsoleSample.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)')
@@ -217,60 +214,6 @@ An asynchronous Task that completes when the service has been stopped.
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | cancellationToken | [System.Threading.CancellationToken](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Threading.CancellationToken 'System.Threading.CancellationToken') | A CancellationToken that indicates when the execution should be stopped. |
-
-<a name='T-ConsoleApp-Hangfire-Worker-Helper-SettingsHelpers'></a>
-## SettingsHelpers `type`
-
-##### Namespace
-
-ConsoleApp.Hangfire.Worker.Helper
-
-##### Summary
-
-static class SettingsHelpers
-
-<a name='M-ConsoleApp-Hangfire-Worker-Helper-SettingsHelpers-AddOrUpdateAppSetting``1-System-String,``0-'></a>
-### AddOrUpdateAppSetting\`\`1(sectionPathKey,value) `method`
-
-##### Summary
-
-Updates or adds a new app setting in the 'appsettings.json' file.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| sectionPathKey | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The section path and key in the format "section1:section2:key". 
-This will navigate through the JSON object to find the correct section. |
-| value | [\`\`0](#T-``0 '``0') | The new value to be set for the specified key. |
-
-##### Generic Types
-
-| Name | Description |
-| ---- | ----------- |
-| T | The type of the value to be set. |
-
-<a name='M-ConsoleApp-Hangfire-Worker-Helper-SettingsHelpers-SetValueRecursively``1-System-String,System-Object,``0-'></a>
-### SetValueRecursively\`\`1(sectionPathKey,jsonObj,value) `method`
-
-##### Summary
-
-Recursively sets a value in a JSON object based on a given section path and key.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| sectionPathKey | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The section path and key in the format "section1:section2:key". 
-This will navigate through the JSON object to find the correct section. |
-| jsonObj | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | The JSON object to be updated. |
-| value | [\`\`0](#T-``0 '``0') | The new value to be set for the specified key. |
-
-##### Generic Types
-
-| Name | Description |
-| ---- | ----------- |
-| T | The type of the value to be set. |
 
 <a name='T-ConsoleSample-Startup'></a>
 ## Startup `type`

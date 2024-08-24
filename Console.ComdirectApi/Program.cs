@@ -2,9 +2,11 @@
 using Comdirect.Rest.Api;
 using Comdirect.Rest.Api.Comdirect;
 using Microsoft.Extensions.Configuration;
+using SettingManager;
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace ConsoleApp.ComdirectApi
@@ -16,6 +18,9 @@ namespace ConsoleApp.ComdirectApi
             await MainAsync(args);
         }
 
+        static IConfigurationRoot _configurationRoot;
+        static bool _isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
+        static SecretsManager _secretsManager;
         private static async Task MainAsync(string[] args)
         {
             Console.WriteLine("Comdirect Rest Api!");
@@ -36,12 +41,18 @@ namespace ConsoleApp.ComdirectApi
             // Bitte beachten:
             // Das Abrufen von fünf TAN - Challenges ohne zwischenzeitliche Entwertung einer korrekten TAN führt zur
             // Sperrung des Onlinebanking - Zugangs
-            var configuration = new ConfigurationBuilder()
+            _configurationRoot = new ConfigurationBuilder()
               .AddUserSecrets<Program>()
               .Build();
 
-            var section = configuration.GetSection("ComdirectCredentials");
+            _secretsManager = new SecretsManager(_configurationRoot);
+
+            var section = _configurationRoot.GetSection("ComdirectCredentials");
             var comdirectCredentials = section.Get<ComdirectCredentials>();
+            if (comdirectCredentials == null)
+            {
+                throw new Exception("missing ComdirectCredentials configuration in secrets.json");
+            }
 
             var builder = new ConfigurationBuilder();
             builder.SetBasePath(AppContext.BaseDirectory)
@@ -154,7 +165,16 @@ namespace ConsoleApp.ComdirectApi
         {
             SettingsHelpers.AddOrUpdateAppSetting<string>("ComdirectSavedSession:SessionId", authClient.SessionId);
             SettingsHelpers.AddOrUpdateAppSetting<string>("ComdirectSavedSession:RequestId", authClient.RequestId);
-            SettingsHelpers.AddOrUpdateAppSetting<string>("ComdirectSavedSession:RefreshToken", token.refresh_token);
+            if (_isDevelopment)
+            {
+                SettingsHelpers.AddOrUpdateAppSetting<string>("ComdirectSavedSession:RefreshToken", token.refresh_token);
+            }
+            else
+            {
+                SettingsHelpers.AddOrUpdateAppSetting<string>("ComdirectSavedSession:RefreshToken", "refresh_token from secrets.json or env var");
+                _secretsManager.UpdateSecret("ComdirectSavedSession:RefreshToken", token.refresh_token);
+            }
+
             SettingsHelpers.AddOrUpdateAppSetting<DateTime>("ComdirectSavedSession:LastSessionDateTime", DateTime.Now);
         }
 
@@ -182,47 +202,6 @@ namespace ConsoleApp.ComdirectApi
                         lastAccountId = item.AccountId;
                     }
                 }
-            }
-        }
-    }
-
-    public static class SettingsHelpers
-    {
-        public static void AddOrUpdateAppSetting<T>(string sectionPathKey, T value)
-        {
-            try
-            {
-                var filePath = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
-                string json = File.ReadAllText(filePath);
-                dynamic jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
-
-                SetValueRecursively(sectionPathKey, jsonObj, value);
-
-                string output = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
-                File.WriteAllText(filePath, output);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error writing app settings | {0}", ex.Message);
-            }
-        }
-
-        private static void SetValueRecursively<T>(string sectionPathKey, dynamic jsonObj, T value)
-        {
-            // split the string at the first ':' character
-            var remainingSections = sectionPathKey.Split(":", 2);
-
-            var currentSection = remainingSections[0];
-            if (remainingSections.Length > 1)
-            {
-                // continue with the procress, moving down the tree
-                var nextSection = remainingSections[1];
-                SetValueRecursively(nextSection, jsonObj[currentSection], value);
-            }
-            else
-            {
-                // we've got to the end of the tree, set the value
-                jsonObj[currentSection] = value;
             }
         }
     }

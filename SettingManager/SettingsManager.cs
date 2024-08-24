@@ -1,4 +1,4 @@
-﻿namespace ConsoleApp.Hangfire.Worker.Helper
+﻿namespace SettingManager
 {
     /// <summary>
     /// static class SettingsHelpers

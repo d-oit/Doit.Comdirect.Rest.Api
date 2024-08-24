@@ -39,6 +39,11 @@ https://kunde.comdirect.de/itx/oauth/privatkunden?execution=e3s1
   }
 ``` 
 
+### Hangfire
+
+The sample use [Hangfire.InMemory](https://github.com/HangfireIO/Hangfire.InMemory) for testing only. 
+Use a persistent storage like SQL Server or Redis for production.
+
 ### Logging
 
 **Serilog**

@@ -8,7 +8,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp.ComdirectApi", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestProject", "TestProject\TestProject.csproj", "{89950D6F-9705-4D6F-8A2F-C2252B60F528}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp.Hangfire.Worker", "ConsoleApp.Hangfire.Worker\ConsoleApp.Hangfire.Worker.csproj", "{4A68021A-A486-44ED-A544-2E5B3832D6D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp.Hangfire.Worker", "ConsoleApp.Hangfire.Worker\ConsoleApp.Hangfire.Worker.csproj", "{4A68021A-A486-44ED-A544-2E5B3832D6D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SettingManager", "SettingManager\SettingManager.csproj", "{F3153938-98E5-4A8B-93CF-7641DA4BF21C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +34,10 @@ Global
 		{4A68021A-A486-44ED-A544-2E5B3832D6D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A68021A-A486-44ED-A544-2E5B3832D6D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A68021A-A486-44ED-A544-2E5B3832D6D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3153938-98E5-4A8B-93CF-7641DA4BF21C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3153938-98E5-4A8B-93CF-7641DA4BF21C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3153938-98E5-4A8B-93CF-7641DA4BF21C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3153938-98E5-4A8B-93CF-7641DA4BF21C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

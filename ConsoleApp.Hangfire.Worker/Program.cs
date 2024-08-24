@@ -19,9 +19,8 @@ namespace ConsoleSample
         public static void Main(string[] args)
         {
             //https://github.com/dotnet/EntityFramework.Docs/issues/3939#issuecomment-1239576724
-            CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).UseEnvironment("Development").Build().Run();
         }
-
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
@@ -40,6 +39,5 @@ namespace ConsoleSample
                 {
                     webBuilder.UseStartup<Startup>();
                 });
-
     }
 }

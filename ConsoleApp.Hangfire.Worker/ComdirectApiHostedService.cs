@@ -1,10 +1,10 @@
 using Comdirect.Auth.CSharp;
 using Comdirect.Rest.Api;
-using ConsoleApp.Hangfire.Worker.Helper;
 using Hangfire;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SettingManager;
 using System.Diagnostics;
 
 namespace ConsoleSample
@@ -40,8 +40,12 @@ namespace ConsoleSample
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             var section = configuration.GetSection("ComdirectCredentials") ??
-                throw new Exception("missing ComdirectCredentials configuration in appsettings.json");
+                throw new Exception("missing ComdirectCredentials configuration in secrets.json");
             _comdirectCredentials = section.Get<ComdirectCredentials>();
+            if(_comdirectCredentials == null)
+            {
+                throw new Exception("missing ComdirectCredentials configuration in secrets.json");
+            }
         }
 
         /// <summary>
@@ -95,13 +99,22 @@ namespace ConsoleSample
         {
             try
             {
-                var delayNextRunMinutes = 6;
+                // read the ExpiresInSeconds value from last comdirect api call
+                var expiresInSeconds = _configuration.GetValue<int?>("ComdirectSavedSession:ExpiresInSeconds") ?? 500;
+                double expiresInMinutes = (expiresInSeconds / 60.0) - 1; // buffer 1 minute
+
+                // add job: get a new refresh token before expires
+                _recurringJobs.AddOrUpdate("ComdirectSession", () => ComdirectSession(), $"*/{(int)expiresInMinutes} * * * *");
+
+                // sample get every 5 minutes the balance or use a hangfire job (https://www.hangfire.io/) 
+                var delayNextRunMinutes = 5;
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     var sw = Stopwatch.StartNew();
                     await GetComdirecAccountBalances(_client);
                     _logger.LogInformation($"Enqueued in {sw.Elapsed}");
                     Console.WriteLine($"Wait for {delayNextRunMinutes} minutes");
+
                     await Task.Delay(TimeSpan.FromMinutes(delayNextRunMinutes), stoppingToken);
                 }
             }
@@ -129,7 +142,7 @@ namespace ConsoleSample
             // Check if a saved TAN can be reused
             if (CheckReuseTan(_configuration))
             {
-                // Refresh the session using the saved TAN
+                // Refresh the session using the saved refresh token for getting the 
                 await RefreshTan(authClient);
             }
             else
@@ -198,6 +211,7 @@ namespace ConsoleSample
                 Console.WriteLine("Refresh token");
                 try
                 {
+                    // get the access token
                     if (!await authClient.RefreshTokenFlowAsync(token))
                     {
                         SettingsHelpers.AddOrUpdateAppSetting<string>("ComdirectSavedSession:SessionId", string.Empty);
@@ -264,8 +278,8 @@ namespace ConsoleSample
                 TimeSpan difference = DateTime.Now - configlastSessionDateTime.Value;
                 // Retrieve the session expiration time in seconds from the application's configuration
                 var expiresInSeconds = config.GetValue<int?>("ComdirectSavedSession:ExpiresInSeconds") ?? 500;
-                // Check if the session is still valid based on the expiration time
-                if (difference.TotalSeconds < (expiresInSeconds - 99))
+                // Check if the session is still valid based on the expiration time, 0 sec buffer
+                if (difference.TotalSeconds < (expiresInSeconds - 50))
                 {
                     sessionValid = true;
                 }
@@ -309,6 +323,7 @@ namespace ConsoleSample
             // Update the application's settings with the session details
             SettingsHelpers.AddOrUpdateAppSetting<string>("ComdirectSavedSession:SessionId", authClient.SessionId);
             SettingsHelpers.AddOrUpdateAppSetting<string>("ComdirectSavedSession:RequestId", authClient.RequestId);
+            // TODO production - save to secrets.json or encypt the value
             SettingsHelpers.AddOrUpdateAppSetting<string>("ComdirectSavedSession:RefreshToken", token.refresh_token);
             SettingsHelpers.AddOrUpdateAppSetting<DateTime>("ComdirectSavedSession:LastSessionDateTime", DateTime.Now);
             SettingsHelpers.AddOrUpdateAppSetting<int>("ComdirectSavedSession:ExpiresInSeconds", token.expires_in);
