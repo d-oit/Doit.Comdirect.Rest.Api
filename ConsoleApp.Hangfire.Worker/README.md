@@ -56,10 +56,12 @@ The sample use **Serilog** to log messages configured in the **appsettings.json*
 > Beschreibung: Für das nun bekannte Session-Objekt wird in diesem Schritt eine TAN-Challenge
 > angefordert.
 
-> **Bitte beachten!**
+> [!CAUTION]
+>  **Bitte beachten!**
 
-> [!CAUTION] Das Abrufen von **fünf** TAN-Challenges ohne zwischenzeitliche Entwertung einer korrekten TAN führt zur 
-> [!CAUTION] **Sperrung des Onlinebanking-Zugangs**
+> [!CAUTION]
+> Das Abrufen von **fünf** TAN-Challenges ohne zwischenzeitliche Entwertung einer korrekten TAN führt zur 
+> **Sperrung des Onlinebanking-Zugangs**
 
 ## Links
 
