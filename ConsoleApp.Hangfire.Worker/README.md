@@ -70,6 +70,7 @@ The sample use **Serilog** to log messages configured in the **appsettings.json*
 - [comdirect API](https://www.comdirect.de/cms/kontakt-zugaenge-api.html)
 - [Issues](https://github.com/d-oit/Doit.Comdirect.Rest.Api/issues)
 - [Discussion](https://github.com/d-oit/Doit.Comdirect.Rest.Api/discussions)
+- [API Documentation](https://github.com/d-oit/Doit.Comdirect.Rest.Api/blob/master/ConsoleApp.Hangfire.Worker/docs/DoitComdirectWorkerAPI.md)
 
 ## License
 
